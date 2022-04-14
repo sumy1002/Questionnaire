@@ -1,0 +1,47 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Admin.master.cs" Inherits="questionnaire.BackAdmin.Admin" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>後台 ─ 問卷管理</title>
+    <!--使用bootstrap-->
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
+    <script src="../bootstrap/js/bootstrap.js"></script>
+    <!--套用jQuery-->
+    <script src="../JavaScript/jquery.min.js"></script>
+    <style>
+        #tblSpace {
+            margin-left: 30px;
+        }
+        #listSpace {
+            padding-top: 30px;
+        }
+    </style>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <table width="95%" id="tblSpace">
+            <tr>
+                <td colspan="2" height="110px">
+                    <h1>後台 ─ 問卷管理</h1>
+                </td>
+            </tr>
+            <tr>
+                <td width="300px" id="listSpace" valign="top">
+                    <a href="mainPageA.aspx">問卷管理</a><br />
+                    <br />
+                    <a href="CommonQuesPageA.aspx">常用問題管理</a>
+                </td>
+                <td>
+                    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                    </asp:ContentPlaceHolder>
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

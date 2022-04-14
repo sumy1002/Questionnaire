@@ -1,0 +1,39 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Index.master.cs" Inherits="questionnaire.Index" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>動態問卷</title>
+    <!--使用bootstrap-->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <script src="bootstrap/js/bootstrap.js"></script>
+    <!--套用jQuery-->
+    <script src="JavaScript/jquery.min.js"></script>
+    <style>
+        #space1 {
+            margin: 30px;
+        }
+        #space2 {
+            margin: 30px;
+            margin-left: 30px;
+            margin-right: 30px;
+        }
+    </style>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                <div id="space1">
+                <h1>前台</h1>
+                </div>
+                <div id="space2"></div>
+            </asp:ContentPlaceHolder>
+        </div>
+    </form>
+</body>
+</html>
