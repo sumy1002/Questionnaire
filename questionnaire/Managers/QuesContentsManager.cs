@@ -98,7 +98,7 @@ namespace questionnaire.Managers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Content GetQuesContent(Guid id)
+        public Content GetQuesContent(int id)
         {
             try
             {
@@ -106,7 +106,7 @@ namespace questionnaire.Managers
                 {
                     var query =
                         from item in contextModel.Contents
-                        where item.ID == id
+                        where item.TitleID == id
                         select item;
 
                     //取得問卷所有資料
@@ -138,12 +138,10 @@ namespace questionnaire.Managers
                 //新增資料
                 using (ContextModel contextModel = new ContextModel())
                 {
-                    ques.ID = Guid.NewGuid();
-
                     //建立新問卷
                     var newQues = new Content
                     {
-                        ID = ques.ID,
+                        TitleID = ques.TitleID,
                         Title = ques.Title,
                         Body = ques.Body,
                         StartDate = ques.StartDate,
@@ -177,7 +175,7 @@ namespace questionnaire.Managers
                 using (ContextModel contextModel = new ContextModel())
                 {
                     //組查詢條件
-                    var query = contextModel.Contents.Where(item => item.ID == ques.ID);
+                    var query = contextModel.Contents.Where(item => item.TitleID == ques.TitleID);
 
                     //取得資料
                     var updateQues = query.FirstOrDefault();
@@ -210,7 +208,7 @@ namespace questionnaire.Managers
         /// 刪除問卷
         /// </summary>
         /// <param name="id"></param>
-        public void DeleteQues(Guid id)
+        public void DeleteQues(int id)
         {
             try
             {
@@ -218,14 +216,17 @@ namespace questionnaire.Managers
                 using (ContextModel contextModel = new ContextModel())
                 {
                     //組查詢條件
-                    var query = contextModel.Contents.Where(item => item.ID == id);
+                    var query = contextModel.Contents.Where(item => item.TitleID == id);
 
                     //取得資料
                     var deleteQues = query.FirstOrDefault();
 
                     //檢查是否存在
                     if (deleteQues != null)
-                        contextModel.Contents.Remove(deleteQues);
+                    {
+                        deleteQues.IsEnable = false;
+                    }
+                    //contextModel.Contents.Remove(deleteQues);
 
                     //確定存檔
                     contextModel.SaveChanges();

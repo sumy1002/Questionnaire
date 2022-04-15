@@ -6,34 +6,26 @@ namespace questionnaire.ORM
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Content")]
-    public partial class Content
+    [Table("QuesType")]
+    public partial class QuesType
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Content()
+        public QuesType()
         {
-            AccountChecks = new HashSet<AccountCheck>();
+            CQs = new HashSet<CQ>();
             QuesDetails = new HashSet<QuesDetail>();
         }
 
-        [Key]
-        public int TitleID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int QuesTypeID { get; set; }
 
+        [Column("QuesType")]
         [Required]
-        [StringLength(200)]
-        public string Title { get; set; }
-
-        [Required]
-        public string Body { get; set; }
-
-        public DateTime StartDate { get; set; }
-
-        public DateTime EndDate { get; set; }
-
-        public bool IsEnable { get; set; }
+        [StringLength(10)]
+        public string QuesType1 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AccountCheck> AccountChecks { get; set; }
+        public virtual ICollection<CQ> CQs { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuesDetail> QuesDetails { get; set; }

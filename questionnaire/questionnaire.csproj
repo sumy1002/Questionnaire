@@ -77,6 +77,7 @@
   <ItemGroup>
     <Content Include="BackAdmin\CommonQuesPageA.aspx" />
     <Content Include="BackAdmin\listPageA.aspx" />
+    <Content Include="BackAdmin\mainPageB.aspx" />
     <Content Include="BackAdmin\mainPageA.aspx" />
     <Content Include="bootstrap\css\bootstrap-grid.css" />
     <Content Include="bootstrap\css\bootstrap-grid.min.css" />
@@ -135,6 +136,13 @@
     <Compile Include="BackAdmin\listPageA.aspx.designer.cs">
       <DependentUpon>listPageA.aspx</DependentUpon>
     </Compile>
+    <Compile Include="BackAdmin\mainPageB.aspx.cs">
+      <DependentUpon>mainPageB.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BackAdmin\mainPageB.aspx.designer.cs">
+      <DependentUpon>mainPageB.aspx</DependentUpon>
+    </Compile>
     <Compile Include="BackAdmin\mainPageA.aspx.cs">
       <DependentUpon>mainPageA.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -182,13 +190,27 @@
     <Compile Include="mainPage.aspx.designer.cs">
       <DependentUpon>mainPage.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Managers\AccountCheckManager.cs" />
     <Compile Include="Managers\AccountManager.cs" />
+    <Compile Include="Managers\CQManager.cs" />
     <Compile Include="Managers\QuesContentsManager.cs" />
+    <Compile Include="Managers\QuesDetailManager.cs" />
+    <Compile Include="Managers\QuesTypeManager.cs" />
+    <Compile Include="Models\AccountCheckModel.cs" />
     <Compile Include="Models\AccountModel.cs" />
+    <Compile Include="Models\CQModel.cs" />
     <Compile Include="Models\QuesContentsModel.cs" />
+    <Compile Include="Models\CQAndTypeModel.cs" />
+    <Compile Include="Models\QuesDetailModel.cs" />
+    <Compile Include="Models\QuesTypeModel.cs" />
     <Compile Include="ORM\Account.cs" />
+    <Compile Include="ORM\AccountCheck.cs" />
     <Compile Include="ORM\Content.cs" />
     <Compile Include="ORM\ContextModel.cs" />
+    <Compile Include="ORM\CQ.cs" />
+    <Compile Include="ORM\QuesDetail.cs" />
+    <Compile Include="ORM\QuesType.cs" />
+    <Compile Include="ORM\sysdiagram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="statisticPage.aspx.cs">
       <DependentUpon>statisticPage.aspx</DependentUpon>

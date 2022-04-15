@@ -15,14 +15,14 @@ namespace questionnaire
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            string idText = this.Request.QueryString["ID"];
+            string idText = this.Request.QueryString["TitleID"];
 
             // 如果沒有帶 id ，跳回列表頁
             if (string.IsNullOrWhiteSpace(idText))
                 this.BackToListPage();
 
-            Guid id;
-            if (!Guid.TryParse(idText, out id))
+            int id;
+            if (!int.TryParse(idText, out id))
                 this.BackToListPage();
 
             // 查資料

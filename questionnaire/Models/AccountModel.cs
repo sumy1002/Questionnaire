@@ -7,7 +7,7 @@ namespace questionnaire.Models
 {
     public class AccountModel
     {
-        public Guid ID { get; set; }
+        public Guid AccountID { get; set; }
 
         /// <summary> 帳號 </summary>
         public string Account { get; set; }

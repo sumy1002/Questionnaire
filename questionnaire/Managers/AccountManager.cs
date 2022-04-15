@@ -153,7 +153,7 @@ namespace questionnaire.Managers
                 {
                     var query =
                         from item in contextModel.Accounts
-                        where item.ID == id
+                        where item.AccountID == id
                         select item;
 
                     //取得Account所有資料
@@ -188,12 +188,12 @@ namespace questionnaire.Managers
                 // 2. 新增資料
                 using (ContextModel contextModel = new ContextModel())
                 {
-                    member.ID = Guid.NewGuid();
+                    member.AccountID = Guid.NewGuid();
 
                     //建立要新增的帳戶資料
                     var newAccount = new Account()
                     {
-                        ID = member.ID,
+                        AccountID = member.AccountID,
                         Account1 = member.Account,
                         PWD = member.PWD,
                         UserLevel = member.UserLevel,
@@ -231,7 +231,7 @@ namespace questionnaire.Managers
                 using (ContextModel contextModel = new ContextModel())
                 {
                     //組查詢條件
-                    var query = contextModel.Accounts.Where(item => item.ID == member.ID);
+                    var query = contextModel.Accounts.Where(item => item.AccountID == member.AccountID);
 
                     //取得資料
                     var memberAccount = query.FirstOrDefault();
@@ -269,14 +269,17 @@ namespace questionnaire.Managers
                 using (ContextModel contextModel = new ContextModel())
                 {
                     //組查詢條件
-                    var query = contextModel.Accounts.Where(item => item.ID == id);
+                    var query = contextModel.Accounts.Where(item => item.AccountID == id);
 
                     //取得資料
                     var deleteAccount = query.FirstOrDefault();
 
                     //檢查是否存在
                     if (deleteAccount != null)
-                        contextModel.Accounts.Remove(deleteAccount);
+                    {
+                        deleteAccount.IsEnable = false;
+                    }
+                    //contextModel.Accounts.Remove(deleteAccount);
 
                     //確定存檔
                     contextModel.SaveChanges();

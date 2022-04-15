@@ -3,4 +3,10 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <h3>常用問題管理</h3>
+    <asp:Repeater ID="rptCQ" runat="server">
+        <ItemTemplate>
+            <p><%# Eval("CQID") %>. <%# Eval("CQTitle") %></p>
+            <p><%# Eval("CQChoice") %></p>
+        </ItemTemplate>
+    </asp:Repeater>
 </asp:Content>

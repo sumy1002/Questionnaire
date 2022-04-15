@@ -32,7 +32,7 @@
             </tr>
             <tr>
                 <td width="300px" id="listSpace" valign="top">
-                    <a href="mainPageA.aspx">問卷管理</a><br />
+                    <a href="listPageA.aspx">問卷管理</a><br />
                     <br />
                     <a href="CommonQuesPageA.aspx">常用問題管理</a>
                 </td>
