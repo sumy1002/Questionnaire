@@ -76,9 +76,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="BackAdmin\CommonQuesPageA.aspx" />
-    <Content Include="BackAdmin\listPageA.aspx" />
-    <Content Include="BackAdmin\mainPageB.aspx" />
-    <Content Include="BackAdmin\mainPageA.aspx" />
+    <Content Include="BackAdmin\ListPageAdmin.aspx" />
+    <Content Include="BackAdmin\NewQues.aspx" />
+    <Content Include="BackAdmin\EditQues.aspx" />
     <Content Include="bootstrap\css\bootstrap-grid.css" />
     <Content Include="bootstrap\css\bootstrap-grid.min.css" />
     <Content Include="bootstrap\css\bootstrap-grid.rtl.css" />
@@ -129,26 +129,26 @@
     <Compile Include="BackAdmin\CommonQuesPageA.aspx.designer.cs">
       <DependentUpon>CommonQuesPageA.aspx</DependentUpon>
     </Compile>
-    <Compile Include="BackAdmin\listPageA.aspx.cs">
-      <DependentUpon>listPageA.aspx</DependentUpon>
+    <Compile Include="BackAdmin\ListPageAdmin.aspx.cs">
+      <DependentUpon>ListPageAdmin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="BackAdmin\listPageA.aspx.designer.cs">
-      <DependentUpon>listPageA.aspx</DependentUpon>
+    <Compile Include="BackAdmin\ListPageAdmin.aspx.designer.cs">
+      <DependentUpon>ListPageAdmin.aspx</DependentUpon>
     </Compile>
-    <Compile Include="BackAdmin\mainPageB.aspx.cs">
-      <DependentUpon>mainPageB.aspx</DependentUpon>
+    <Compile Include="BackAdmin\NewQues.aspx.cs">
+      <DependentUpon>NewQues.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="BackAdmin\mainPageB.aspx.designer.cs">
-      <DependentUpon>mainPageB.aspx</DependentUpon>
+    <Compile Include="BackAdmin\NewQues.aspx.designer.cs">
+      <DependentUpon>NewQues.aspx</DependentUpon>
     </Compile>
-    <Compile Include="BackAdmin\mainPageA.aspx.cs">
-      <DependentUpon>mainPageA.aspx</DependentUpon>
+    <Compile Include="BackAdmin\EditQues.aspx.cs">
+      <DependentUpon>EditQues.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="BackAdmin\mainPageA.aspx.designer.cs">
-      <DependentUpon>mainPageA.aspx</DependentUpon>
+    <Compile Include="BackAdmin\EditQues.aspx.designer.cs">
+      <DependentUpon>EditQues.aspx</DependentUpon>
     </Compile>
     <Compile Include="checkPage.aspx.cs">
       <DependentUpon>checkPage.aspx</DependentUpon>
@@ -199,6 +199,7 @@
     <Compile Include="Models\AccountCheckModel.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\CQModel.cs" />
+    <Compile Include="Models\QuesAndTypeModel.cs" />
     <Compile Include="Models\QuesContentsModel.cs" />
     <Compile Include="Models\CQAndTypeModel.cs" />
     <Compile Include="Models\QuesDetailModel.cs" />

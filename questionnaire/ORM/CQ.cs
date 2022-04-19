@@ -19,7 +19,7 @@ namespace questionnaire.ORM
 
         public string CQChoice { get; set; }
 
-        public bool IsEnable { get; set; }
+        public bool Necessary { get; set; }
 
         public virtual QuesType QuesType { get; set; }
     }

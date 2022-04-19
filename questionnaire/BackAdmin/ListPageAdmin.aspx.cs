@@ -25,7 +25,7 @@ namespace questionnaire.BackAdmin
         protected void ImgBtnAdd_Click(object sender, ImageClickEventArgs e)
         {
             //去新建
-            Response.Redirect("~/BackAdmin/mainPageB.aspx");
+            Response.Redirect("~/BackAdmin/NewQues.aspx");
         }
     }
 }

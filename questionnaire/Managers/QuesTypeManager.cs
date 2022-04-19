@@ -43,7 +43,7 @@ namespace questionnaire.Managers
         }
 
         /// <summary>
-        /// 輸入ID取得顧客訂位紀錄(OrderID, Time, Spending)
+        /// 輸入ID取得常用問題
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -65,7 +65,7 @@ namespace questionnaire.Managers
                             CQChoice = item.CQChoice,
                             QuesTypeID = item2.QuesTypeID,
                             QuesType1 = item2.QuesType1,
-                            IsEnable = item.IsEnable
+                            Necessary = item.Necessary
                         };
 
                     var memberInfo = query.FirstOrDefault();

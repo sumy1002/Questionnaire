@@ -15,6 +15,6 @@ namespace questionnaire.Models
 
         public string CQChoice { get; set; }
 
-        public bool IsEnable { get; set; }
+        public bool Necessary { get; set; }
     }
 }

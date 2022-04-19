@@ -15,6 +15,6 @@ namespace questionnaire.Models
 
         public int QuesTypeID { get; set; }
 
-        public bool IsEnable { get; set; }
+        public bool Necessary { get; set; }
     }
 }

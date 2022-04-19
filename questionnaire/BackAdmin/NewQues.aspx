@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/BackAdmin/Admin.Master" AutoEventWireup="true" CodeBehind="mainPageB.aspx.cs" Inherits="questionnaire.BackAdmin.mainPageB" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/BackAdmin/Admin.Master" AutoEventWireup="true" CodeBehind="NewQues.aspx.cs" Inherits="questionnaire.BackAdmin.NewQues" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -23,6 +23,8 @@
     <div class="tab-content">
         <asp:PlaceHolder ID="plc1" runat="server">
             <div id="paper" class="tab-pane fade in active">
+                <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
+                <asp:HiddenField ID="HiddenField1" runat="server" />
                 <p>
                     <asp:Literal ID="ltltitle" runat="server">問卷名稱</asp:Literal>
                     <asp:TextBox ID="txttitle" runat="server" Width="250"></asp:TextBox><br />
@@ -37,7 +39,7 @@
                     <br />
                     <asp:Button ID="btnCancel" runat="server" Text="取消" />
                     &emsp;&emsp;&emsp;&emsp;&emsp;
-                <asp:Button ID="btnSend" runat="server" Text="送出" OnClick="btnSend_Click"/>
+                <asp:Button ID="btnSend" runat="server" Text="送出" OnClick="btnSend_Click" />
                 </p>
             </div>
         </asp:PlaceHolder>
@@ -45,23 +47,24 @@
         <div id="question" class="tab-pane fade">
             <p>
                 <asp:Literal ID="ltlType" runat="server">種類</asp:Literal>
-                <asp:DropDownList ID="ddlType" runat="server" OnSelectedIndexChanged="ddlType_SelectedIndexChanged"></asp:DropDownList>
-                <asp:Button ID="Button3" runat="server" Text="Button" OnClick="Button3_Click" OnClientClick="" />
+                <asp:DropDownList ID="ddlType" runat="server"></asp:DropDownList>
+                <asp:Button ID="btnAddCQ" runat="server" Text="Button" OnClick="btnAddCQ_Click" OnClientClick="" />
                 <br />
                 <br />
                 <asp:Literal ID="ltlQues" runat="server">問題</asp:Literal>
-                <asp:TextBox ID="txtQues" runat="server" TextMode="MultiLine"></asp:TextBox>&nbsp;
+                <asp:TextBox ID="txtQues" runat="server" Width="250px"></asp:TextBox>&nbsp;
                 <asp:DropDownList ID="ddlQuesType" runat="server"></asp:DropDownList>&nbsp;
-                <asp:CheckBox ID="ckbMust" runat="server" Text="必填" />
+                <asp:CheckBox ID="ckbNess" runat="server" Text="必填" />
                 <br />
                 <asp:Literal ID="ltlAnswer" runat="server">回答</asp:Literal>
                 <asp:TextBox ID="txtAnswer" runat="server"></asp:TextBox>&nbsp;
                 <span>﹝多個答案以；分隔﹞</span>&emsp;
-                <asp:Button ID="btnAdd" runat="server" Text="加入" OnClick="btnAdd_Click" /><br />
+                <asp:Button ID="btnQuesAdd" runat="server" Text="加入" OnClick="btnQuesAdd_Click" /><br />
             </p>
 
             <br />
             <asp:ImageButton ID="ImageButton1" runat="server" />
+
             <table border="1">
                 <tr>
                     <th></th>
@@ -71,19 +74,30 @@
                     <th>必填</th>
                     <th></th>
                 </tr>
-                <tr>
-                    <td>
-                        <asp:CheckBox ID="CheckBox3" runat="server" />
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <asp:CheckBox ID="CheckBox4" runat="server" />
-                    </td>
-                    <td><a>編輯</a></td>
-                </tr>
+                <asp:Repeater ID="rptQuesItem" runat="server">
+                    <ItemTemplate>
+                        <tr>
+                            <td>
+                                <asp:CheckBox ID="ckbDel" runat="server" />
+                            </td>
+                            <td>
+                                <asp:Label ID="lblnumber" runat="server" ></asp:Label>
+                            </td>
+                            <td>
+                                <asp:Label ID="lblQues" runat="server" Text='<%#Eval("QuesTitle") %>'></asp:Label>
+                            </td>
+                            <td>
+                                <asp:Label ID="lblQType" runat="server" Text='<%#Eval("QuesType1") %>'></asp:Label>
+                            </td>
+                            <td>
+                                <asp:CheckBox ID="ckbNecessary" runat="server" Text='<%#Eval("Necessary") %>'/>
+                            </td>
+                            <td><a>編輯</a></td>
+                        </tr>
+                    </ItemTemplate>
+                </asp:Repeater>
             </table>
+
             <p></p>
             <asp:Button ID="Button1" runat="server" Text="取消" />
             &emsp;&emsp;&emsp;&emsp;&emsp;

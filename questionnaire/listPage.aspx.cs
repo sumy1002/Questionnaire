@@ -25,12 +25,7 @@ namespace questionnaire
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            //if(!string.IsNullOrWhiteSpace(this.txtTitle.Text))
-            //{
-            //    var quesList = this._mgrQuesContents.GetQuesContentsList(this.txtTitle.Text);
-            //    this.rptQues.DataSource = quesList;
-            //    this.rptQues.DataBind();
-            //}
+            //輸入Title搜尋
             string title = this.txtTitle.Text;
             var quesList = this._mgrQuesContents.GetQuesContentsList(title);
             this.rptQues.DataSource = quesList;
@@ -39,15 +34,41 @@ namespace questionnaire
             string url = this.Request.Url.LocalPath + "?Caption=" + this.txtTitle.Text;
             this.Response.Redirect(url);
 
-            // 日期搜尋
-            if (!string.IsNullOrWhiteSpace(this.txtStartDate.Text) && 
-                !string.IsNullOrWhiteSpace(this.txtEndDate.Text))
+            // 輸入日期搜尋
+            // String轉DateTime
+            var startDate = this.txtStartDate.Text;
+            var endDate = this.txtEndDate.Text;
+            var strDT = Convert.ToDateTime(startDate);
+            var endDT = Convert.ToDateTime(endDate);
+
+            //過濾搜尋條件(起始or結束、起始+結束或全部)
+            if (string.IsNullOrWhiteSpace(startDate) || 
+                string.IsNullOrWhiteSpace(endDate))
             {
-                var quesList2 = this._mgrQuesContents.GetQuesContentsList(this.txtStartDate.Text, this.txtEndDate.Text);
+                var quesList2 = this._mgrQuesContents.GetQuesContentsList_Date(strDT, endDT);
                 this.rptQues.DataSource = quesList2;
                 this.rptQues.DataBind();
 
-                string url2 = this.Request.Url.LocalPath + "?StartDate=" + this.txtStartDate.Text + "&EndDate=" + this.txtEndDate.Text;
+                string url2 = this.Request.Url.LocalPath + "?StartDate=" + startDate + "&EndDate=" + endDate;
+                this.Response.Redirect(url2);
+            }
+            else if(!string.IsNullOrWhiteSpace(startDate) &&
+                !string.IsNullOrWhiteSpace(endDate))
+            {
+                var quesList2 = this._mgrQuesContents.GetQuesContentsList_Date2(strDT, endDT);
+                this.rptQues.DataSource = quesList2;
+                this.rptQues.DataBind();
+
+                string url2 = this.Request.Url.LocalPath + "?StartDate=" + startDate + "&EndDate=" + endDate;
+                this.Response.Redirect(url2);
+            }
+            else
+            {
+                var quesList2 = this._mgrQuesContents.GetQuesContentsList_Date(strDT, endDT);
+                this.rptQues.DataSource = quesList2;
+                this.rptQues.DataBind();
+
+                string url2 = this.Request.Url.LocalPath + "?StartDate=" + startDate + "&EndDate=" + endDate;
                 this.Response.Redirect(url2);
             }
         }

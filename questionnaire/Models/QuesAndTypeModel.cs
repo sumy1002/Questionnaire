@@ -5,13 +5,13 @@ using System.Web;
 
 namespace questionnaire.Models
 {
-    public class CQAndTypeModel
+    public class QuesAndTypeModel
     {
-        public int CQID { get; set; } 
+        public int QuesID { get; set; }
 
-        public string CQTitle { get; set; }
+        public string QuesTitle { get; set; }
 
-        public string CQChoice { get; set; }
+        public string QuesChoice { get; set; }
 
         public int QuesTypeID { get; set; } //問題種類ID
 

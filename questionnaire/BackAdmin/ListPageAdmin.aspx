@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/BackAdmin/Admin.Master" AutoEventWireup="true" CodeBehind="listPageA.aspx.cs" Inherits="questionnaire.BackAdmin.listPageA" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/BackAdmin/Admin.Master" AutoEventWireup="true" CodeBehind="ListPageAdmin.aspx.cs" Inherits="questionnaire.BackAdmin.listPageA" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <!--套用jQuery-->

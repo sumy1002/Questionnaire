@@ -29,7 +29,7 @@ namespace questionnaire.Managers
                         TitleID = ques.TitleID,
                         QuesTitle = ques.QuesTitle,
                         QuesTypeID = ques.QuesTypeID,
-                        IsEnable = ques.IsEnable
+                        Necessary = ques.Necessary
                     };
 
                     //將新資料插入EF的集合中
@@ -70,7 +70,7 @@ namespace questionnaire.Managers
                         updateQues.TitleID = ques.TitleID;
                         updateQues.QuesTitle = ques.QuesTitle;
                         updateQues.QuesTypeID = ques.QuesTypeID;
-                        updateQues.IsEnable = ques.IsEnable;
+                        updateQues.Necessary = ques.Necessary;
                     }
                     else
                         throw new Exception("此問卷不存在");
@@ -106,7 +106,7 @@ namespace questionnaire.Managers
                     //檢查是否存在
                     if (deleteQues != null)
                     {
-                        deleteQues.IsEnable = false;
+                        deleteQues.Necessary = false;
                     }
                     //contextModel.Contents.Remove(deleteQues);
 

@@ -39,7 +39,7 @@
         <asp:Repeater ID="rptQues" runat="server">
             <ItemTemplate>
                 <tr>
-                    <td><%# Eval("ID") %></td>
+                    <td><%# Eval("TitleID") %></td>
                     <td><a><%# Eval("Title") %></a></td>
                     <td><%# Eval("IsEnable") %></td>
                     <td><%# Eval("StartDate") %></td>

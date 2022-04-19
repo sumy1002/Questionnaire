@@ -51,26 +51,34 @@ namespace questionnaire.Managers
         }
 
         /// <summary>
-        /// 取得所有或附加查詢條件(起始/結束日)的問卷，及其所有資料
+        /// 取得所有或附加查詢條件(起始日或結束日)的問卷，及其所有資料
         /// </summary>
         /// <param name="startDT"></param>
         /// <param name="endDT"></param>
         /// <returns></returns>
-        public List<Content> GetQuesContentsList(string startDT, string endDT)
+        public List<Content> GetQuesContentsList_Date(DateTime startDT, DateTime endDT)
         {
             try
             {
+                var startDTString = startDT.ToString();
+                var endDTString = endDT.ToString();
+
                 using (ContextModel contextModel = new ContextModel())
                 {
                     //取得加查詢條件的問卷
                     IQueryable<Content> query;
-                    if (!string.IsNullOrWhiteSpace(startDT) &&
-                        !string.IsNullOrWhiteSpace(endDT))
+                    if (!string.IsNullOrWhiteSpace(startDTString))
                     {
                         query =
                         from item in contextModel.Contents
-                        where item.Title.Contains(startDT)
-                        where item.Title.Contains(endDT)
+                        where item.StartDate == startDT
+                        select item;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(endDTString))
+                    {
+                        query =
+                        from item in contextModel.Contents
+                        where item.StartDate == endDT
                         select item;
                     }
                     else
@@ -92,6 +100,48 @@ namespace questionnaire.Managers
             }
         }
 
+        /// <summary>
+        /// 取得所有查詢條件(起始日+結束日)的問卷，及其所有資料
+        /// </summary>
+        /// <param name="startDT"></param>
+        /// <param name="endDT"></param>
+        /// <returns></returns>
+        public List<Content> GetQuesContentsList_Date2(DateTime startDT, DateTime endDT)
+        {
+            try
+            {
+                var startDTString = startDT.ToString();
+                var endDTString = endDT.ToString();
+
+                using (ContextModel contextModel = new ContextModel())
+                {
+                    //取得加查詢條件的問卷
+                    IQueryable<Content> query;
+                    if (!string.IsNullOrWhiteSpace(startDTString) && !string.IsNullOrWhiteSpace(endDTString))
+                    {
+                        query =
+                        from item in contextModel.Contents
+                        where item.StartDate == startDT
+                        select item;
+                    }
+                    else
+                    {
+                        query =
+                            from item in contextModel.Contents
+                            select item;
+                    }
+
+                    //組合，並取回結果
+                    var list = query.ToList();
+                    return list;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuesContentsManager.GetQuesContentsList", ex);
+                throw;
+            }
+        }
 
         /// <summary>
         /// 輸入ID取得問卷所有資料
