@@ -10,6 +10,15 @@ namespace questionnaire.Managers
 {
     public class QuesDetailManager
     {
+        //private List<QuesAndTypeModel> _quesList = new List<QuesAndTypeModel>();
+
+        //public List<QuesAndTypeModel> GetQuesList(QuesAndTypeModel ques)
+        //{
+        //    _quesList.Add(ques);
+
+        //    return _quesList;
+        //}
+
         #region "增刪修"
         /// <summary>
         /// 新增問題
@@ -25,8 +34,9 @@ namespace questionnaire.Managers
                     //建立新問卷
                     var newQuesDetail = new QuesDetail
                     {
+                        QuestionnaireID = ques.QuestionnaireID,
                         QuesID = ques.QuesID,
-                        TitleID = ques.TitleID,
+                        //TitleID = ques.TitleID,
                         QuesTitle = ques.QuesTitle,
                         QuesTypeID = ques.QuesTypeID,
                         Necessary = ques.Necessary
@@ -58,7 +68,7 @@ namespace questionnaire.Managers
                 using (ContextModel contextModel = new ContextModel())
                 {
                     //組查詢條件
-                    var query = contextModel.QuesDetails.Where(item => item.TitleID == ques.TitleID);
+                    var query = contextModel.QuesDetails.Where(item => item.QuestionnaireID == ques.QuestionnaireID);
 
                     //取得資料
                     var updateQues = query.FirstOrDefault();
@@ -67,6 +77,7 @@ namespace questionnaire.Managers
                     if (updateQues != null)
                     {
                         updateQues.QuesID = ques.QuesID;
+                        updateQues.QuestionnaireID = ques.QuestionnaireID;
                         updateQues.TitleID = ques.TitleID;
                         updateQues.QuesTitle = ques.QuesTitle;
                         updateQues.QuesTypeID = ques.QuesTypeID;
@@ -90,7 +101,7 @@ namespace questionnaire.Managers
         /// 刪除問題
         /// </summary>
         /// <param name="id"></param>
-        public void DeleteQuesDetail(int id)
+        public void DeleteQuesDetail(Guid id)
         {
             try
             {
@@ -98,7 +109,7 @@ namespace questionnaire.Managers
                 using (ContextModel contextModel = new ContextModel())
                 {
                     //組查詢條件
-                    var query = contextModel.QuesDetails.Where(item => item.TitleID == id);
+                    var query = contextModel.QuesDetails.Where(item => item.QuestionnaireID == id);
 
                     //取得資料
                     var deleteQues = query.FirstOrDefault();
@@ -121,5 +132,32 @@ namespace questionnaire.Managers
             }
         }
         #endregion
+
+        /// <summary>
+        /// 輸入字串，做字串切割，輸出成列表
+        /// </summary>
+        /// <param name="ques"></param>
+        /// <returns></returns>
+        public List<QuesAndTypeModel> GetQuesList(string ques)
+        {
+            ques = ques.TrimEnd('$');
+            string[] Q = ques.Split('$');
+
+            List<QuesAndTypeModel> quesList = new List<QuesAndTypeModel>();
+            foreach (string item in Q)
+            {
+                string[] QD = item.Split('&');
+
+                QuesAndTypeModel Ques = new QuesAndTypeModel();
+                Ques.QuesTitle = QD[0];
+                Ques.QuesChoice = QD[1];
+                Ques.QuesTypeID = Convert.ToInt32(QD[2]);
+                Ques.QuesType1 = QD[3];
+                Ques.Necessary = Convert.ToBoolean(QD[4]);
+
+                quesList.Add(Ques);
+            }
+            return quesList;
+        }
     }
 }

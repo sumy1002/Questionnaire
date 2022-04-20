@@ -13,19 +13,18 @@ namespace questionnaire.BackAdmin
     public partial class NewQues : System.Web.UI.Page
     {
         //private List<QuesDetailModel> _quesDetail = new List<QuesDetailModel>();
-        private QuesTypeManager _mgrQuesType = new QuesTypeManager();
         private CQManager _mgrCQ = new CQManager();
-        List<QuesAndTypeModel> _quesSession = new List<QuesAndTypeModel>();
-        //private static List<QuesAndTypeModel> _quesSession;
+        private QuesTypeManager _mgrQuesType = new QuesTypeManager();
+        private QuesDetailManager _mgrQuesDetail = new QuesDetailManager();
+        private QuesContentsManager _mgrContent = new QuesContentsManager();
+        Guid _questionnaireID = Guid.NewGuid();
+        private static List<QuesDetailModel> _questionSession = new List<QuesDetailModel>();
+        //private List<QuesDetailModel> _questionSession;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //_quesSession = HttpContext.Current.Session["qusetionModel"] as List<QuesAndTypeModel>;
-
             if (!IsPostBack)
             {
-                //_quesSession = HttpContext.Current.Session["qusetionModel"] as List<QuesAndTypeModel>;
-
                 //問題類型下拉繫結
                 var QTypeList = this._mgrQuesType.GetQuesTypesList();
                 this.ddlQuesType.DataSource = QTypeList;
@@ -42,25 +41,6 @@ namespace questionnaire.BackAdmin
 
                 this.ddlType.Items.Insert(0, new ListItem("自訂問題", "0"));
             }
-        }
-
-        private void InitRpt(List<QuesAndTypeModel> questionList)
-        {
-            if (questionList != null || questionList.Count > 0)
-            {
-                int i = 1;
-                this.rptQuesItem.Visible = true;
-                this.rptQuesItem.DataSource = questionList;
-                this.rptQuesItem.DataBind();
-                foreach (RepeaterItem item in this.rptQuesItem.Items)
-                {
-                    Label lblNumber = item.FindControl("lblNumber") as Label;
-                    lblNumber.Text = i.ToString();
-                    i++;
-                }
-            }
-            else
-                this.rptQuesItem.Visible = false;
         }
 
         //加入自訂/常用問題
@@ -82,40 +62,90 @@ namespace questionnaire.BackAdmin
                     this.ckbNess.Checked = true;
                 }
             }
-
         }
 
-        //生成問卷
+        //生成問卷A送出
         protected void btnSend_Click(object sender, EventArgs e)
         {
             //this.plc1.Visible = false;
+            
         }
 
+        //新增問題按鈕
         protected void btnQuesAdd_Click(object sender, EventArgs e)
         {
-            ////編號
-            //this.lblnumber.Text += (number.ToString() + "<br />");
-            //number = number + 1;
-
-            //this.lblQues.Text += (this.txtQues.Text + "<br />");
-            //this.lblQType.Text += (this.ddlQuesType.SelectedItem.ToString() + "<br />");
-
-            //bool Ness = this.ckbNess.Checked;
-            //if (Ness)
-            //{
-            //    this.ckbNecessary.Checked = true;
-            //}
-
-            QuesAndTypeModel ques = new QuesAndTypeModel();
+            QuesDetailModel ques = new QuesDetailModel();
+            //ques.QuestionnaireID = _questionnaireID;
             ques.QuesTitle = this.txtQues.Text.Trim();
             ques.QuesChoice = this.txtAnswer.Text.Trim();
             ques.QuesTypeID = Convert.ToInt32(this.ddlQuesType.SelectedValue);
-            ques.QuesType1 = (this.ddlQuesType.SelectedItem.ToString()).Trim();
             ques.Necessary = this.ckbNess.Checked;
-            _quesSession.Add(ques);
 
-            HttpContext.Current.Session["qusetionModel"] = _quesSession;
-            InitRpt(_quesSession);
+            _questionSession.Add(ques);
+            HttpContext.Current.Session["qusetionModel"] = _questionSession;
+
+
+            //HttpContext.Current.Session["qusetionModel"] = _quesSession;
+            ////InitRpt(_quesSession);
+
+            //把內容以字串形式寫進Session
+            Session["questionList"] += this.txtQues.Text.Trim() + "&";
+            Session["questionList"] += this.txtAnswer.Text.Trim() + "&";
+            Session["questionList"] += Convert.ToInt32(this.ddlQuesType.SelectedValue) + "&";
+            Session["questionList"] += (this.ddlQuesType.SelectedItem.ToString()).Trim() + "&";
+            Session["questionList"] += this.ckbNess.Checked + "$";
+
+            //做拆字串的處理
+            var queslist = this._mgrQuesDetail.GetQuesList(Session["questionList"].ToString());
+
+            this.rptQuesItem.DataSource = queslist;
+            this.rptQuesItem.DataBind();
+
+            //生成問題的編號
+            if (queslist != null || queslist.Count > 0)
+            {
+                int i = 1;
+                foreach (RepeaterItem item in this.rptQuesItem.Items)
+                {
+                    Label lblNumber = item.FindControl("lblNumber") as Label;
+                    lblNumber.Text = i.ToString();
+                    i++;
+                }
+            }
+        }
+
+        protected void btnCreateQ_Click(object sender, EventArgs e)
+        {
+            //建立問卷
+            QuesContentsModel ques = new QuesContentsModel();
+            ques.QuestionnaireID = _questionnaireID;
+            ques.Title = this.txtTitle.Text;
+            ques.Body = this.txtContent.Text;
+            ques.StartDate = Convert.ToDateTime(this.txtStart.Text);
+            ques.EndDate = Convert.ToDateTime(this.txtEnd.Text);
+            ques.IsEnable = this.ckbEnable.Checked;
+
+            //資料寫進Session後在寫進資料庫
+            Session["Questionnaire"] = ques;
+            this._mgrContent.CreateQues(ques);
+
+            //取得該問卷ID
+            var Q = this._mgrContent.GetQuesContent(ques.QuestionnaireID);
+
+            //建立問題
+            int questionNo = 1;
+            foreach (QuesDetailModel question in _questionSession)
+            {
+                question.QuesID = questionNo;
+                question.TitleID = Q.TitleID;
+                question.QuestionnaireID = Q.QuestionnaireID;
+                _mgrQuesDetail.CreateQuesDetail(question);
+
+                questionNo++;
+            }
+
+            //回列表頁
+            Response.Redirect("ListPageAdmin.aspx");
         }
 
         //private void CreateRdb(QuestionModel question)

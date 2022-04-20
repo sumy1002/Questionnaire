@@ -9,9 +9,13 @@ namespace questionnaire.Models
     {
         public int QuesID { get; set; }
 
+        public Guid QuestionnaireID { get; set; }
+
         public int TitleID { get; set; }
 
         public string QuesTitle { get; set; }
+
+        public string QuesChoice { get; set; }
 
         public int QuesTypeID { get; set; }
 

@@ -28,12 +28,14 @@ namespace questionnaire.Managers
                         query =
                             from item in contextModel.Contents
                             where item.Title.Contains(keyword)
+                            orderby item.TitleID descending
                             select item;
                     }
                     else
                     {
                         query =
                             from item in contextModel.Contents
+                            orderby item.TitleID descending
                             select item;
                     }
 
@@ -148,7 +150,7 @@ namespace questionnaire.Managers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Content GetQuesContent(int id)
+        public Content GetQuesContent(Guid id)
         {
             try
             {
@@ -156,7 +158,7 @@ namespace questionnaire.Managers
                 {
                     var query =
                         from item in contextModel.Contents
-                        where item.TitleID == id
+                        where item.QuestionnaireID == id
                         select item;
 
                     //取得問卷所有資料
@@ -191,6 +193,7 @@ namespace questionnaire.Managers
                     //建立新問卷
                     var newQues = new Content
                     {
+                        QuestionnaireID = ques.QuestionnaireID,
                         TitleID = ques.TitleID,
                         Title = ques.Title,
                         Body = ques.Body,
@@ -233,6 +236,7 @@ namespace questionnaire.Managers
                     //檢查是否存在
                     if (updateQues != null)
                     {
+                        updateQues.QuestionnaireID = ques.QuestionnaireID;
                         updateQues.Title = ques.Title;
                         updateQues.Body = ques.Body;
                         updateQues.StartDate = ques.StartDate;
@@ -258,7 +262,7 @@ namespace questionnaire.Managers
         /// 刪除問卷
         /// </summary>
         /// <param name="id"></param>
-        public void DeleteQues(int id)
+        public void DeleteQues(Guid id)
         {
             try
             {
@@ -266,7 +270,7 @@ namespace questionnaire.Managers
                 using (ContextModel contextModel = new ContextModel())
                 {
                     //組查詢條件
-                    var query = contextModel.Contents.Where(item => item.TitleID == id);
+                    var query = contextModel.Contents.Where(item => item.QuestionnaireID == id);
 
                     //取得資料
                     var deleteQues = query.FirstOrDefault();

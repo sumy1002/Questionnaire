@@ -31,17 +31,18 @@
     <asp:ImageButton ID="ImgBtnDel" runat="server" ImageUrl="../images/deleteICON.png" Width="70" />
     <asp:ImageButton ID="ImgBtnAdd" runat="server" ImageUrl="../images/addICON.png" Width="50" OnClick="ImgBtnAdd_Click" />
 
-    <asp:Repeater ID="rptList" runat="server">
-        <ItemTemplate>
-                <tr>
-                    <th></th>
-                    <th>編號</th>
-                    <th>問卷標題</th>
-                    <th>狀態</th>
-                    <th>開始時間</th>
-                    <th>結束時間</th>
-                    <th>觀看統計</th>
-                </tr>
+    <table border="1">
+        <tr>
+            <th></th>
+            <th>編號</th>
+            <th>問卷標題</th>
+            <th>狀態</th>
+            <th>開始時間</th>
+            <th>結束時間</th>
+            <th>觀看統計</th>
+        </tr>
+        <asp:Repeater ID="rptList" runat="server">
+            <ItemTemplate>
                 <tr>
                     <td>
                         <asp:CheckBox ID="CheckBox1" runat="server" />
@@ -53,8 +54,10 @@
                     <td><%# Eval("EndDate") %></td>
                     <td><a>前往</a></td>
                 </tr>
-        </ItemTemplate>
-    </asp:Repeater>
+
+            </ItemTemplate>
+        </asp:Repeater>
+    </table>
 
     <span id='table_pageA'></span>
 

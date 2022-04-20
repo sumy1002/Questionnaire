@@ -23,13 +23,12 @@
     <div class="tab-content">
         <asp:PlaceHolder ID="plc1" runat="server">
             <div id="paper" class="tab-pane fade in active">
-                <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
                 <asp:HiddenField ID="HiddenField1" runat="server" />
                 <p>
                     <asp:Literal ID="ltltitle" runat="server">問卷名稱</asp:Literal>
-                    <asp:TextBox ID="txttitle" runat="server" Width="250"></asp:TextBox><br />
+                    <asp:TextBox ID="txtTitle" runat="server" Width="250"></asp:TextBox><br />
                     <asp:Literal ID="ltlcontent" runat="server">描述內容</asp:Literal>
-                    <asp:TextBox ID="txtcontent" runat="server" TextMode="MultiLine"></asp:TextBox><br />
+                    <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine"></asp:TextBox><br />
                     <asp:Literal ID="ltlStart" runat="server">開始時間</asp:Literal>
                     <asp:TextBox ID="txtStart" runat="server" TextMode="Date" Width="250"></asp:TextBox><br />
                     <asp:Literal ID="ltlEnd" runat="server">結束時間</asp:Literal>
@@ -65,6 +64,7 @@
             <br />
             <asp:ImageButton ID="ImageButton1" runat="server" />
 
+            <asp:HiddenField ID="hfQuesList" runat="server" />
             <table border="1">
                 <tr>
                     <th></th>
@@ -90,7 +90,7 @@
                                 <asp:Label ID="lblQType" runat="server" Text='<%#Eval("QuesType1") %>'></asp:Label>
                             </td>
                             <td>
-                                <asp:CheckBox ID="ckbNecessary" runat="server" Text='<%#Eval("Necessary") %>'/>
+                                <asp:CheckBox ID="ckbNecessary" runat="server" Checked='<%#Eval("Necessary") %>' Enabled="false"/>
                             </td>
                             <td><a>編輯</a></td>
                         </tr>
@@ -101,7 +101,7 @@
             <p></p>
             <asp:Button ID="Button1" runat="server" Text="取消" />
             &emsp;&emsp;&emsp;&emsp;&emsp;
-            <asp:Button ID="Button2" runat="server" Text="送出" />
+            <asp:Button ID="btnCreateQ" runat="server" Text="送出" OnClick="btnCreateQ_Click"/>
         </div>
     </div>
 

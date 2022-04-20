@@ -21,8 +21,8 @@ namespace questionnaire
             if (string.IsNullOrWhiteSpace(idText))
                 this.BackToListPage();
 
-            int id;
-            if (!int.TryParse(idText, out id))
+            Guid id;
+            if (!Guid.TryParse(idText, out id))
                 this.BackToListPage();
 
             // 查資料

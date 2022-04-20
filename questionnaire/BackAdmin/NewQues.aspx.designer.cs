@@ -24,15 +24,6 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.PlaceHolder plc1;
 
         /// <summary>
-        /// Label1 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label Label1;
-
-        /// <summary>
         /// HiddenField1 控制項。
         /// </summary>
         /// <remarks>
@@ -51,13 +42,13 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.Literal ltltitle;
 
         /// <summary>
-        /// txttitle 控制項。
+        /// txtTitle 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txttitle;
+        protected global::System.Web.UI.WebControls.TextBox txtTitle;
 
         /// <summary>
         /// ltlcontent 控制項。
@@ -69,13 +60,13 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.Literal ltlcontent;
 
         /// <summary>
-        /// txtcontent 控制項。
+        /// txtContent 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtcontent;
+        protected global::System.Web.UI.WebControls.TextBox txtContent;
 
         /// <summary>
         /// ltlStart 控制項。
@@ -240,6 +231,15 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.ImageButton ImageButton1;
 
         /// <summary>
+        /// hfQuesList 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfQuesList;
+
+        /// <summary>
         /// rptQuesItem 控制項。
         /// </summary>
         /// <remarks>
@@ -258,12 +258,12 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.Button Button1;
 
         /// <summary>
-        /// Button2 控制項。
+        /// btnCreateQ 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button2;
+        protected global::System.Web.UI.WebControls.Button btnCreateQ;
     }
 }

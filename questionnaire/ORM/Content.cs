@@ -12,11 +12,13 @@ namespace questionnaire.ORM
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Content()
         {
-            AccountChecks = new HashSet<AccountCheck>();
             QuesDetails = new HashSet<QuesDetail>();
         }
 
         [Key]
+        public Guid QuestionnaireID { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int TitleID { get; set; }
 
         [Required]
@@ -31,9 +33,6 @@ namespace questionnaire.ORM
         public DateTime EndDate { get; set; }
 
         public bool IsEnable { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<AccountCheck> AccountChecks { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<QuesDetail> QuesDetails { get; set; }

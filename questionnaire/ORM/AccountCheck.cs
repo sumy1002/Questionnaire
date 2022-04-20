@@ -18,7 +18,5 @@ namespace questionnaire.ORM
         public int TitleID { get; set; }
 
         public virtual Account Account { get; set; }
-
-        public virtual Content Content { get; set; }
     }
 }
