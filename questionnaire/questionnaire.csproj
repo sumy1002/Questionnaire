@@ -79,6 +79,7 @@
     <Content Include="BackAdmin\ListPageAdmin.aspx" />
     <Content Include="BackAdmin\NewQues.aspx" />
     <Content Include="BackAdmin\EditQues.aspx" />
+    <Content Include="BackAdmin\NewQuesDetail.aspx" />
     <Content Include="bootstrap\css\bootstrap-grid.css" />
     <Content Include="bootstrap\css\bootstrap-grid.min.css" />
     <Content Include="bootstrap\css\bootstrap-grid.rtl.css" />
@@ -104,7 +105,10 @@
     <Content Include="checkPage.aspx" />
     <Content Include="Global.asax" />
     <Content Include="images\addICON.png" />
+    <Content Include="images\del.png" />
     <Content Include="images\deleteICON.png" />
+    <Content Include="images\edit.png" />
+    <Content Include="images\plus.png" />
     <Content Include="JavaScript\jquery-tablepage-1.0.js" />
     <Content Include="JavaScript\jquery.js" />
     <Content Include="JavaScript\jquery.min.js" />
@@ -149,6 +153,13 @@
     </Compile>
     <Compile Include="BackAdmin\EditQues.aspx.designer.cs">
       <DependentUpon>EditQues.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BackAdmin\NewQuesDetail.aspx.cs">
+      <DependentUpon>NewQuesDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BackAdmin\NewQuesDetail.aspx.designer.cs">
+      <DependentUpon>NewQuesDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="checkPage.aspx.cs">
       <DependentUpon>checkPage.aspx</DependentUpon>

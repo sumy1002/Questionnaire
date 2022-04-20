@@ -15,7 +15,7 @@ namespace questionnaire.Managers
         /// </summary>
         /// <param name="keyword"></param>
         /// <returns></returns>
-        public List<Content> GetQuesContentsList(string keyword)
+        public List<QuesContentsModel> GetQuesContentsList(string keyword)
         {
             try
             {
@@ -39,11 +39,32 @@ namespace questionnaire.Managers
                             select item;
                     }
 
+                    ////組合，並取回結果
+                    //var list = query.ToList();
+                    //return list;
+
                     //組合，並取回結果
                     var list = query.ToList();
-                    return list;
+                    var Qlist = new List<QuesContentsModel>();
+                    foreach (var item in list)
+                    {
+                        var Q = new QuesContentsModel()
+                        {
+                            QuestionnaireID = item.QuestionnaireID,
+                            TitleID = item.TitleID,
+                            Title = item.Title,
+                            Body = item.Body,
+                            StartDate = item.StartDate,
+                            EndDate = item.EndDate,
+                            strStartTime = item.StartDate.ToString("yyyy-MM-dd"),
+                            strEndTime = item.EndDate.ToString("yyyy-MM-dd"),
+                            IsEnable = item.IsEnable,
+                            strIsEnable = item.IsEnable ? "開放中" : "已關閉",
+                        };
+                        Qlist.Add(Q);
+                    }
+                    return Qlist;
                 }
-
             }
             catch (Exception ex)
             {

@@ -19,7 +19,12 @@ namespace questionnaire.Models
 
         public DateTime EndDate { get; set; }
 
+        public string strStartTime { get; set; }
+
+        public string strEndTime { get; set; }
+
         public bool IsEnable { get; set; }
+        public string strIsEnable { get; set; }
 
         public string Content
         {

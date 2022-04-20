@@ -1,4 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/BackAdmin/Admin.Master" AutoEventWireup="true" CodeBehind="NewQues.aspx.cs" Inherits="questionnaire.BackAdmin.NewQues" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/BackAdmin/Admin.Master" AutoEventWireup="true" CodeBehind="NewQuesDetail.aspx.cs" Inherits="questionnaire.BackAdmin.NewQuesDetail1" %>
+
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -16,32 +17,10 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#paper">問卷</a></li>
-        <li><a data-toggle="tab" href="#question">問題</a></li>
+        <li class="active"><a data-toggle="tab" href="#question">問題</a></li>
     </ul>
 
     <div class="tab-content">
-        <asp:PlaceHolder ID="plc1" runat="server">
-            <div id="paper" class="tab-pane fade in active">
-                <asp:HiddenField ID="HiddenField1" runat="server" />
-                <p>
-                    <asp:Literal ID="ltltitle" runat="server">問卷名稱</asp:Literal>
-                    <asp:TextBox ID="txtTitle" runat="server" Width="250"></asp:TextBox><br />
-                    <asp:Literal ID="ltlcontent" runat="server">描述內容</asp:Literal>
-                    <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine"></asp:TextBox><br />
-                    <asp:Literal ID="ltlStart" runat="server">開始時間</asp:Literal>
-                    <asp:TextBox ID="txtStart" runat="server" TextMode="Date" Width="250"></asp:TextBox><br />
-                    <asp:Literal ID="ltlEnd" runat="server">結束時間</asp:Literal>
-                    <asp:TextBox ID="txtEnd" runat="server" TextMode="Date" Width="250"></asp:TextBox><br />
-                    <br />
-                    <asp:CheckBox ID="ckbEnable" runat="server" Text="已啟用" Checked="true" />
-                    <br />
-                    <asp:Button ID="btnCancel" runat="server" Text="取消" />
-                    &emsp;&emsp;&emsp;&emsp;&emsp;
-                <asp:Button ID="btnSend" runat="server" Text="送出" OnClick="btnSend_Click" />
-                </p>
-            </div>
-        </asp:PlaceHolder>
 
         <div id="question" class="tab-pane fade">
             <p>
@@ -65,7 +44,7 @@
             <asp:ImageButton ID="ImageButton1" runat="server" />
 
             <asp:HiddenField ID="hfQuesList" runat="server" />
-            <table border="1" id="tblUserInfo">
+            <table border="1">
                 <tr>
                     <th></th>
                     <th>編號</th>
@@ -97,7 +76,6 @@
                     </ItemTemplate>
                 </asp:Repeater>
             </table>
-            <span id='table_pageA'></span>
 
             <p></p>
             <asp:Button ID="Button1" runat="server" Text="取消" />
@@ -107,6 +85,7 @@
     </div>
 
     <script>
-        $("#tblUserInfo").tablepage($("#table_pageA"), 10);
+        $("#tblUserInfo").tablepage($("#table_pageA2"), 10);
     </script>
 </asp:Content>
+

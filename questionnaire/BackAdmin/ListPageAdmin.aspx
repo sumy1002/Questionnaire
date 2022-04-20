@@ -31,7 +31,7 @@
     <asp:ImageButton ID="ImgBtnDel" runat="server" ImageUrl="../images/deleteICON.png" Width="70" />
     <asp:ImageButton ID="ImgBtnAdd" runat="server" ImageUrl="../images/addICON.png" Width="50" OnClick="ImgBtnAdd_Click" />
 
-    <table border="1">
+    <table border="1" id="tblA">
         <tr>
             <th></th>
             <th>編號</th>
@@ -48,17 +48,16 @@
                         <asp:CheckBox ID="CheckBox1" runat="server" />
                     </td>
                     <td><%# Eval("TitleID") %></td>
-                    <td><a><%# Eval("Title") %></a></td>
-                    <td><%# Eval("IsEnable") %></td>
-                    <td><%# Eval("StartDate") %></td>
-                    <td><%# Eval("EndDate") %></td>
-                    <td><a>前往</a></td>
+                    <td><a herf="#"><%# Eval("Title") %></a></td>
+                    <td><%# Eval("strIsEnable") %></td>
+                    <td><%# Eval("strStartTime") %></td>
+                    <td><%# Eval("strEndTime") %></td>
+                    <td><a href="NewQues.aspx?ID=<%#Eval("QuestionnaireID") %>">前往</a></td>
                 </tr>
 
             </ItemTemplate>
         </asp:Repeater>
     </table>
-
     <span id='table_pageA'></span>
 
     <script>

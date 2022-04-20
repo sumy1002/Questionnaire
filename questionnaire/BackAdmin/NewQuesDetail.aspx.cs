@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 
 namespace questionnaire.BackAdmin
 {
-    public partial class NewQues : System.Web.UI.Page
+    public partial class NewQuesDetail1 : System.Web.UI.Page
     {
         //private List<QuesDetailModel> _quesDetail = new List<QuesDetailModel>();
         private CQManager _mgrCQ = new CQManager();
@@ -64,13 +64,6 @@ namespace questionnaire.BackAdmin
             }
         }
 
-        //生成問卷A送出
-        protected void btnSend_Click(object sender, EventArgs e)
-        {
-            //this.plc1.Visible = false;
-            
-        }
-
         //新增問題按鈕
         protected void btnQuesAdd_Click(object sender, EventArgs e)
         {
@@ -110,41 +103,40 @@ namespace questionnaire.BackAdmin
             }
         }
 
-        protected void btnCreateQ_Click(object sender, EventArgs e)
-        {
-            //建立問卷
-            QuesContentsModel ques = new QuesContentsModel();
-            ques.QuestionnaireID = _questionnaireID;
-            ques.Title = this.txtTitle.Text;
-            ques.Body = this.txtContent.Text;
-            ques.StartDate = Convert.ToDateTime(this.txtStart.Text).Date;
-            ques.EndDate = Convert.ToDateTime(this.txtEnd.Text);
-            ques.IsEnable = this.ckbEnable.Checked;
+        //protected void btnCreateQ_Click(object sender, EventArgs e)
+        //{
+        //    var Q = Session[""]
 
-            //資料寫進Session後在寫進資料庫
-            Session["Questionnaire"] = ques;
-            this._mgrContent.CreateQues(ques);
+        //    //建立問卷
+        //    QuesContentsModel ques = new QuesContentsModel();
+        //    ques.QuestionnaireID = QSession._questionnaireID;
+        //    ques.Title = this.txtTitle.Text;
+        //    ques.Body = this.txtContent.Text;
+        //    ques.StartDate = Convert.ToDateTime(this.txtStart.Text);
+        //    ques.EndDate = Convert.ToDateTime(this.txtEnd.Text);
+        //    ques.IsEnable = this.ckbEnable.Checked;
 
-            HttpContext.Current.Session["ID"] = ques.QuestionnaireID;
+        //    //資料寫進Session後在寫進資料庫
+        //    Session["Questionnaire"] = ques;
+        //    this._mgrContent.CreateQues(ques);
 
-            //取得該問卷ID
-            var Q = this._mgrContent.GetQuesContent((Guid)Session["ID"]);
+        //    //取得該問卷ID
+        //    var Q = this._mgrContent.GetQuesContent(ques.QuestionnaireID);
 
-            //建立問題
-            int questionNo = 1;
-            foreach (QuesDetailModel question in _questionSession)
-            {
-                question.QuesID = questionNo;
-                question.TitleID = Q.TitleID;
-                question.QuestionnaireID = Q.QuestionnaireID;
-                _mgrQuesDetail.CreateQuesDetail(question);
+        //    //建立問題
+        //    int questionNo = 1;
+        //    foreach (QuesDetailModel question in _questionSession)
+        //    {
+        //        question.QuesID = questionNo;
+        //        question.TitleID = Q.TitleID;
+        //        question.QuestionnaireID = Q.QuestionnaireID;
+        //        _mgrQuesDetail.CreateQuesDetail(question);
 
-                questionNo++;
-            }
+        //        questionNo++;
+        //    }
 
-            //回列表頁
-            Response.Redirect("ListPageAdmin.aspx");
-            //Response.Redirect("NewQues.aspx?ID=" + ques.QuestionnaireID);
-        }
+        //    //回列表頁
+        //    Response.Redirect("ListPageAdmin.aspx");
+        //}
     }
 }

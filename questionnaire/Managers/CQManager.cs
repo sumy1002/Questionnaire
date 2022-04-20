@@ -11,7 +11,7 @@ namespace questionnaire.Managers
     public class CQManager
     {
         /// <summary>
-        /// 取得所有或附加查詢條件的CQ，及其所有資料
+        /// 取得所有查詢條件的CQ，及其所有資料
         /// </summary>
         /// <param name="keyword"></param>
         /// <returns></returns>
@@ -154,7 +154,7 @@ namespace questionnaire.Managers
         }
 
         /// <summary>
-        /// 刪除CQ
+        /// 輸入CQID取得資料後刪除CQ
         /// </summary>
         /// <param name="id"></param>
         public void DeleteCQ(int id)
@@ -173,9 +173,8 @@ namespace questionnaire.Managers
                     //檢查是否存在
                     if (deleteQues != null)
                     {
-                        deleteQues.Necessary = false;
+                        contextModel.CQs.Remove(deleteQues);
                     }
-                    //contextModel.Contents.Remove(deleteQues);
 
                     //確定存檔
                     contextModel.SaveChanges();
