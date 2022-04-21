@@ -51,6 +51,97 @@ namespace questionnaire.Managers
             }
         }
 
+        /// <summary>
+        /// 輸入問題id取得該筆問題
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public QuesDetail GetOneQuesDetail(int id)
+        {
+            string idText = id.ToString();
+
+            try
+            {
+                using (ContextModel contextModel = new ContextModel())
+                {
+                    //取得加查詢條件的問題
+                    var query =
+                    from item in contextModel.QuesDetails
+                    where item.QuesID == id
+                    select item;
+
+                    var quesDetail = query.FirstOrDefault();
+
+                    if(quesDetail != null)
+                        return quesDetail;
+
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuesDetailManager.GetOneQuesDetail", ex);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 輸入GUID取得問題及問題種類
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<QuesAndTypeModel> GetQuesDetailAndTypeList(Guid id)
+        {
+            try
+            {
+                using (ContextModel contextModel = new ContextModel())
+                {
+                    var query =
+                        from item in contextModel.QuesDetails
+                        join item2 in contextModel.QuesTypes
+                        on item.QuesTypeID equals item2.QuesTypeID
+                        where item.QuestionnaireID == id
+                        select new QuesAndTypeModel
+                        {
+                            QuesID = item.QuesID,
+                            QuesTitle = item.QuesTitle,
+                            QuesChoice = item.QuesChoice,
+                            QuesTypeID = item2.QuesTypeID,
+                            QuesType1 = item2.QuesType1,
+                            Necessary = item.Necessary
+                        };
+
+                    ////組合，並取回結果
+                    //var list = query.ToList();
+                    //return list;
+
+                    //組合，並取回結果
+                    var list = query.ToList();
+                    var Qlist = new List<QuesAndTypeModel>();
+                    foreach (var item in list)
+                    {
+                        var Q = new QuesAndTypeModel()
+                        {
+                            QuesID = item.QuesID,
+                            QuesTitle = item.QuesTitle,
+                            QuesChoice = item.QuesChoice,
+                            QuesTypeID = item.QuesTypeID,
+                            QuesType1 = item.QuesType1,
+                            Necessary = item.Necessary
+                        };
+                        Qlist.Add(Q);
+                    }
+                    return Qlist;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("ReservationManager.UpdateMember", ex);
+                throw;
+            }
+
+        }
+
         #region "增刪修"
         /// <summary>
         /// 新增問題
@@ -70,6 +161,7 @@ namespace questionnaire.Managers
                         QuesID = ques.QuesID,
                         //TitleID = ques.TitleID,
                         QuesTitle = ques.QuesTitle,
+                        QuesChoice = ques.QuesChoice,
                         QuesTypeID = ques.QuesTypeID,
                         Necessary = ques.Necessary
                     };
@@ -112,6 +204,7 @@ namespace questionnaire.Managers
                         updateQues.QuestionnaireID = ques.QuestionnaireID;
                         updateQues.TitleID = ques.TitleID;
                         updateQues.QuesTitle = ques.QuesTitle;
+                        updateQues.QuesChoice = ques.QuesChoice;
                         updateQues.QuesTypeID = ques.QuesTypeID;
                         updateQues.Necessary = ques.Necessary;
                     }
@@ -133,7 +226,7 @@ namespace questionnaire.Managers
         /// 刪除問題
         /// </summary>
         /// <param name="id"></param>
-        public void DeleteQuesDetail(Guid id)
+        public void DeleteQuesDetail(int id)
         {
             try
             {
@@ -141,7 +234,7 @@ namespace questionnaire.Managers
                 using (ContextModel contextModel = new ContextModel())
                 {
                     //組查詢條件
-                    var query = contextModel.QuesDetails.Where(item => item.QuestionnaireID == id);
+                    var query = contextModel.QuesDetails.Where(item => item.QuesID == id);
 
                     //取得資料
                     var deleteQues = query.FirstOrDefault();

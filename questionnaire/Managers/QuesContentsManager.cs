@@ -92,7 +92,7 @@ namespace questionnaire.Managers
                     {
                         query =
                         from item in contextModel.Contents
-                        where item.StartDate > startDT
+                        where item.StartDate >= startDT
                         orderby item.StartDate descending
                         select item;
                     }
@@ -152,7 +152,7 @@ namespace questionnaire.Managers
                     {
                         query =
                         from item in contextModel.Contents
-                        where item.EndDate < endDT
+                        where item.EndDate <= endDT
                         orderby item.EndDate descending
                         select item;
                     }
@@ -214,7 +214,7 @@ namespace questionnaire.Managers
                     {
                         query =
                         from item in contextModel.Contents
-                        where item.StartDate > startDT && item.EndDate < endDT
+                        where item.StartDate >= startDT && item.EndDate <= endDT
                         orderby item.TitleID descending
                         select item;
                     }

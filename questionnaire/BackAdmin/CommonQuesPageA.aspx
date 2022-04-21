@@ -22,8 +22,8 @@
         <asp:Label ID="lblAnsRed" runat="server" Text="選項格式錯誤" Visible="false" ForeColor="Red"></asp:Label>
         <asp:Label ID="lblAnsRed2" runat="server" Text="單選及多選選項必須以;分隔，且不可以;結尾" Visible="false" ForeColor="Red"></asp:Label>
         <asp:Label ID="lblAnsRed3" runat="server" Text="文字題無須輸入選項" Visible="false" ForeColor="Red"></asp:Label><br />
-        <asp:Button ID="btnQuesAdd" runat="server" Text="加入" OnClick="btnQuesAdd_Click"/>
-        <asp:Button ID="btnQuesAddCancel" runat="server" Text="取消" OnClick="btnQuesAddCancel_Click"/><br />
+        <asp:Button ID="btnQuesAdd" runat="server" Text="加入" OnClick="btnQuesAdd_Click" />
+        <asp:Button ID="btnQuesAddCancel" runat="server" Text="取消" OnClick="btnQuesAddCancel_Click" /><br />
     </asp:PlaceHolder>
 
     <%-- 修改問題 --%>
@@ -38,9 +38,9 @@
         <span>(多個答案以;分隔)</span>&emsp;<br />
         <asp:Label ID="lblAnsRedEdit" runat="server" Text="選項格式錯誤" Visible="false" ForeColor="Red"></asp:Label>
         <asp:Label ID="lblAnsRedEdit2" runat="server" Text="單選及多選選項必須以;分隔" Visible="false" ForeColor="Red"></asp:Label><br />
-        <asp:Button ID="btnQuesEdit" runat="server" Text="確定修改" OnClick="btnQuesEdit_Click"/>
-        <asp:Button ID="btnQuesAddCancelEdit" runat="server" Text="取消" OnClick="btnQuesAddCancelEdit_Click"/><br />
-        <asp:HiddenField ID="hfCQID" runat="server" Value='<%# Eval("CQID") %>'/>
+        <asp:Button ID="btnQuesEdit" runat="server" Text="確定修改" OnClick="btnQuesEdit_Click" />
+        <asp:Button ID="btnQuesAddCancelEdit" runat="server" Text="取消" OnClick="btnQuesAddCancelEdit_Click" /><br />
+
     </asp:PlaceHolder>
 
     <table border="1" id="tblA">
@@ -53,6 +53,8 @@
             <th>編輯</th>
             <th>刪除</th>
         </tr>
+
+        <asp:HiddenField ID="hfCQID" runat="server" />
         <asp:Repeater ID="rptCQ" runat="server">
             <ItemTemplate>
                 <tr>
@@ -72,7 +74,7 @@
                         <asp:CheckBox ID="ckbNess" runat="server" Enabled="false" Checked='<%#Eval("Necessary") %>' />
                     </td>
                     <td>
-                        <asp:ImageButton ID="imgbtnedit" runat="server" ImageUrl="~/images/edit.png" Width="39px" CommandName='<%# Eval("CQID") %>' OnCommand="imgbtnedit_Command"/>
+                        <asp:ImageButton ID="imgbtnedit" runat="server" ImageUrl="~/images/edit.png" Width="39px" CommandName='<%# Eval("CQID") %>' OnCommand="imgbtnedit_Command" />
                     </td>
                     <td>
                         <asp:ImageButton ID="imgbtnDel" runat="server" ImageUrl="~/images/del.png" Width="40px" CommandName='<%# Eval("CQID") %>' OnCommand="imgbtnDel_Command" OnClientClick="return confirm('確定要刪除嗎？')" />

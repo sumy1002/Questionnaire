@@ -67,8 +67,7 @@ namespace questionnaire.BackAdmin
         //生成問卷A送出
         protected void btnSend_Click(object sender, EventArgs e)
         {
-            //this.plc1.Visible = false;
-
+            Response.Redirect("NewQues.aspx#question");
         }
 
         //新增問題按鈕
@@ -94,6 +93,7 @@ namespace questionnaire.BackAdmin
                 {
                     RadioHasChoice = true;
                     CkbHasChoice = true;
+                    this.lblAnsRed3.Visible = false;
                 }
                 else
                     this.lblAnsRed3.Visible = true;
@@ -114,7 +114,7 @@ namespace questionnaire.BackAdmin
                         RadioHasChoice = true;
                         this.lblAnsRed.Visible = false;
                         this.lblAnsRed2.Visible = false;
-                        this.lblAnsRed3.Visible = true;
+                        this.lblAnsRed3.Visible = false;
                     }
                     else
                         this.lblAnsRed2.Visible = true;
@@ -142,7 +142,7 @@ namespace questionnaire.BackAdmin
                         CkbHasChoice = true;
                         this.lblAnsRed.Visible = false;
                         this.lblAnsRed2.Visible = false;
-                        this.lblAnsRed3.Visible = true;
+                        this.lblAnsRed3.Visible = false;
                     }
                     else
                         this.lblAnsRed2.Visible = true;

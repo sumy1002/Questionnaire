@@ -15,6 +15,15 @@ namespace questionnaire.BackAdmin
     {
 
         /// <summary>
+        /// LinkButton1 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
+
+        /// <summary>
         /// ltltitle 控制項。
         /// </summary>
         /// <remarks>
@@ -204,6 +213,15 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.TextBox txtAnswer;
 
         /// <summary>
+        /// btnQuesAdd 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnQuesAdd;
+
+        /// <summary>
         /// lblAnsRed 控制項。
         /// </summary>
         /// <remarks>
@@ -229,15 +247,6 @@ namespace questionnaire.BackAdmin
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblAnsRed3;
-
-        /// <summary>
-        /// btnQuesAdd 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnQuesAdd;
 
         /// <summary>
         /// ImageButton1 控制項。

@@ -174,6 +174,7 @@ namespace questionnaire.BackAdmin
             //取得該問題的資料
             int id = Convert.ToInt32(e.CommandName);
             var item = this._mgrCQ.GetCQs(id);
+            this.hfCQID.Value = e.CommandName;
 
             //判斷該問題有無答案
             bool hasChoise;
@@ -216,7 +217,7 @@ namespace questionnaire.BackAdmin
 
                 this._mgrCQ.UpdateCQ(updateCQ);
 
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('變更成功。');location.href='adminMenu.aspx';", true);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('變更成功。');location.href='CommonQuesPageA.aspx';", true);
                 this.plcEditCQ.Visible = false;
                 this.imgbtnPlus.Visible = true;
             }

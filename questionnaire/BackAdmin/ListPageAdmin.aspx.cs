@@ -26,12 +26,14 @@ namespace questionnaire.BackAdmin
                 this.rptList.DataSource = quesList;
                 this.rptList.DataBind();
 
-                foreach (var item in quesList)
+                foreach (RepeaterItem item in this.rptList.Items)
                 {
-                    if (item.IsEnable == true)
+                    HiddenField hfID = item.FindControl("hfID") as HiddenField;
+                    CheckBox ckbDel = item.FindControl("CheckBox1") as CheckBox;
+                    Label lbl1 = item.FindControl("lblTitle") as Label;
+                    if (!ckbDel.Checked && Guid.TryParse(hfID.Value, out Guid questionnaireID))
                     {
-                        //Label aaa = this.rptList.FindControl("lblTitle") as Label;
-                        //aaa.Style.Add("background", "#000000");
+                        lbl1.ForeColor = System.Drawing.Color.Red;
                     }
                 }
             }
@@ -73,6 +75,13 @@ namespace questionnaire.BackAdmin
                 {
                     ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('查無資料。');location.href='ListPageAdmin.aspx';", true);
                 }
+                else
+                {
+                    var count = quesList.Count.ToString();
+                    var text = "以 標題 搜尋 " + title + " ";
+                    this.ltlMsg.Text = text + "，共有 " + count + " 項結果";
+                    this.ltlMsg.Visible = true;
+                }
             }
             //判斷是否以日期搜尋
             else if (!StartDTSearch || !EndDTSearch)
@@ -96,6 +105,13 @@ namespace questionnaire.BackAdmin
                     {
                         ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('查無資料。');location.href='ListPageAdmin.aspx';", true);
                     }
+                    else
+                    {
+                        var count = quesList.Count.ToString();
+                        var text = "以 日期 搜尋從  " + startDT + "  到  " + endDT + "  之間";
+                        this.ltlMsg.Text = text + "，共有 " + count + " 項結果";
+                        this.ltlMsg.Visible = true;
+                    }
                 }
                 //只有起始日有值
                 else if (!StartDTSearch && EndDTSearch)
@@ -114,6 +130,13 @@ namespace questionnaire.BackAdmin
                     if (quesList.Count == 0 || quesList == null)
                     {
                         ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('查無資料。');location.href='ListPageAdmin.aspx';", true);
+                    }
+                    else
+                    {
+                        var count = quesList.Count.ToString();
+                        var text = "以 日期 搜尋從  " + startDT + "  開始";
+                        this.ltlMsg.Text = text + "，共有 " + count + " 項結果";
+                        this.ltlMsg.Visible = true;
                     }
                 }
                 //只有結束日有值
@@ -134,12 +157,24 @@ namespace questionnaire.BackAdmin
                     {
                         ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('查無資料。');location.href='ListPageAdmin.aspx';", true);
                     }
+                    else
+                    {
+                        var count = quesList.Count.ToString();
+                        var text = "以 日期 搜尋到  " + endDT + "  截止";
+                        this.ltlMsg.Text = text + "，共有 " + count + " 項結果";
+                        this.ltlMsg.Visible = true;
+                    }
                 }
             }
+            else
+            {
+                var t = string.Empty;
+                var quesList = TitleSearch(t);
+                this.rptList.DataSource = quesList;
+                this.rptList.DataBind();
 
-            //this.txtTitle.Text = String.Empty;
-            //this.txtStartDate.Text = String.Empty;
-            //this.txtEndDate.Text = String.Empty;
+                this.ltlMsg.Visible = false;
+            }
         }
 
         #region 日期搜尋
@@ -209,10 +244,11 @@ namespace questionnaire.BackAdmin
                 this.txtTitle.Enabled = true;
         }
 
+        //刪除問卷
         protected void ImgBtnDel_Command(object sender, CommandEventArgs e)
         {
             Guid id = Guid.Parse(e.CommandName);
-            //this._mgrQues.DeleteQues(id);
+            this._mgrQues.DeleteQues(id);
 
             var quesList = this._mgrQues.GetQuesContent(id);
             QuesContentsModel a = new QuesContentsModel
@@ -223,24 +259,7 @@ namespace questionnaire.BackAdmin
                 strIsEnable = quesList.Title,
             };
 
-            string b = string.Empty;
-
-            foreach (RepeaterItem item in this.rptList.Items)
-            {
-                HiddenField hfID = item.FindControl("hfID") as HiddenField;
-                Label lbl1 = item.FindControl("lblTitle") as Label;
-                //CheckBox ckbDel = item.FindControl("ckbDel") as CheckBox;
-                if (Guid.TryParse(hfID.Value, out Guid questionnaireID))
-                {
-                    lbl1.Style.Add("background", "#000000");
-                    _mgrQues.DeleteQues(questionnaireID);
-                }
-            }
-            List<QuesContentsModel> questionnaireList = _mgrQues.GetQuesContentsList(b);
-            this.rptList.DataSource = questionnaireList;
-            this.rptList.DataBind();
-
-            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('已刪除。');location.href='ListPageAdmin.aspx';", true);
+            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('已刪除。');location.href='ListPageAdmin.aspx';", true);
         }
     }
 }
