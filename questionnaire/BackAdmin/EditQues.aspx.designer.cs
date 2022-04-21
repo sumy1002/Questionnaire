@@ -15,6 +15,15 @@ namespace questionnaire.BackAdmin
     {
 
         /// <summary>
+        /// Label1 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label1;
+
+        /// <summary>
         /// ltltitle 控制項。
         /// </summary>
         /// <remarks>
@@ -24,13 +33,13 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.Literal ltltitle;
 
         /// <summary>
-        /// txttitle 控制項。
+        /// txtTitle 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txttitle;
+        protected global::System.Web.UI.WebControls.TextBox txtTitle;
 
         /// <summary>
         /// ltlcontent 控制項。
@@ -42,13 +51,13 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.Literal ltlcontent;
 
         /// <summary>
-        /// txtcontent 控制項。
+        /// txtContent 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtcontent;
+        protected global::System.Web.UI.WebControls.TextBox txtContent;
 
         /// <summary>
         /// ltlStart 控制項。
@@ -87,13 +96,13 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.TextBox txtEnd;
 
         /// <summary>
-        /// CheckBox1 控制項。
+        /// ckbEnable 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CheckBox1;
+        protected global::System.Web.UI.WebControls.CheckBox ckbEnable;
 
         /// <summary>
         /// btnCancel 控制項。
@@ -114,94 +123,130 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.Button btnSend;
 
         /// <summary>
-        /// Literal1 控制項。
+        /// ltlType 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal Literal1;
+        protected global::System.Web.UI.WebControls.Literal ltlType;
 
         /// <summary>
-        /// DropDownList1 控制項。
+        /// ddlType 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList1;
+        protected global::System.Web.UI.WebControls.DropDownList ddlType;
 
         /// <summary>
-        /// ListBox1 控制項。
+        /// btnAddCQ 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox ListBox1;
+        protected global::System.Web.UI.WebControls.Button btnAddCQ;
 
         /// <summary>
-        /// Literal2 控制項。
+        /// ltlQues 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal Literal2;
+        protected global::System.Web.UI.WebControls.Literal ltlQues;
 
         /// <summary>
-        /// TextBox1 控制項。
+        /// txtQues 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox1;
+        protected global::System.Web.UI.WebControls.TextBox txtQues;
 
         /// <summary>
-        /// DropDownList2 控制項。
+        /// ddlQuesType 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList DropDownList2;
+        protected global::System.Web.UI.WebControls.DropDownList ddlQuesType;
 
         /// <summary>
-        /// CheckBox2 控制項。
+        /// ckbNess 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CheckBox2;
+        protected global::System.Web.UI.WebControls.CheckBox ckbNess;
 
         /// <summary>
-        /// Literal3 控制項。
+        /// lblQuesRed 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal Literal3;
+        protected global::System.Web.UI.WebControls.Label lblQuesRed;
 
         /// <summary>
-        /// TextBox2 控制項。
+        /// ltlAnswer 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBox2;
+        protected global::System.Web.UI.WebControls.Literal ltlAnswer;
 
         /// <summary>
-        /// btnAdd 控制項。
+        /// txtAnswer 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAdd;
+        protected global::System.Web.UI.WebControls.TextBox txtAnswer;
+
+        /// <summary>
+        /// lblAnsRed 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAnsRed;
+
+        /// <summary>
+        /// lblAnsRed2 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAnsRed2;
+
+        /// <summary>
+        /// lblAnsRed3 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAnsRed3;
+
+        /// <summary>
+        /// btnQuesAdd 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnQuesAdd;
 
         /// <summary>
         /// ImageButton1 控制項。
@@ -213,22 +258,13 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.ImageButton ImageButton1;
 
         /// <summary>
-        /// CheckBox3 控制項。
+        /// rptQuesItem 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CheckBox3;
-
-        /// <summary>
-        /// CheckBox4 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox CheckBox4;
+        protected global::System.Web.UI.WebControls.Repeater rptQuesItem;
 
         /// <summary>
         /// Button1 控制項。
@@ -240,13 +276,13 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.Button Button1;
 
         /// <summary>
-        /// Button2 控制項。
+        /// btnCreateQ 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button2;
+        protected global::System.Web.UI.WebControls.Button btnCreateQ;
 
         /// <summary>
         /// plcInfo1 控制項。
@@ -258,13 +294,13 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.PlaceHolder plcInfo1;
 
         /// <summary>
-        /// Button3 控制項。
+        /// btnExport 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Button3;
+        protected global::System.Web.UI.WebControls.Button btnExport;
 
         /// <summary>
         /// plcInfo2 控制項。

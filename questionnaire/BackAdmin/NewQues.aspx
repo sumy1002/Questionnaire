@@ -21,9 +21,7 @@
     </ul>
 
     <div class="tab-content">
-        <asp:PlaceHolder ID="plc1" runat="server">
             <div id="paper" class="tab-pane fade in active">
-                <asp:HiddenField ID="HiddenField1" runat="server" />
                 <p>
                     <asp:Literal ID="ltltitle" runat="server">問卷名稱</asp:Literal>
                     <asp:TextBox ID="txtTitle" runat="server" Width="250"></asp:TextBox><br />
@@ -41,7 +39,6 @@
                 <asp:Button ID="btnSend" runat="server" Text="送出" OnClick="btnSend_Click" />
                 </p>
             </div>
-        </asp:PlaceHolder>
 
         <div id="question" class="tab-pane fade">
             <p>

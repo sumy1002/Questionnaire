@@ -158,7 +158,6 @@ namespace questionnaire.BackAdmin
             //問題加入列表
             if (TitleCheck == true && (RadioHasChoice == true || CkbHasChoice == true))
             {
-
                 QuesDetailModel ques = new QuesDetailModel();
                 ques.QuestionnaireID = _questionnaireID;
                 ques.QuesTitle = this.txtQues.Text.Trim();

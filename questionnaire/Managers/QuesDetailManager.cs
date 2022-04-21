@@ -10,14 +10,46 @@ namespace questionnaire.Managers
 {
     public class QuesDetailManager
     {
-        //private List<QuesAndTypeModel> _quesList = new List<QuesAndTypeModel>();
+        /// <summary>
+        /// 輸入問卷id取得問題清單
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public List<QuesDetail> GetQuesDetailList(Guid id)
+        {
+            string idText = id.ToString();
 
-        //public List<QuesAndTypeModel> GetQuesList(QuesAndTypeModel ques)
-        //{
-        //    _quesList.Add(ques);
+            try
+            {
+                using (ContextModel contextModel = new ContextModel())
+                {
+                    //取得加查詢條件的問題
+                    IQueryable<QuesDetail> query;
+                    if (!string.IsNullOrWhiteSpace(idText))
+                    {
+                        query =
+                        from item in contextModel.QuesDetails
+                        where item.QuestionnaireID == id
+                        select item;
+                    }
+                    else
+                    {
+                        query =
+                            from item in contextModel.QuesDetails
+                            select item;
+                    }
 
-        //    return _quesList;
-        //}
+                    //組合，並取回結果
+                    var list = query.ToList();
+                    return list;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuesDetailManager.GetQuesDetailList", ex);
+                throw;
+            }
+        }
 
         #region "增刪修"
         /// <summary>
@@ -117,9 +149,8 @@ namespace questionnaire.Managers
                     //檢查是否存在
                     if (deleteQues != null)
                     {
-                        deleteQues.Necessary = false;
+                        contextModel.QuesDetails.Remove(deleteQues);
                     }
-                    //contextModel.Contents.Remove(deleteQues);
 
                     //確定存檔
                     contextModel.SaveChanges();

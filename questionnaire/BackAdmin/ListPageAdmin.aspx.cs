@@ -3,9 +3,11 @@ using questionnaire.Models;
 using questionnaire.ORM;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace questionnaire.BackAdmin
@@ -16,11 +18,24 @@ namespace questionnaire.BackAdmin
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //列表資料繫結
-            string a = string.Empty;
-            var quesList = this._mgrQues.GetQuesContentsList(a);
-            this.rptList.DataSource = quesList;
-            this.rptList.DataBind();
+            if (!IsPostBack)
+            {
+                //列表資料繫結
+                string a = string.Empty;
+                var quesList = this._mgrQues.GetQuesContentsList(a);
+                this.rptList.DataSource = quesList;
+                this.rptList.DataBind();
+
+                foreach (var item in quesList)
+                {
+                    if (item.IsEnable == true)
+                    {
+                        //Label aaa = this.rptList.FindControl("lblTitle") as Label;
+                        //aaa.Style.Add("background", "#000000");
+                    }
+                }
+            }
+
         }
 
         //新建問卷按鈕
@@ -192,6 +207,40 @@ namespace questionnaire.BackAdmin
                 this.txtTitle.Enabled = false;
             else
                 this.txtTitle.Enabled = true;
+        }
+
+        protected void ImgBtnDel_Command(object sender, CommandEventArgs e)
+        {
+            Guid id = Guid.Parse(e.CommandName);
+            //this._mgrQues.DeleteQues(id);
+
+            var quesList = this._mgrQues.GetQuesContent(id);
+            QuesContentsModel a = new QuesContentsModel
+            {
+                Title = quesList.Title,
+                strStartTime = quesList.Title,
+                strEndTime = quesList.Title,
+                strIsEnable = quesList.Title,
+            };
+
+            string b = string.Empty;
+
+            foreach (RepeaterItem item in this.rptList.Items)
+            {
+                HiddenField hfID = item.FindControl("hfID") as HiddenField;
+                Label lbl1 = item.FindControl("lblTitle") as Label;
+                //CheckBox ckbDel = item.FindControl("ckbDel") as CheckBox;
+                if (Guid.TryParse(hfID.Value, out Guid questionnaireID))
+                {
+                    lbl1.Style.Add("background", "#000000");
+                    _mgrQues.DeleteQues(questionnaireID);
+                }
+            }
+            List<QuesContentsModel> questionnaireList = _mgrQues.GetQuesContentsList(b);
+            this.rptList.DataSource = questionnaireList;
+            this.rptList.DataBind();
+
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('已刪除。');location.href='ListPageAdmin.aspx';", true);
         }
     }
 }

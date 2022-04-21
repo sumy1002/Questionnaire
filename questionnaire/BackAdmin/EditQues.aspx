@@ -15,6 +15,7 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#paper">問卷</a></li>
         <li><a data-toggle="tab" href="#question">問題</a></li>
@@ -26,15 +27,15 @@
         <div id="paper" class="tab-pane fade in active">
             <p>
                 <asp:Literal ID="ltltitle" runat="server">問卷名稱</asp:Literal>
-                <asp:TextBox ID="txttitle" runat="server" Width="250"></asp:TextBox><br />
+                <asp:TextBox ID="txtTitle" runat="server" Width="250"></asp:TextBox><br />
                 <asp:Literal ID="ltlcontent" runat="server">描述內容</asp:Literal>
-                <asp:TextBox ID="txtcontent" runat="server" TextMode="MultiLine"></asp:TextBox><br />
+                <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine"></asp:TextBox><br />
                 <asp:Literal ID="ltlStart" runat="server">開始時間</asp:Literal>
                 <asp:TextBox ID="txtStart" runat="server" TextMode="Date" Width="250"></asp:TextBox><br />
                 <asp:Literal ID="ltlEnd" runat="server">結束時間</asp:Literal>
                 <asp:TextBox ID="txtEnd" runat="server" TextMode="Date" Width="250"></asp:TextBox><br />
                 <br />
-                <asp:CheckBox ID="CheckBox1" runat="server" Text="已啟用" Checked="true" />
+                <asp:CheckBox ID="ckbEnable" runat="server" Text="已啟用" Checked="true" />
                 <br />
                 <asp:Button ID="btnCancel" runat="server" Text="取消" />
                 &emsp;&emsp;&emsp;&emsp;&emsp;
@@ -44,25 +45,28 @@
 
         <div id="question" class="tab-pane fade">
             <p>
-                <asp:Literal ID="Literal1" runat="server">種類</asp:Literal>
-                <asp:DropDownList ID="DropDownList1" runat="server"></asp:DropDownList><br />
-                <asp:ListBox ID="ListBox1" runat="server">
-                    <asp:ListItem>常用問題1</asp:ListItem>
-                </asp:ListBox>
+                <asp:Literal ID="ltlType" runat="server">種類</asp:Literal>
+                <asp:DropDownList ID="ddlType" runat="server"></asp:DropDownList>
+                <asp:Button ID="btnAddCQ" runat="server" Text="Button" />
                 <br />
-                <asp:Literal ID="Literal2" runat="server">問題</asp:Literal>
-                <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>&nbsp;
-                <asp:DropDownList ID="DropDownList2" runat="server"></asp:DropDownList>&nbsp;
-                <asp:CheckBox ID="CheckBox2" runat="server" Text="必填" />
                 <br />
-                <asp:Literal ID="Literal3" runat="server">回答</asp:Literal>
-                <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>&nbsp;
-                <span>﹝多個答案以；分隔﹞</span>&emsp;
-                <asp:Button ID="btnAdd" runat="server" Text="加入" /><br />
+                <asp:Literal ID="ltlQues" runat="server">問題</asp:Literal>
+                <asp:TextBox ID="txtQues" runat="server" Width="250px"></asp:TextBox>&nbsp;
+                <asp:DropDownList ID="ddlQuesType" runat="server"></asp:DropDownList>&nbsp;
+                <asp:CheckBox ID="ckbNess" runat="server" Text="必填" /><br />
+                <asp:Label ID="lblQuesRed" runat="server" Text="未輸入問題" Visible="false" ForeColor="Red"></asp:Label><br />
+                <asp:Literal ID="ltlAnswer" runat="server">回答</asp:Literal>
+                <asp:TextBox ID="txtAnswer" runat="server"></asp:TextBox>&nbsp;
+                <span>(多個答案以；分隔)</span>&emsp;<br />
+                <asp:Label ID="lblAnsRed" runat="server" Text="選項格式錯誤" Visible="false" ForeColor="Red"></asp:Label>
+                <asp:Label ID="lblAnsRed2" runat="server" Text="單選及多選選項必須以;分隔，且不可以;結尾" Visible="false" ForeColor="Red"></asp:Label>
+                <asp:Label ID="lblAnsRed3" runat="server" Text="文字題無須輸入選項" Visible="false" ForeColor="Red"></asp:Label><br />
+                <asp:Button ID="btnQuesAdd" runat="server" Text="加入" /><br />
             </p>
             <br />
             <asp:ImageButton ID="ImageButton1" runat="server" />
-            <table border="1">
+
+            <table border="1" id="tblUserInfo">
                 <tr>
                     <th></th>
                     <th>編號</th>
@@ -71,30 +75,42 @@
                     <th>必填</th>
                     <th></th>
                 </tr>
-                <tr>
-                    <td>
-                        <asp:CheckBox ID="CheckBox3" runat="server" />
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <asp:CheckBox ID="CheckBox4" runat="server" />
-                    </td>
-                    <td><a>編輯</a></td>
-                </tr>
+                <asp:Repeater ID="rptQuesItem" runat="server">
+                    <ItemTemplate>
+                        <tr>
+                            <td>
+                                <asp:CheckBox ID="ckbDel" runat="server" />
+                            </td>
+                            <td>
+                                <asp:Label ID="lblnumber" runat="server"></asp:Label>
+                            </td>
+                            <td>
+                                <asp:Label ID="lblQues" runat="server" Text='<%#Eval("QuesTitle") %>'></asp:Label>
+                            </td>
+                            <td>
+                                <asp:Label ID="lblQType" runat="server" Text='<%#Eval("QuesType1") %>'></asp:Label>
+                            </td>
+                            <td>
+                                <asp:CheckBox ID="ckbNecessary" runat="server" Checked='<%#Eval("Necessary") %>' Enabled="false" />
+                            </td>
+                            <td><a>編輯</a></td>
+                        </tr>
+                    </ItemTemplate>
+                </asp:Repeater>
             </table>
+            <span id='table_pageA'></span>
+
             <p></p>
             <asp:Button ID="Button1" runat="server" Text="取消" />
             &emsp;&emsp;&emsp;&emsp;&emsp;
-            <asp:Button ID="Button2" runat="server" Text="送出" />
+            <asp:Button ID="btnCreateQ" runat="server" Text="送出" />
         </div>
 
         <div id="userInfo" class="tab-pane fade">
             <asp:PlaceHolder runat="server" ID="plcInfo1">
-                <asp:Button ID="Button3" runat="server" Text="Button" />
+                <asp:Button ID="btnExport" runat="server" Text="匯出" />
                 <p></p>
-                <table id="tblUserInfo" border="1">
+                <table id="tblUserInfo2" border="1">
                     <tr>
                         <th>編號</th>
                         <th>姓名</th>
@@ -126,9 +142,9 @@
             <p>2022/12/12 21:09:23</p>
                 <br />
                 <br />
-
             </asp:PlaceHolder>
         </div>
+
         <div id="statistic" class="tab-pane fade">
             <p>
                 ddd

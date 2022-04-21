@@ -39,20 +39,22 @@
             <th>開始時間</th>
             <th>結束時間</th>
             <th>觀看統計</th>
-            <th>刪除</th>
+            <th>關閉問卷</th>
         </tr>
         <asp:Repeater ID="rptList" runat="server">
             <ItemTemplate>
-                <tr>
-                    <td width="50px"><%# Eval("TitleID") %></td>
-                    <td width="250px"><a herf="#"><%# Eval("Title") %></a></td>
-                    <td width="80px"><%# Eval("strIsEnable") %></td>
-                    <td  width="120px"><%# Eval("strStartTime") %></td>
-                    <td width="120px"><%# Eval("strEndTime") %></td>
+                <asp:HiddenField ID="hfID" runat="server" Value='<%#Eval("QuestionnaireID") %>'/>
+                <tr id="trQList" runat="server">
+                    <td width="50px"><asp:Label ID="lblTitleID" runat="server" Text='<%# Eval("TitleID") %>'></asp:Label></td>
+                    <td width="250px"><asp:Label ID="lblTitle" runat="server" Text='<%# Eval("Title") %>'></asp:Label></td>
+                    <td width="80px"><asp:Label ID="lblIsEnable" runat="server" Text='<%# Eval("strIsEnable") %>'></asp:Label></td>
+                    <td width="120px"><asp:Label ID="lblSDT" runat="server" Text='<%# Eval("strStartTime") %>'></asp:Label></td>
+                    <td width="120px"><asp:Label ID="lblEDT" runat="server" Text='<%# Eval("strEndTime") %>'></asp:Label></td>
                     <td width="80px"><a href="EditQues.aspx?ID=<%#Eval("QuestionnaireID") %>">前往</a></td>
-                    <td><asp:ImageButton ID="ImgBtnDel" runat="server" ImageUrl="../images/del.png" Width="40" /></td>
+                    <td>
+                        <asp:ImageButton ID="ImgBtnDel" runat="server" ImageUrl="../images/del.png" Width="40px" CommandName='<%# Eval("QuestionnaireID") %>' OnCommand="ImgBtnDel_Command" OnClientClick="return confirm('確定要關閉問卷嗎？')"/>
+                    </td>
                 </tr>
-
             </ItemTemplate>
         </asp:Repeater>
     </table>
