@@ -4,6 +4,7 @@ using questionnaire.ORM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -53,7 +54,6 @@ namespace questionnaire.BackAdmin
             {
                 this.txtQues.Text = this.ddlType.SelectedItem.ToString();
                 this.txtAnswer.Text = CQs.CQChoice;
-                //this.ddlQuesType.SelectedItem = CQs.QuesTypeID;
                 this.ddlQuesType.SelectedIndex = CQs.QuesTypeID - 1;
 
                 var isEnable = CQs.Necessary;
@@ -68,51 +68,137 @@ namespace questionnaire.BackAdmin
         protected void btnSend_Click(object sender, EventArgs e)
         {
             //this.plc1.Visible = false;
-            
+
         }
 
         //新增問題按鈕
         protected void btnQuesAdd_Click(object sender, EventArgs e)
         {
-            QuesDetailModel ques = new QuesDetailModel();
-            ques.QuestionnaireID = _questionnaireID;
-            ques.QuesTitle = this.txtQues.Text.Trim();
-            ques.QuesChoice = this.txtAnswer.Text.Trim();
-            ques.QuesTypeID = Convert.ToInt32(this.ddlQuesType.SelectedValue);
-            ques.Necessary = this.ckbNess.Checked;
+            #region 防呆
+            bool TitleCheck = !String.IsNullOrWhiteSpace(this.txtQues.Text);
+            bool RadioHasChoice = false;
+            bool CkbHasChoice = false;
 
-            _questionSession.Add(ques);
-            HttpContext.Current.Session["qusetionModel"] = _questionSession;
+            //檢查有無輸入問題標題
+            if (TitleCheck == false)
+                this.lblQuesRed.Visible = true;
+            else
+                this.lblQuesRed.Visible = false;
 
-            //把內容以字串形式寫進Session
-            Session["questionList"] += this.txtQues.Text.Trim() + "&";
-            Session["questionList"] += this.txtAnswer.Text.Trim() + "&";
-            Session["questionList"] += Convert.ToInt32(this.ddlQuesType.SelectedValue) + "&";
-            Session["questionList"] += (this.ddlQuesType.SelectedItem.ToString()).Trim() + "&";
-            Session["questionList"] += this.ckbNess.Checked + "$";
-
-            //做拆字串的處理
-            var queslist = this._mgrQuesDetail.GetQuesList(Session["questionList"].ToString());
-
-            this.rptQuesItem.DataSource = queslist;
-            this.rptQuesItem.DataBind();
-
-            //生成問題的編號
-            if (queslist != null || queslist.Count > 0)
+            //檢查單複選題有無輸入選項
+            //文字
+            if (this.ddlQuesType.SelectedValue == "1")
             {
-                int i = 1;
-                foreach (RepeaterItem item in this.rptQuesItem.Items)
+                var ansCheck1 = String.IsNullOrWhiteSpace(this.txtAnswer.Text);
+                if (ansCheck1)
                 {
-                    Label lblNumber = item.FindControl("lblNumber") as Label;
-                    lblNumber.Text = i.ToString();
-                    i++;
+                    RadioHasChoice = true;
+                    CkbHasChoice = true;
+                }
+                else
+                    this.lblAnsRed3.Visible = true;
+            }
+            //單選
+            else if (this.ddlQuesType.SelectedValue == "2") 
+            {
+                this.lblAnsRed3.Visible = false;
+                //檢查是否有值
+                if (!String.IsNullOrWhiteSpace(this.txtAnswer.Text))
+                {
+                    this.lblAnsRed.Visible = false;
+                    //檢查有無分號
+                    var ansCheck1 = Regex.IsMatch(this.txtAnswer.Text.Trim(), @";");
+                    var ansCheck2 = !(Regex.IsMatch(this.txtAnswer.Text.Trim(), @";$"));
+                    if (ansCheck1 && ansCheck2)
+                    {
+                        RadioHasChoice = true;
+                        this.lblAnsRed.Visible = false;
+                        this.lblAnsRed2.Visible = false;
+                        this.lblAnsRed3.Visible = true;
+                    }
+                    else
+                        this.lblAnsRed2.Visible = true;
+                }
+                else
+                {
+                    RadioHasChoice = false;
+                    this.lblAnsRed.Visible = true;
+                }
+            }
+            //多選
+            else if (this.ddlQuesType.SelectedValue == "3") 
+            {
+                this.lblAnsRed3.Visible = false;
+                //檢查是否有值
+                if (!String.IsNullOrWhiteSpace(this.txtAnswer.Text))
+                {
+                    this.lblAnsRed.Visible = false;
+
+                    //檢查有無分號 且分號位子正確與否
+                    var ansCheck1 = Regex.IsMatch(this.txtAnswer.Text.Trim(), @";");
+                    var ansCheck2 = !(Regex.IsMatch(this.txtAnswer.Text.Trim(), @";$"));
+                    if (ansCheck1 && ansCheck2)
+                    {
+                        CkbHasChoice = true;
+                        this.lblAnsRed.Visible = false;
+                        this.lblAnsRed2.Visible = false;
+                        this.lblAnsRed3.Visible = true;
+                    }
+                    else
+                        this.lblAnsRed2.Visible = true;
+                }
+                else
+                {
+                    CkbHasChoice = false;
+                    this.lblAnsRed.Visible = true;
+                }
+            }
+            #endregion
+
+            //問題加入列表
+            if (TitleCheck == true && (RadioHasChoice == true || CkbHasChoice == true))
+            {
+
+                QuesDetailModel ques = new QuesDetailModel();
+                ques.QuestionnaireID = _questionnaireID;
+                ques.QuesTitle = this.txtQues.Text.Trim();
+                ques.QuesChoice = this.txtAnswer.Text.Trim();
+                ques.QuesTypeID = Convert.ToInt32(this.ddlQuesType.SelectedValue);
+                ques.Necessary = this.ckbNess.Checked;
+
+                _questionSession.Add(ques);
+                HttpContext.Current.Session["qusetionModel"] = _questionSession;
+
+                //把內容以字串形式寫進Session
+                Session["questionList"] += this.txtQues.Text.Trim() + "&";
+                Session["questionList"] += this.txtAnswer.Text.Trim() + "&";
+                Session["questionList"] += Convert.ToInt32(this.ddlQuesType.SelectedValue) + "&";
+                Session["questionList"] += (this.ddlQuesType.SelectedItem.ToString()).Trim() + "&";
+                Session["questionList"] += this.ckbNess.Checked + "$";
+
+                //做拆字串的處理
+                var queslist = this._mgrQuesDetail.GetQuesList(Session["questionList"].ToString());
+
+                this.rptQuesItem.DataSource = queslist;
+                this.rptQuesItem.DataBind();
+
+                //生成問題的編號
+                if (queslist != null || queslist.Count > 0)
+                {
+                    int i = 1;
+                    foreach (RepeaterItem item in this.rptQuesItem.Items)
+                    {
+                        Label lblNumber = item.FindControl("lblNumber") as Label;
+                        lblNumber.Text = i.ToString();
+                        i++;
+                    }
                 }
             }
         }
 
         protected void btnCreateQ_Click(object sender, EventArgs e)
         {
-            //建立問卷
+            //建立問卷 寫入DB
             QuesContentsModel ques = new QuesContentsModel();
             ques.QuestionnaireID = _questionnaireID;
             ques.Title = this.txtTitle.Text;
@@ -130,7 +216,7 @@ namespace questionnaire.BackAdmin
             //取得該問卷ID
             var Q = this._mgrContent.GetQuesContent((Guid)Session["ID"]);
 
-            //建立問題
+            //新增問題 寫入DB
             int questionNo = 1;
             foreach (QuesDetailModel question in _questionSession)
             {

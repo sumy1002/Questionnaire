@@ -53,11 +53,14 @@
                 <asp:Literal ID="ltlQues" runat="server">問題</asp:Literal>
                 <asp:TextBox ID="txtQues" runat="server" Width="250px"></asp:TextBox>&nbsp;
                 <asp:DropDownList ID="ddlQuesType" runat="server"></asp:DropDownList>&nbsp;
-                <asp:CheckBox ID="ckbNess" runat="server" Text="必填" />
-                <br />
+                <asp:CheckBox ID="ckbNess" runat="server" Text="必填" /><br />
+                <asp:Label ID="lblQuesRed" runat="server" Text="未輸入問題" Visible="false" ForeColor="Red"></asp:Label><br />
                 <asp:Literal ID="ltlAnswer" runat="server">回答</asp:Literal>
                 <asp:TextBox ID="txtAnswer" runat="server"></asp:TextBox>&nbsp;
-                <span>﹝多個答案以；分隔﹞</span>&emsp;
+                <span>(多個答案以；分隔)</span>&emsp;<br />
+                <asp:Label ID="lblAnsRed" runat="server" Text="選項格式錯誤" Visible="false" ForeColor="Red"></asp:Label>
+                <asp:Label ID="lblAnsRed2" runat="server" Text="單選及多選選項必須以;分隔，且不可以;結尾" Visible="false" ForeColor="Red"></asp:Label>
+                <asp:Label ID="lblAnsRed3" runat="server" Text="文字題無須輸入選項" Visible="false" ForeColor="Red"></asp:Label><br />
                 <asp:Button ID="btnQuesAdd" runat="server" Text="加入" OnClick="btnQuesAdd_Click" /><br />
             </p>
 
@@ -81,7 +84,7 @@
                                 <asp:CheckBox ID="ckbDel" runat="server" />
                             </td>
                             <td>
-                                <asp:Label ID="lblnumber" runat="server" ></asp:Label>
+                                <asp:Label ID="lblnumber" runat="server"></asp:Label>
                             </td>
                             <td>
                                 <asp:Label ID="lblQues" runat="server" Text='<%#Eval("QuesTitle") %>'></asp:Label>
@@ -90,7 +93,7 @@
                                 <asp:Label ID="lblQType" runat="server" Text='<%#Eval("QuesType1") %>'></asp:Label>
                             </td>
                             <td>
-                                <asp:CheckBox ID="ckbNecessary" runat="server" Checked='<%#Eval("Necessary") %>' Enabled="false"/>
+                                <asp:CheckBox ID="ckbNecessary" runat="server" Checked='<%#Eval("Necessary") %>' Enabled="false" />
                             </td>
                             <td><a>編輯</a></td>
                         </tr>
@@ -102,7 +105,7 @@
             <p></p>
             <asp:Button ID="Button1" runat="server" Text="取消" />
             &emsp;&emsp;&emsp;&emsp;&emsp;
-            <asp:Button ID="btnCreateQ" runat="server" Text="送出" OnClick="btnCreateQ_Click"/>
+            <asp:Button ID="btnCreateQ" runat="server" Text="送出" OnClick="btnCreateQ_Click" />
         </div>
     </div>
 

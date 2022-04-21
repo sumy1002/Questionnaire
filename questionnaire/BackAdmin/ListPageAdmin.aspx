@@ -16,43 +16,41 @@
     <div id="topDiv">
         <p>
             <asp:Literal ID="ltlTitle" runat="server">問卷標題</asp:Literal>
-            <asp:TextBox ID="txtTitle" runat="server"></asp:TextBox>
+            <asp:TextBox ID="txtTitle" runat="server" OnTextChanged="txtTitle_TextChanged" autopostback=true></asp:TextBox>
         </p>
         <p>
             <asp:Literal ID="ltlDate" runat="server">開始／結束</asp:Literal>
-            <asp:TextBox ID="txtStartDate" runat="server" TextMode="Date"></asp:TextBox>&nbsp;
-            <asp:TextBox ID="txtEndDate" runat="server" TextMode="Date"></asp:TextBox>
+            <asp:TextBox ID="txtStartDate" runat="server" TextMode="Date" OnTextChanged="txtStartDate_TextChanged" autopostback=true></asp:TextBox>&nbsp;
+            <asp:TextBox ID="txtEndDate" runat="server" TextMode="Date" OnTextChanged="txtEndDate_TextChanged" autopostback=true></asp:TextBox>
             &emsp;&emsp;
-            <asp:Button ID="btnSearch" runat="server" Text="搜尋" />
+            <asp:Button ID="btnSearch" runat="server" Text="搜尋" OnClick="btnSearch_Click"/>
         </p>
     </div>
     <br />
     <br />
-    <asp:ImageButton ID="ImgBtnDel" runat="server" ImageUrl="../images/deleteICON.png" Width="70" />
-    <asp:ImageButton ID="ImgBtnAdd" runat="server" ImageUrl="../images/addICON.png" Width="50" OnClick="ImgBtnAdd_Click" />
+    
+    <asp:ImageButton ID="ImgBtnAdd" runat="server" ImageUrl="../images/plus.png" Width="40" OnClick="ImgBtnAdd_Click" />
 
     <table border="1" id="tblA">
         <tr>
-            <th></th>
             <th>編號</th>
             <th>問卷標題</th>
             <th>狀態</th>
             <th>開始時間</th>
             <th>結束時間</th>
             <th>觀看統計</th>
+            <th>刪除</th>
         </tr>
         <asp:Repeater ID="rptList" runat="server">
             <ItemTemplate>
                 <tr>
-                    <td>
-                        <asp:CheckBox ID="CheckBox1" runat="server" />
-                    </td>
-                    <td><%# Eval("TitleID") %></td>
-                    <td><a herf="#"><%# Eval("Title") %></a></td>
-                    <td><%# Eval("strIsEnable") %></td>
-                    <td><%# Eval("strStartTime") %></td>
-                    <td><%# Eval("strEndTime") %></td>
-                    <td><a href="NewQues.aspx?ID=<%#Eval("QuestionnaireID") %>">前往</a></td>
+                    <td width="50px"><%# Eval("TitleID") %></td>
+                    <td width="250px"><a herf="#"><%# Eval("Title") %></a></td>
+                    <td width="80px"><%# Eval("strIsEnable") %></td>
+                    <td  width="120px"><%# Eval("strStartTime") %></td>
+                    <td width="120px"><%# Eval("strEndTime") %></td>
+                    <td width="80px"><a href="EditQues.aspx?ID=<%#Eval("QuestionnaireID") %>">前往</a></td>
+                    <td><asp:ImageButton ID="ImgBtnDel" runat="server" ImageUrl="../images/del.png" Width="40" /></td>
                 </tr>
 
             </ItemTemplate>

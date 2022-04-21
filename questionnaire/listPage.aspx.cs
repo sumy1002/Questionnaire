@@ -41,36 +41,36 @@ namespace questionnaire
             var strDT = Convert.ToDateTime(startDate);
             var endDT = Convert.ToDateTime(endDate);
 
-            //過濾搜尋條件(起始or結束、起始+結束或全部)
-            if (string.IsNullOrWhiteSpace(startDate) || 
-                string.IsNullOrWhiteSpace(endDate))
-            {
-                var quesList2 = this._mgrQuesContents.GetQuesContentsList_Date(strDT, endDT);
-                this.rptQues.DataSource = quesList2;
-                this.rptQues.DataBind();
+            ////過濾搜尋條件(起始or結束、起始+結束或全部)
+            //if (string.IsNullOrWhiteSpace(startDate) || 
+                //string.IsNullOrWhiteSpace(endDate))
+            //{
+                //var quesList2 = this._mgrQuesContents.GetQuesContentsList_Date(strDT, endDT);
+                //this.rptQues.DataSource = quesList2;
+                //this.rptQues.DataBind();
 
-                string url2 = this.Request.Url.LocalPath + "?StartDate=" + startDate + "&EndDate=" + endDate;
-                this.Response.Redirect(url2);
-            }
-            else if(!string.IsNullOrWhiteSpace(startDate) &&
-                !string.IsNullOrWhiteSpace(endDate))
-            {
-                var quesList2 = this._mgrQuesContents.GetQuesContentsList_Date2(strDT, endDT);
-                this.rptQues.DataSource = quesList2;
-                this.rptQues.DataBind();
+                //string url2 = this.Request.Url.LocalPath + "?StartDate=" + startDate + "&EndDate=" + endDate;
+                //this.Response.Redirect(url2);
+            //}
+            //else if(!string.IsNullOrWhiteSpace(startDate) &&
+                //!string.IsNullOrWhiteSpace(endDate))
+            //{
+                //var quesList2 = this._mgrQuesContents.GetQuesContentsList_Date2(strDT, endDT);
+                //this.rptQues.DataSource = quesList2;
+                //this.rptQues.DataBind();
 
-                string url2 = this.Request.Url.LocalPath + "?StartDate=" + startDate + "&EndDate=" + endDate;
-                this.Response.Redirect(url2);
-            }
-            else
-            {
-                var quesList2 = this._mgrQuesContents.GetQuesContentsList_Date(strDT, endDT);
-                this.rptQues.DataSource = quesList2;
-                this.rptQues.DataBind();
+                //string url2 = this.Request.Url.LocalPath + "?StartDate=" + startDate + "&EndDate=" + endDate;
+                //this.Response.Redirect(url2);
+            //}
+            //else
+            //{
+                //var quesList2 = this._mgrQuesContents.GetQuesContentsList_Date(strDT, endDT);
+                //this.rptQues.DataSource = quesList2;
+                //this.rptQues.DataBind();
 
-                string url2 = this.Request.Url.LocalPath + "?StartDate=" + startDate + "&EndDate=" + endDate;
-                this.Response.Redirect(url2);
-            }
+                //string url2 = this.Request.Url.LocalPath + "?StartDate=" + startDate + "&EndDate=" + endDate;
+                //this.Response.Redirect(url2);
+            //}
         }
     }
 }

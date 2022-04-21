@@ -112,7 +112,6 @@ namespace questionnaire.BackAdmin
                     var ansCheck2 = !(Regex.IsMatch(this.txtAnswer.Text.Trim(), @";$"));
                     if (ansCheck1 && ansCheck2)
                     {
-                        Regex.IsMatch(this.txtAnswer.Text.Trim(), @";");
                         CkbHasChoice = true;
                         this.lblAnsRed.Visible = false;
                         this.lblAnsRed2.Visible = false;
@@ -248,7 +247,5 @@ namespace questionnaire.BackAdmin
 
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('已刪除。');location.href='CommonQuesPageA.aspx';", true);
         }
-
-
     }
 }

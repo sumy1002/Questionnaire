@@ -195,6 +195,15 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.CheckBox ckbNess;
 
         /// <summary>
+        /// lblQuesRed 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblQuesRed;
+
+        /// <summary>
         /// ltlAnswer 控制項。
         /// </summary>
         /// <remarks>
@@ -211,6 +220,33 @@ namespace questionnaire.BackAdmin
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAnswer;
+
+        /// <summary>
+        /// lblAnsRed 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAnsRed;
+
+        /// <summary>
+        /// lblAnsRed2 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAnsRed2;
+
+        /// <summary>
+        /// lblAnsRed3 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAnsRed3;
 
         /// <summary>
         /// btnQuesAdd 控制項。
