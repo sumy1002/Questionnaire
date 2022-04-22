@@ -53,7 +53,7 @@
                             <asp:CheckBox ID="CheckBox1" runat="server" Checked='<%# Eval("IsEnable") %>' Visible="false"/></td>
                         <td width="50px">
                             <asp:Label ID="lblTitleID" runat="server" Text='<%# Eval("TitleID") %>'></asp:Label></td>
-                        <td width="250px">
+                        <td width="350px">
                             <asp:Label ID="lblTitle" runat="server" Text='<%# Eval("Title") %>'></asp:Label></td>
                         <td width="80px">
                             <asp:Label ID="lblIsEnable" runat="server" Text='<%# Eval("strIsEnable") %>'></asp:Label></td>

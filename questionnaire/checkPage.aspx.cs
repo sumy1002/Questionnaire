@@ -15,42 +15,42 @@ namespace questionnaire
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            string idText = this.Request.QueryString["TitleID"];
-
-            // 如果沒有帶 id ，跳回列表頁
-            if (string.IsNullOrWhiteSpace(idText))
-                this.BackToListPage();
-
-            Guid id;
-            if (!Guid.TryParse(idText, out id))
-                this.BackToListPage();
-
-            // 查資料
-            ORM.Content quesContent = this._mgrQues.GetQuesContent(id);
-            if (quesContent == null)
-                this.BackToListPage();
-
-            // 不開放前台顯示
-            if (!quesContent.IsEnable)
-                this.BackToListPage();
-
-
-            string name = this.Session["Name"] as string;
-            string phone = this.Session["Phone"] as string;
-            string email = this.Session["Email"] as string;
-            string age = this.Session["Age"] as string;
-
-            if (!string.IsNullOrWhiteSpace(name))
-                this.ltlNameAns.Text = name.ToString();
-            else
-                this.ltlNameAns.Text = "No Session";
-
-            if (!string.IsNullOrWhiteSpace(phone))
-                this.ltlPhoneAns.Text = phone.ToString();
-            if (!string.IsNullOrWhiteSpace(email))
-                this.ltlEmailAns.Text = email.ToString();
-            if (!string.IsNullOrWhiteSpace(age))
-                this.ltlAgeAns.Text = age.ToString();
+            //string idText = this.Request.QueryString["TitleID"];
+            //
+            //// 如果沒有帶 id ，跳回列表頁
+            //if (string.IsNullOrWhiteSpace(idText))
+            //    this.BackToListPage();
+            //
+            //Guid id;
+            //if (!Guid.TryParse(idText, out id))
+            //    this.BackToListPage();
+            //
+            //// 查資料
+            //ORM.Content quesContent = this._mgrQues.GetQuesContent(id);
+            //if (quesContent == null)
+            //    this.BackToListPage();
+            //
+            //// 不開放前台顯示
+            //if (!quesContent.IsEnable)
+            //    this.BackToListPage();
+            //
+            //
+            //string name = this.Session["Name"] as string;
+            //string phone = this.Session["Phone"] as string;
+            //string email = this.Session["Email"] as string;
+            //string age = this.Session["Age"] as string;
+            //
+            //if (!string.IsNullOrWhiteSpace(name))
+            //    this.ltlNameAns.Text = name.ToString();
+            //else
+            //    this.ltlNameAns.Text = "No Session";
+            //
+            //if (!string.IsNullOrWhiteSpace(phone))
+            //    this.ltlPhoneAns.Text = phone.ToString();
+            //if (!string.IsNullOrWhiteSpace(email))
+            //    this.ltlEmailAns.Text = email.ToString();
+            //if (!string.IsNullOrWhiteSpace(age))
+            //    this.ltlAgeAns.Text = age.ToString();
         }
 
         protected void btnChange_Click(object sender, EventArgs e)
@@ -67,6 +67,16 @@ namespace questionnaire
         private void BackToListPage()
         {
             this.Response.Redirect("listPage.aspx", true);
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnSend_Click1(object sender, EventArgs e)
+        {
+
         }
     }
 }

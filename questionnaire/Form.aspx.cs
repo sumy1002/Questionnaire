@@ -36,7 +36,7 @@ namespace questionnaire
                 //string q = $"<br/>{question.TitleID}. {question.QuesID}";
                 string title = $"<br /><br />{i}. {question.QuesTitle}";
                 if (question.Necessary)
-                    title += "(*必填)";
+                    title += "(*)";
                 i = i + 1;
                 Literal ltlQuestion = new Literal();
                 ltlQuestion.Text =title + "<br/>";
@@ -73,7 +73,7 @@ namespace questionnaire
                         break;
                 }
 
-                this.ltlVote.Text = Ques.State.ToString();
+                this.ltlVote.Text = Ques.IsEnable.ToString();
                 this.lvlTime.Text = Ques.strStartTime.ToString();
 
                 string count = questionList.Count.ToString();
@@ -81,6 +81,7 @@ namespace questionnaire
             }
         }
 
+        //建立單選問題
         private void CreateRdb(QuesDetail question)
         {
             RadioButtonList radioButtonList = new RadioButtonList();
@@ -89,12 +90,24 @@ namespace questionnaire
 
             //
             string[] arrQ = question.QuesChoice.Split(';');
+
+            //for (int i = 0; i < arrQ.Length; i++)
+            //{
+            //    ListItem item = new ListItem(arrQ[i], i.ToString());
+            //    radioButtonList.Items.Add(item);
+            //}
+
             for (int i = 0; i < arrQ.Length; i++)
             {
-                ListItem item = new ListItem(arrQ[i], i.ToString());
-                radioButtonList.Items.Add(item);
+                RadioButton item = new RadioButton();
+                item.Text = arrQ[i].ToString();
+                item.GroupName = "group" + question.QuesID;
+                this.plcDynamic.Controls.Add(item);
+                this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
             }
         }
+
+        //建立複選問題
         private void CreateCkb(QuesDetail question)
         {
             CheckBoxList checkBoxList = new CheckBoxList();
@@ -107,6 +120,8 @@ namespace questionnaire
                 checkBoxList.Items.Add(item);
             }
         }
+
+        //建立文字問題
         private void CreateTxt(QuesDetail question)
         {
             TextBox textBox = new TextBox();

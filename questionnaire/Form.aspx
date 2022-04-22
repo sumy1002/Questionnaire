@@ -2,8 +2,30 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
-        #userInfoQues {
-            margin-left: 30px;
+        #divTiCon {
+            border: 0px solid #000000;
+        }
+
+            #divTiCon #divTitle {
+                margin: 30px;
+            }
+
+            #divTiCon #divContent {
+                margin: 30px;
+            }
+
+        #divUserInfo {
+            margin: 20px auto;
+            
+            border: 0px solid #000000;
+            text-align: left;
+            line-height: 35px;
+        }
+
+        #divDynamic {
+            margin: 20px auto;
+            border:0px solid #000000;
+            text-align: left;
         }
 
         #btnSpace {
@@ -19,28 +41,31 @@
     </div>
 
     <%-- 標題&內文 --%>
-    <div class="col-lg-12" align="center">
-        <asp:HiddenField ID="hfID" runat="server" />
-        <h2><asp:Literal ID="ltlTitle" runat="server"></asp:Literal></h2>
-        <h4><asp:Literal ID="ltlContent" runat="server"></asp:Literal></h4>
+    <div id="divTiCon" class="col-lg-12" align="center">
+        <div id="divTitle">
+            <asp:HiddenField ID="hfID" runat="server" />
+            <h2>
+                <asp:Literal ID="ltlTitle" runat="server"></asp:Literal></h2>
+        </div>
+        <div id="divContent" class="col-lg-5">
+            <asp:Literal ID="ltlContent" runat="server"></asp:Literal>
+        </div>
     </div>
 
     <%-- 必填個人資訊 --%>
-    <div id="userInfoQues" align="center">
-        <p></p>
-        <br />
-        <asp:Literal ID="ltlName" runat="server">姓名</asp:Literal>
-        <asp:TextBox ID="txtName" runat="server"></asp:TextBox><br />
-        <asp:Literal ID="ltlPhone" runat="server">手機</asp:Literal>
-        <asp:TextBox ID="txtPhone" runat="server" TextMode="Phone"></asp:TextBox><br />
-        <asp:Literal ID="ltlEmail" runat="server">Email</asp:Literal>
-        <asp:TextBox ID="txtEmail" runat="server" TextMode="Email"></asp:TextBox><br />
-        <asp:Literal ID="ltlAge" runat="server">年齡</asp:Literal>
-        <asp:TextBox ID="txtAge" runat="server" TextMode="Number" min="1"></asp:TextBox><br />
+    <div id="divUserInfo" class="col-lg-5" align="center">
+        <asp:Literal ID="ltlName" runat="server">姓名</asp:Literal>&nbsp;&nbsp;&nbsp;
+        <asp:TextBox ID="txtName" runat="server" Height="24px"></asp:TextBox><br />
+        <asp:Literal ID="ltlPhone" runat="server">手機</asp:Literal>&nbsp;&nbsp;&nbsp;
+        <asp:TextBox ID="txtPhone" runat="server" TextMode="Phone" Height="24px"></asp:TextBox><br />
+        <asp:Literal ID="ltlEmail" runat="server">Email</asp:Literal>&nbsp;
+        <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" Height="24px"></asp:TextBox><br />
+        <asp:Literal ID="ltlAge" runat="server">年齡</asp:Literal>&nbsp;&nbsp;&nbsp;
+        <asp:TextBox ID="txtAge" runat="server" TextMode="Number" min="1" Height="24px"></asp:TextBox>
     </div>
 
     <%-- 問卷 --%>
-    <div align="center">
+    <div id="divDynamic" class="col-lg-5" align="center">
         <asp:PlaceHolder ID="plcDynamic" runat="server"></asp:PlaceHolder>
     </div>
 

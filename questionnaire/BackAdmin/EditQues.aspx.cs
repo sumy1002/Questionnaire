@@ -1,5 +1,6 @@
 ﻿using questionnaire.Managers;
 using questionnaire.Models;
+using questionnaire.ORM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,16 +118,60 @@ namespace questionnaire.BackAdmin
 
             if (!hasChoise)
             {
+                this.btnQuesAddEdit.CommandName = item.QuesID.ToString();
                 this.txtQuesEdit.Text = item.QuesTitle.ToString();
                 this.ddlQuesTypeEdit.SelectedValue = item.QuesTypeID.ToString();
                 this.ckbNessEdit.Checked = item.Necessary;
             }
             else
             {
+                this.btnQuesAddEdit.CommandName = item.QuesID.ToString();
                 this.txtQuesEdit.Text = item.QuesTitle.ToString();
                 this.txtAnswerEdit.Text = item.QuesChoice.ToString();
                 this.ddlQuesTypeEdit.SelectedValue = item.QuesTypeID.ToString();
                 this.ckbNessEdit.Checked = item.Necessary;
+            }
+        }
+
+        //儲存編輯問題
+        protected void btnQuesAddEdit_Command(object sender, CommandEventArgs e)
+        {
+            int id = Convert.ToInt32(e.CommandName);
+            var item = this._mgrQuesDetail.GetOneQuesDetail(id);
+
+            try
+            {
+                QuesDetailModel updateQ = new QuesDetailModel()
+                {
+                    QuestionnaireID = item.QuestionnaireID,
+                    QuesID = item.QuesID,
+                    QuesTitle = this.txtQuesEdit.Text,
+                    QuesTypeID = Convert.ToInt32(this.ddlQuesTypeEdit.SelectedValue),
+                    QuesChoice = this.txtAnswerEdit.Text,
+                    Necessary = this.ckbNessEdit.Checked,
+                };
+
+                this._mgrQuesDetail.UpdateQuesDetail(updateQ);
+
+                //取ID
+                string ID = Request.QueryString["ID"];
+                Guid id2 = new Guid(ID);
+
+                var QList = this._mgrQuesDetail.GetQuesDetailAndTypeList(id2);
+                this.rptQuesItem.DataSource = QList;
+                this.rptQuesItem.DataBind();
+
+                this.plcUpdate.Visible = false;
+                this.imgbtnDel.Visible = true;
+                this.imgbtnPlus.Visible = true;
+
+                this.txtQuesEdit.Text = String.Empty;
+                this.txtAnswerEdit.Text = String.Empty;
+                this.ckbNessEdit.Checked = false;
+            }
+            catch (Exception)
+            {
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('入力した内容に誤りがあります。');location.href='adminMenu.aspx';", true);
             }
         }
 
@@ -263,8 +308,8 @@ namespace questionnaire.BackAdmin
                 //做拆字串的處理
                 var queslist = this._mgrQuesDetail.GetQuesList(Session["questionList"].ToString());
 
-                this.rptQuesItem.DataSource = queslist;
-                this.rptQuesItem.DataBind();
+                //this.rptQuesItem.DataSource = queslist;
+                //this.rptQuesItem.DataBind();
 
                 //新增問題 寫入DB
                 int questionNo = 1;
@@ -295,6 +340,14 @@ namespace questionnaire.BackAdmin
                     }
                 }
 
+                //取ID
+                string ID = Request.QueryString["ID"];
+                Guid id = new Guid(ID);
+
+                var QList = this._mgrQuesDetail.GetQuesDetailAndTypeList(id);
+                this.rptQuesItem.DataSource = QList;
+                this.rptQuesItem.DataBind();
+
                 this.plcQues.Visible = false;
                 this.plcUpdate.Visible = false;
                 this.imgbtnDel.Visible = true;
@@ -324,16 +377,16 @@ namespace questionnaire.BackAdmin
                 {
                     //把問題從資料庫中刪除
                     this._mgrQuesDetail.DeleteQuesDetail(Convert.ToInt32(imgbtnDel.CommandName));
-
-                    //取問卷ID
-                    string ID = Request.QueryString["ID"];
-                    this.Label1.Text = ID;
-                    Guid id = new Guid(ID);
-
-                    //導回正確的問卷編輯頁
-                    Response.Redirect($"EditQues.aspx?ID={ID}");
                 }
             }
+
+            //取問卷ID
+            string ID = Request.QueryString["ID"];
+            this.Label1.Text = ID;
+            Guid id = new Guid(ID);
+
+            //導回正確的問卷編輯頁
+            Response.Redirect($"EditQues.aspx?ID={ID}");
         }
         #endregion
 

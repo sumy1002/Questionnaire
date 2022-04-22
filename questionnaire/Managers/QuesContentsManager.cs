@@ -317,7 +317,7 @@ namespace questionnaire.Managers
                         EndDate = QuesContent.EndDate,
                         strStartTime = QuesContent.StartDate.ToString("yyyy-MM-dd"),
                         strEndTime = QuesContent.EndDate.ToString("yyyy-MM-dd"),
-                        State = QuesContent.EndDate < DateTime.Now ? "已關閉" : "開放中",
+                        State1 = QuesContent.EndDate < DateTime.Now ? "已關閉" : "開放中",
                         IsEnable = QuesContent.IsEnable,
                         strIsEnable = QuesContent.IsEnable ? "開放中" : "已關閉",
                     };

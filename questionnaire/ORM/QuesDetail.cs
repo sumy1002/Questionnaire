@@ -12,7 +12,7 @@ namespace questionnaire.ORM
         [Key]
         public int QuesID { get; set; }
 
-        public Guid? QuestionnaireID { get; set; }
+        public Guid QuestionnaireID { get; set; }
 
         public int TitleID { get; set; }
 
