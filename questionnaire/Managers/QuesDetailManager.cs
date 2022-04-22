@@ -86,6 +86,40 @@ namespace questionnaire.Managers
         }
 
         /// <summary>
+        /// 輸入問題title取得該筆問題
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public QuesDetail GetTitleQuesDetail(string title)
+        {
+            string titleText = title.ToString();
+
+            try
+            {
+                using (ContextModel contextModel = new ContextModel())
+                {
+                    //取得加查詢條件的問題
+                    var query =
+                    from item in contextModel.QuesDetails
+                    where item.QuesTitle == title
+                    select item;
+
+                    var quesDetail = query.FirstOrDefault();
+
+                    if (quesDetail != null)
+                        return quesDetail;
+
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuesDetailManager.GetTitleQuesDetail", ex);
+                throw;
+            }
+        }
+
+        /// <summary>
         /// 輸入GUID取得問題及問題種類
         /// </summary>
         /// <param name="id"></param>

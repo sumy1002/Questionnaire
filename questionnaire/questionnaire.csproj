@@ -114,7 +114,7 @@
     <Content Include="JavaScript\jquery.min.js" />
     <Content Include="listPage.aspx" />
     <Content Include="Login.aspx" />
-    <Content Include="mainPage.aspx" />
+    <Content Include="Form.aspx" />
     <Content Include="statisticPage.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -194,12 +194,12 @@
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
-    <Compile Include="mainPage.aspx.cs">
-      <DependentUpon>mainPage.aspx</DependentUpon>
+    <Compile Include="Form.aspx.cs">
+      <DependentUpon>Form.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="mainPage.aspx.designer.cs">
-      <DependentUpon>mainPage.aspx</DependentUpon>
+    <Compile Include="Form.aspx.designer.cs">
+      <DependentUpon>Form.aspx</DependentUpon>
     </Compile>
     <Compile Include="Managers\AccountCheckManager.cs" />
     <Compile Include="Managers\AccountManager.cs" />

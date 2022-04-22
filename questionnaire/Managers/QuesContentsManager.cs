@@ -39,10 +39,6 @@ namespace questionnaire.Managers
                             select item;
                     }
 
-                    ////組合，並取回結果
-                    //var list = query.ToList();
-                    //return list;
-
                     //組合，並取回結果
                     var list = query.ToList();
                     var Qlist = new List<QuesContentsModel>();
@@ -58,6 +54,9 @@ namespace questionnaire.Managers
                             EndDate = item.EndDate,
                             strStartTime = item.StartDate.ToString("yyyy-MM-dd"),
                             strEndTime = item.EndDate.ToString("yyyy-MM-dd"),
+                            State1 = item.EndDate < DateTime.Now ? "已完結" : "開放中",
+                            State2 = item.StartDate > DateTime.Now ? "尚未開始" : "開放中",
+                            State3 = item.EndDate < DateTime.Now ? "已完結" : "開放中",
                             IsEnable = item.IsEnable,
                             strIsEnable = item.IsEnable ? "開放中" : "已關閉",
                         };
@@ -214,7 +213,7 @@ namespace questionnaire.Managers
                     {
                         query =
                         from item in contextModel.Contents
-                        where item.StartDate >= startDT && item.EndDate <= endDT
+                        where item.StartDate >= startDT && item.EndDate >= endDT
                         orderby item.TitleID descending
                         select item;
                     }
@@ -256,7 +255,7 @@ namespace questionnaire.Managers
         }
 
         /// <summary>
-        /// 輸入ID取得問卷所有資料
+        /// 輸入GUID取得問卷所有資料
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -279,6 +278,55 @@ namespace questionnaire.Managers
                         return QuesContent;
 
                     return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuesContentsManager.GetQuesContent", ex);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 輸入GUID取得問卷所有資料 有str日期跟開放狀態的
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public QuesContentsModel GetQuesContent2(Guid id)
+        {
+            try
+            {
+                using (ContextModel contextModel = new ContextModel())
+                {
+                    var query =
+                        from item in contextModel.Contents
+                        where item.QuestionnaireID == id
+                        select item;
+
+                    //取得問卷所有資料
+                    var QuesContent = query.FirstOrDefault();
+
+                    //組合，並取回結果
+                    var Q = new QuesContentsModel()
+                    {
+                        QuestionnaireID = QuesContent.QuestionnaireID,
+                        TitleID = QuesContent.TitleID,
+                        Title = QuesContent.Title,
+                        Body = QuesContent.Body,
+                        StartDate = QuesContent.StartDate,
+                        EndDate = QuesContent.EndDate,
+                        strStartTime = QuesContent.StartDate.ToString("yyyy-MM-dd"),
+                        strEndTime = QuesContent.EndDate.ToString("yyyy-MM-dd"),
+                        State = QuesContent.EndDate < DateTime.Now ? "已關閉" : "開放中",
+                        IsEnable = QuesContent.IsEnable,
+                        strIsEnable = QuesContent.IsEnable ? "開放中" : "已關閉",
+                    };
+
+                    //檢查是否存在
+                    if (Q != null)
+                        return Q;
+                    else
+                        return null;
                 }
             }
             catch (Exception ex)

@@ -26,7 +26,8 @@
             <asp:Button ID="btnSearch" runat="server" Text="搜尋" OnClick="btnSearch_Click" />
         </p>
     </div>
-    <br />
+    <asp:Literal ID="ltlMsg" runat="server" Visible="false"></asp:Literal>
+    <br /><br />
     <table id="tbl">
         <tr>
             <th>編號</th>
@@ -38,12 +39,15 @@
         </tr>
         <asp:Repeater ID="rptQues" runat="server">
             <ItemTemplate>
+                <asp:HiddenField ID="hfID" runat="server" Value='<%# Eval("TitleID") %>'/>
+                <asp:HiddenField ID="hfSta" runat="server" Value='<%# Eval("StartDate") %>'/>
+                <asp:HiddenField ID="hfEnd" runat="server" Value='<%# Eval("EndDate") %>'/>
                 <tr>
-                    <td><%# Eval("TitleID") %></td>
-                    <td><a><%# Eval("Title") %></a></td>
-                    <td><%# Eval("IsEnable") %></td>
-                    <td><%# Eval("StartDate") %></td>
-                    <td><%# Eval("EndDate") %></td>
+                    <td width="50px"><%# Eval("TitleID") %></td>
+                    <td width="250px"><a href="Form.aspx?ID=<%#Eval("QuestionnaireID") %>"><%# Eval("Title") %></a></td>
+                    <td width="150px"><asp:Literal ID="ltlState" runat="server" Text='<%# Eval("strIsEnable") %>'></asp:Literal></td>
+                    <td width="150px"><asp:Literal ID="Literal1" runat="server" Text='<%# Eval("strStartTime") %>'></asp:Literal></td>
+                    <td width="150px"><asp:Literal ID="Literal2" runat="server" Text='<%# Eval("strEndTime") %>'></asp:Literal></td>
                     <td><a>前往</a></td>
                 </tr>
             </ItemTemplate>

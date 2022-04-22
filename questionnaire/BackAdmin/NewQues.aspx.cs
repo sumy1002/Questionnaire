@@ -195,9 +195,9 @@ namespace questionnaire.BackAdmin
             }
         }
 
+        //建立問卷 寫入DB
         protected void btnCreateQ_Click(object sender, EventArgs e)
         {
-            //建立問卷 寫入DB
             QuesContentsModel ques = new QuesContentsModel();
             ques.QuestionnaireID = _questionnaireID;
             ques.Title = this.txtTitle.Text;

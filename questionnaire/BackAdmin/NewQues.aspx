@@ -28,7 +28,7 @@
                 <asp:Literal ID="ltltitle" runat="server">問卷名稱</asp:Literal>
                 <asp:TextBox ID="txtTitle" runat="server" Width="250"></asp:TextBox><br />
                 <asp:Literal ID="ltlcontent" runat="server">描述內容</asp:Literal>
-                <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine"></asp:TextBox><br />
+                <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine" Width="400px"></asp:TextBox><br />
                 <asp:Literal ID="ltlStart" runat="server">開始時間</asp:Literal>
                 <asp:TextBox ID="txtStart" runat="server" TextMode="Date" Width="250"></asp:TextBox><br />
                 <asp:Literal ID="ltlEnd" runat="server">結束時間</asp:Literal>

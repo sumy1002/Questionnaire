@@ -6,6 +6,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <!--套用jQuery-->
     <script src="../JavaScript/jquery-tablepage-1.0.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <style>
         li {
             width: auto;
@@ -13,41 +15,55 @@
             font-size: 18px;
         }
     </style>
+
+    <script>
+        $("#tblUserInfo").tablepage($("#table_pageA2"), 10);
+        $("#tblQDetail").tablepage($("#table_QuesDetail"), 10);
+
+        $("#a1").click(function () {
+            alert("123");
+        });
+    </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:Label ID="Label1" runat="server" Text="Label" Visible="false"></asp:Label>
-    <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#paper">問卷</a></li>
-        <li><a data-toggle="tab" href="#question">問題</a></li>
-        <li><a data-toggle="tab" href="#userInfo">填寫資料</a></li>
-        <li><a data-toggle="tab" href="#statistic">統計</a></li>
-    </ul>
+    <div class="tab-content">
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#paper">問卷</a></li>
+            <li id="li1" runat="server"><a id="tab2_tab" data-toggle="tab" href="#question">問題</a></li>
+            <li><a data-toggle="tab" href="#userInfo">填寫資料</a></li>
+            <li><a data-toggle="tab" href="#statistic">統計</a></li>
+        </ul>
+    </div>
 
-
+     <button class="btn btn-primary" href="#question">跳至第二頁</button>
+    <button>123</button>
 
     <div class="tab-content">
         <%-- 問卷資訊 --%>
         <asp:PlaceHolder ID="plcQuestionnaire" runat="server">
-            <asp:Button ID="btnQuesEdit" runat="server" Text="編輯問卷資訊" />
             <div id="paper" class="tab-pane fade in active">
                 <p>
-                    <asp:Literal ID="ltltitle" runat="server">問卷名稱</asp:Literal>
+                    <asp:HiddenField ID="hfQid" runat="server" />
+                    <asp:HiddenField ID="hfTitleID" runat="server" />
+                    <asp:Literal ID="ltltitle" runat="server">問卷名稱 </asp:Literal>
                     <asp:TextBox ID="txtTitle" runat="server" Width="250" Enabled="false"></asp:TextBox><br />
-                    <asp:Literal ID="ltlcontent" runat="server">描述內容</asp:Literal>
+                    <asp:Literal ID="ltlcontent" runat="server">描述內容 </asp:Literal>
                     <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine" Enabled="false"></asp:TextBox><br />
-                    <asp:Literal ID="ltlStart" runat="server">開始時間</asp:Literal>
+                    <asp:Literal ID="ltlStart" runat="server">開始時間 </asp:Literal>
                     <asp:TextBox ID="txtStart" runat="server" TextMode="Date" Width="250" Enabled="false"></asp:TextBox><br>
-                    <asp:Literal ID="ltlEnd" runat="server">結束時間</asp:Literal>
+                    <asp:Literal ID="ltlEnd" runat="server">結束時間 </asp:Literal>
                     <asp:TextBox ID="txtEnd" runat="server" TextMode="Date" Width="250" Enabled="false"></asp:TextBox><br />
                     <br />
-                    <asp:Literal ID="ltlEnable" runat="server">開放狀態</asp:Literal>
+                    <asp:Literal ID="ltlEnable" runat="server">開放狀態 </asp:Literal>
                     <asp:CheckBox ID="ckbEnable" runat="server" Text="" Checked='<%# Eval("IsEnable") %>' Visible="false" />
-                    <asp:RadioButton ID="rdbEnableT" runat="server" GroupName="Enable" Text="開放中"  Enabled="false"/>
-                    <asp:RadioButton ID="rdbEnableF" runat="server" GroupName="Enable" Text="已關閉"  Enabled="false"/>
+                    <asp:RadioButton ID="rdbEnableT" runat="server" GroupName="Enable" Text="開放中" Enabled="false" />
+                    <asp:RadioButton ID="rdbEnableF" runat="server" GroupName="Enable" Text="已關閉" Enabled="false" />
                     <br />
-                    <asp:Button ID="btnCancel" runat="server" Text="取消"/>
-                    &emsp;&emsp;&emsp;&emsp;&emsp;
-               <asp:Button ID="btnSend" runat="server" Text="送出" />
+
+                    <asp:Button ID="btnQuesEdit" runat="server" Text="編輯問卷資訊" OnClick="btnQuesEdit_Click" />
+                    <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" Visible="false" />&emsp;
+                    <asp:Button ID="btnSend" runat="server" Text="送出" OnClick="btnSend_Click" Visible="false" />
                 </p>
             </div>
         </asp:PlaceHolder>
@@ -73,13 +89,13 @@
                     <asp:Label ID="lblAnsRed" runat="server" Text="選項格式錯誤" Visible="false" ForeColor="Red"></asp:Label>
                     <asp:Label ID="lblAnsRed2" runat="server" Text="單選及多選選項必須以;分隔，且不可以;結尾" Visible="false" ForeColor="Red"></asp:Label>
                     <asp:Label ID="lblAnsRed3" runat="server" Text="文字題無須輸入選項" Visible="false" ForeColor="Red"></asp:Label><br />
-                    <asp:Button ID="btnQuesAdd" runat="server" Text="加入" />
-                    <asp:Button ID="btnQuesAddCancel" runat="server" Text="取消" OnClick="btnQuesAddCancel_Click"/><br />
+                    <asp:Button ID="btnQuesAdd" runat="server" Text="加入" OnClick="btnQuesAdd_Click" />
+                    <asp:Button ID="btnQuesAddCancel" runat="server" Text="取消" OnClick="btnQuesAddCancel_Click" /><br />
                 </p>
                 <br />
             </asp:PlaceHolder>
 
-            <asp:ImageButton ID="imgbtnDel" runat="server" ImageUrl="~/images/del.png" OnClick="imgbtnDel_Click"/>
+            <asp:ImageButton ID="imgbtnDel" runat="server" ImageUrl="~/images/del.png" OnClick="imgbtnDel_Click" OnClientClick="return confirm('確定要刪除嗎？')" />
             <asp:ImageButton ID="imgbtnPlus" runat="server" ImageUrl="~/images/plus.png" OnClick="imgbtnPlus_Click" />
 
 
@@ -108,7 +124,7 @@
             </asp:PlaceHolder>
 
             <%-- 問題列表 --%>
-            <table border="1" id="tblUserInfo">
+            <table border="1" id="tblQDetail">
                 <tr>
                     <th width="20px"></th>
                     <th width="40px">編號</th>
@@ -120,21 +136,27 @@
 
                 <asp:Repeater ID="rptQuesItem" runat="server">
                     <ItemTemplate>
-                        <asp:HiddenField ID="hfid" runat="server" Value='<%# Eval("QuesID") %>'/>
+                        <asp:HiddenField ID="hfid" runat="server" Value='<%# Eval("QuesID") %>' />
                         <tr>
-                            <td><asp:CheckBox ID="ckbDel" runat="server" Checked="false"/></td>
-                            <td><asp:Label ID="lblnumber" runat="server"></asp:Label></td>
-                            <td><asp:Label ID="lblQues" runat="server" Text='<%#Eval("QuesTitle") %>'></asp:Label></td>
-                            <td><asp:Label ID="lblQType" runat="server" Text='<%#Eval("QuesType1") %>'></asp:Label></td>
-                            <td><asp:CheckBox ID="ckbNecessary" runat="server" Checked='<%#Eval("Necessary") %>' Enabled="false"/></td>
-                            <td><asp:ImageButton ID="imgbtnEdit" runat="server" ImageUrl="~/images/edit.png" CommandName='<%# Eval("QuesID") %>' OnCommand="imgbtnEdit_Command" /></td>
+                            <td>
+                                <asp:CheckBox ID="ckbDel" runat="server" Checked="false" /></td>
+                            <td>
+                                <asp:Label ID="lblnumber" runat="server"></asp:Label></td>
+                            <td>
+                                <asp:Label ID="lblQues" runat="server" Text='<%#Eval("QuesTitle") %>'></asp:Label></td>
+                            <td>
+                                <asp:Label ID="lblQType" runat="server" Text='<%#Eval("QuesType1") %>'></asp:Label></td>
+                            <td>
+                                <asp:CheckBox ID="ckbNecessary" runat="server" Checked='<%#Eval("Necessary") %>' Enabled="false" /></td>
+                            <td>
+                                <asp:ImageButton ID="imgbtnEdit" runat="server" ImageUrl="~/images/edit.png" CommandName='<%# Eval("QuesID") %>' OnCommand="imgbtnEdit_Command" /></td>
                         </tr>
                     </ItemTemplate>
                 </asp:Repeater>
             </table>
 
             <%-- 分頁 --%>
-            <span id='table_pageA'></span>
+            <span id='table_QuesDetail'></span>
 
             <p></p>
             <asp:Button ID="Button1" runat="server" Text="取消" />
@@ -190,7 +212,4 @@
 
     </div>
 
-    <script>
-        $("#tblUserInfo").tablepage($("#table_pageA2"), 10);
-    </script>
 </asp:Content>

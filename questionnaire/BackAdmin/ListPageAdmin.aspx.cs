@@ -31,9 +31,11 @@ namespace questionnaire.BackAdmin
                     HiddenField hfID = item.FindControl("hfID") as HiddenField;
                     CheckBox ckbDel = item.FindControl("CheckBox1") as CheckBox;
                     Label lbl1 = item.FindControl("lblTitle") as Label;
+                    ImageButton imgbtn = item.FindControl("ImgBtnDel") as ImageButton;
                     if (!ckbDel.Checked && Guid.TryParse(hfID.Value, out Guid questionnaireID))
                     {
                         lbl1.ForeColor = System.Drawing.Color.Red;
+                        imgbtn.Enabled = false;
                     }
                 }
             }

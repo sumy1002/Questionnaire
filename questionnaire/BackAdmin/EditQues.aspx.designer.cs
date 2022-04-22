@@ -24,6 +24,15 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.Label Label1;
 
         /// <summary>
+        /// li1 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl li1;
+
+        /// <summary>
         /// plcQuestionnaire 控制項。
         /// </summary>
         /// <remarks>
@@ -33,13 +42,22 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.PlaceHolder plcQuestionnaire;
 
         /// <summary>
-        /// btnQuesEdit 控制項。
+        /// hfQid 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnQuesEdit;
+        protected global::System.Web.UI.WebControls.HiddenField hfQid;
+
+        /// <summary>
+        /// hfTitleID 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfTitleID;
 
         /// <summary>
         /// ltltitle 控制項。
@@ -148,6 +166,15 @@ namespace questionnaire.BackAdmin
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
         protected global::System.Web.UI.WebControls.RadioButton rdbEnableF;
+
+        /// <summary>
+        /// btnQuesEdit 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnQuesEdit;
 
         /// <summary>
         /// btnCancel 控制項。

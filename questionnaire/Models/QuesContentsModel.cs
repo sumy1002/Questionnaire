@@ -23,6 +23,10 @@ namespace questionnaire.Models
 
         public string strEndTime { get; set; }
 
+        public string State1 { get; set; }
+        public string State2 { get; set; }
+        public string State3 { get; set; }
+
         public bool IsEnable { get; set; }
         public string strIsEnable { get; set; }
 
