@@ -11,6 +11,8 @@ namespace questionnaire.Models
 
         public Guid AccountID { get; set; }
 
-        public int TitleID { get; set; }
+        public Guid QuestionnaireID { get; set; }
+
+        public bool Checks { get; set; }
     }
 }

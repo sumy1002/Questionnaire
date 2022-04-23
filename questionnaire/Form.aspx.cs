@@ -15,6 +15,7 @@ namespace questionnaire
     {
         private QuesContentsManager _mgrContent = new QuesContentsManager();
         private QuesDetailManager _mgrQuesDetail = new QuesDetailManager();
+        //private static List<UserQuesDetailModel> _answerList;
         int i = 1;
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -39,10 +40,10 @@ namespace questionnaire
                     title += "(*)";
                 i = i + 1;
                 Literal ltlQuestion = new Literal();
-                ltlQuestion.Text =title + "<br/>";
+                ltlQuestion.Text = title + "<br/>";
 
                 this.plcDynamic.Controls.Add(ltlQuestion);
-                
+
                 //if (isEditMode)
                 //{
                 //    switch (question.Type)
@@ -101,6 +102,7 @@ namespace questionnaire
             {
                 RadioButton item = new RadioButton();
                 item.Text = arrQ[i].ToString();
+                item.ID = question.QuesID + i.ToString();
                 item.GroupName = "group" + question.QuesID;
                 this.plcDynamic.Controls.Add(item);
                 this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
@@ -136,6 +138,7 @@ namespace questionnaire
 
         protected void btnSend_Click(object sender, EventArgs e)
         {
+            #region 防呆
             bool isNameRight = false;
             bool isPhoneRight = false;
             bool isEmailRight = false;
@@ -160,7 +163,104 @@ namespace questionnaire
                 this.Session["Email"] = this.txtEmail.Text;
                 this.Session["Age"] = this.txtAge.Text;
 
-                Response.Redirect("checkPage.aspx");
+                //取ID
+                string ID = Request.QueryString["ID"];
+
+                //Response.Redirect($"checkPage.aspx?ID={ID}");
+            }
+
+            #endregion
+
+            //取ID
+            string ID2 = Request.QueryString["ID"];
+            Guid ID3 = new Guid(ID2);
+
+            var QID = this._mgrQuesDetail.GetQuesDetailList(ID3);
+            List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(ID3);
+
+            //foreach (RepeaterItem item in this.plcDynamic.Controls)
+            //{
+            //    foreach (var Q in QID)
+            //    {
+            //        if (item.ID == "Q" + Q.QuesID)
+            //        {
+            //            if (Q.QuesTypeID == 2)
+            //            {
+            //                item.ToString();
+            //
+            //                UserQuesDetailModel userQuesDetailModel = new UserQuesDetailModel()
+            //                {
+            //                    QuestionnaireID = ID3,
+            //                    QuesID = Q.QuesID,
+            //                    //Answer = Q
+            //                };
+            //            }
+            //            //_answerList.Add(userQuesDetailModel);
+            //        }
+            //    }
+            //}
+
+            // 取得動態控制項的值
+            List<UserQuesDetailModel> answerList = new List<UserQuesDetailModel>();
+            for (var i = 0; i < questionList.Count; i++)
+            {
+                var q = _mgrQuesDetail.GetOneQuesDetail(questionList[i].QuesID);
+                UserQuesDetailModel Ans = new UserQuesDetailModel()
+                {
+                    QuestionnaireID = q.QuestionnaireID,
+                    QuesID = q.QuesID,
+                    QuesTypeID = q.QuesTypeID,
+                    //Answer = this.answerList[i].Title,
+                };
+
+                //判斷一下問題種類
+                switch (questionList[i].QuesTypeID)
+                {
+                   // //單選
+                   // case 2:
+                   //     for (var j = -1; j < i; j++)
+                   //     {
+                   //         int check = 0;
+                   //         RadioButtonList rdblist = (RadioButtonList)this.plcDynamic.FindControl($"Q{questionList[i].QuesID}");
+                   //         string[] arrQ = questionList[i].QuesChoice.Split(';');
+                   //         //RadioButton rdb = (RadioButton)rdblist.FindControl($"{questionList[i].QuesID}{arrQ[i]}");
+                   //         for (var k = 0; k < arrQ.Length; k++)
+                   //         {
+                   //             RadioButton rdb = (RadioButton)this.plcDynamic.FindControl($"{questionList[i].QuesID}{k}");
+                   //             if (rdb.Checked == true)
+                   //             {
+                   //                 Ans.Answer = rdb.Text;
+                   //                 answerList.Add(Ans);
+                   //                 check = 1;
+                   //                 break;
+                   //             }
+                   //         }
+                   //         if (check == 1)
+                   //             break;
+                   //     }
+                   //     break;
+                   // case 3:
+                   //     List<string> ckbl = new List<string>();
+                   //     //for (var j = 0; j < this._qtll[i].NaiyoList.Count; j++)
+                   //     {
+                   //         CheckBoxList ckb = (CheckBoxList)this.plcDynamic.FindControl($"Mondai{i}");
+                   //         for (var k = 0; k < ckb.Items.Count; k++)
+                   //         {
+                   //             if (ckb.Items[k].Selected == true)
+                   //             {
+                   //                 ckbl.Add(ckb.Items[k].Text);
+                   //             }
+                   //         }
+                   //     }
+                   //     krkl.ckbNaiyo = ckbl;
+                   //     krkll.Add(krkl);
+                   //     break;
+                    //default:
+                    //    TextBox txb = (TextBox)this.plh.FindControl($"Mondai{i}");
+                    //    krkl.Naiyo = txb.Text;
+                    //    krkll.Add(krkl);
+                    //    break;
+                }
             }
         }
     }

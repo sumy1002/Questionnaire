@@ -207,6 +207,8 @@
     <Compile Include="Managers\QuesContentsManager.cs" />
     <Compile Include="Managers\QuesDetailManager.cs" />
     <Compile Include="Managers\QuesTypeManager.cs" />
+    <Compile Include="Managers\UserInfoManager.cs" />
+    <Compile Include="Managers\UserQuesDetailManager.cs" />
     <Compile Include="Models\AccountCheckModel.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\CQModel.cs" />
@@ -215,6 +217,8 @@
     <Compile Include="Models\CQAndTypeModel.cs" />
     <Compile Include="Models\QuesDetailModel.cs" />
     <Compile Include="Models\QuesTypeModel.cs" />
+    <Compile Include="Models\UserInfoModel.cs" />
+    <Compile Include="Models\UserQuesDetailModel.cs" />
     <Compile Include="ORM\Account.cs" />
     <Compile Include="ORM\AccountCheck.cs" />
     <Compile Include="ORM\Content.cs" />
@@ -223,6 +227,8 @@
     <Compile Include="ORM\QuesDetail.cs" />
     <Compile Include="ORM\QuesType.cs" />
     <Compile Include="ORM\sysdiagram.cs" />
+    <Compile Include="ORM\UserInfo.cs" />
+    <Compile Include="ORM\UserQuesDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="statisticPage.aspx.cs">
       <DependentUpon>statisticPage.aspx</DependentUpon>

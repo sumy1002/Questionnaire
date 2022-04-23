@@ -145,7 +145,7 @@ namespace questionnaire.Managers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Account GetAccount(Guid id)
+        public Account GetAccount2(Guid id)
         {
             try
             {

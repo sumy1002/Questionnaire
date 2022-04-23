@@ -18,8 +18,14 @@
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#paper">問卷</a></li>
         <li><a data-toggle="tab" href="#question">問題</a></li>
-        <li><asp:LinkButton ID="LinkButton1" runat="server" data-toggle="tab" href="#question" >LinkButton</asp:LinkButton></li>
+        <li><a id="tab2_tab" data-toggle="tab" href="#tab2">頁籤 2</a></li>
     </ul>
+
+    <%-- 測一下頁籤功能 --%>
+    <button class="btn btn-info" onclick="GoTotab2()">利用btn onclick直接帶function實現跳頁籤</button>
+    <button id="btn1" class="btn btn-primary" onclick="$('#tab2_tab').trigger('click'); return false;">跳至第二頁</button>
+    <asp:Button ID="Button2" runat="server" Text="serverbtn" OnClick="Button2_Click" />
+
 
     <%-- 新增問卷資訊 --%>
     <div class="tab-content">
@@ -47,7 +53,7 @@
             <p>
                 <asp:Literal ID="ltlType" runat="server">種類</asp:Literal>
                 <asp:DropDownList ID="ddlType" runat="server"></asp:DropDownList>
-                <asp:Button ID="btnAddCQ" runat="server" Text="Button" OnClick="btnAddCQ_Click" OnClientClick="" />
+                <asp:Button ID="btnAddCQ" runat="server" Text="Button" OnClick="btnAddCQ_Click" />
                 <br />
                 <br />
                 <asp:Literal ID="ltlQues" runat="server">問題</asp:Literal>
@@ -58,7 +64,9 @@
                 <asp:Literal ID="ltlAnswer" runat="server">回答</asp:Literal>
                 <asp:TextBox ID="txtAnswer" runat="server"></asp:TextBox>&nbsp;
                 <span>(多個答案以；分隔)</span>&emsp;
+
                 <asp:Button ID="btnQuesAdd" runat="server" Text="加入" OnClick="btnQuesAdd_Click"/><br />
+
                 <asp:Label ID="lblAnsRed" runat="server" Text="選項格式錯誤" Visible="false" ForeColor="Red"></asp:Label>
                 <asp:Label ID="lblAnsRed2" runat="server" Text="單選及多選選項必須以;分隔，且不可以;結尾" Visible="false" ForeColor="Red"></asp:Label>
                 <asp:Label ID="lblAnsRed3" runat="server" Text="文字題無須輸入選項" Visible="false" ForeColor="Red"></asp:Label>
@@ -103,9 +111,40 @@
             &emsp;&emsp;&emsp;&emsp;&emsp;
             <asp:Button ID="btnCreateQ" runat="server" Text="送出" OnClick="btnCreateQ_Click" />
         </div>
+        <div id="tab2" class="tab-pane fade">
+            123
+        </div>
     </div>
 
+
+
     <script>
+        <%-- 分頁 --%>
         $("#tblUserInfo").tablepage($("#table_pageA"), 10);
+
+        <%-- 測一下頁籤功能 --%>
+        function GoTotab2() {
+            $('[href="#question"]').tab('show');
+        }
+
+        //var a = document.getElementById("btnadd");
+
+        $("#btnadd").click(function () {
+            $('[href="#tab2"]').tab('show');
+        });
+
+        //if (a.click) {
+        //    $("#btn1").click();
+        //   //$('[href="#qeestion"]').tab('show');
+        //};
+
+        //a.click(function () {
+        //    $('[href="#qeestion"]').tab('show');
+        //});
+
+        //a.onClick(function () {
+        //    //GoTotab2();
+        //    alert("123");
+        //});
     </script>
 </asp:Content>

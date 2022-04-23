@@ -54,13 +54,13 @@
     <%-- 必填個人資訊 --%>
     <div id="divUserInfo" class="col-lg-5" align="center">
         <asp:Literal ID="ltlName" runat="server">姓名</asp:Literal>&nbsp;&nbsp;&nbsp;
-        <asp:TextBox ID="txtName" runat="server" Height="24px"></asp:TextBox><br />
+        <asp:TextBox ID="txtName" runat="server" Height="24px" Enabled="false"></asp:TextBox><br />
         <asp:Literal ID="ltlPhone" runat="server">手機</asp:Literal>&nbsp;&nbsp;&nbsp;
-        <asp:TextBox ID="txtPhone" runat="server" TextMode="Phone" Height="24px"></asp:TextBox><br />
+        <asp:TextBox ID="txtPhone" runat="server" TextMode="Phone" Height="24px" Enabled="false"></asp:TextBox><br />
         <asp:Literal ID="ltlEmail" runat="server">Email</asp:Literal>&nbsp;
-        <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" Height="24px"></asp:TextBox><br />
+        <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" Height="24px" Enabled="false"></asp:TextBox><br />
         <asp:Literal ID="ltlAge" runat="server">年齡</asp:Literal>&nbsp;&nbsp;&nbsp;
-        <asp:TextBox ID="txtAge" runat="server" TextMode="Number" min="1" Height="24px"></asp:TextBox>
+        <asp:TextBox ID="txtAge" runat="server" TextMode="Number" min="1" Height="24px" Enabled="false"></asp:TextBox>
     </div>
 
     <%-- 問卷 --%>

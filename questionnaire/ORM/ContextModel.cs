@@ -8,7 +8,7 @@ namespace questionnaire.ORM
     public partial class ContextModel : DbContext
     {
         public ContextModel()
-            : base("name=ContextModel6")
+            : base("name=ContextModel8")
         {
         }
 
@@ -19,6 +19,8 @@ namespace questionnaire.ORM
         public virtual DbSet<QuesDetail> QuesDetails { get; set; }
         public virtual DbSet<QuesType> QuesTypes { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<UserInfo> UserInfos { get; set; }
+        public virtual DbSet<UserQuesDetail> UserQuesDetails { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -35,6 +37,11 @@ namespace questionnaire.ORM
                 .WithRequired(e => e.Account)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Content>()
+                .HasMany(e => e.QuesDetails)
+                .WithRequired(e => e.Content)
+                .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<QuesType>()
                 .Property(e => e.QuesType1)
                 .IsFixedLength();
@@ -47,6 +54,11 @@ namespace questionnaire.ORM
             modelBuilder.Entity<QuesType>()
                 .HasMany(e => e.QuesDetails)
                 .WithRequired(e => e.QuesType)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<UserInfo>()
+                .HasMany(e => e.UserQuesDetails)
+                .WithRequired(e => e.UserInfo)
                 .WillCascadeOnDelete(false);
         }
     }

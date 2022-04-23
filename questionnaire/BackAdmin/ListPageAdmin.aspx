@@ -74,6 +74,6 @@
     <span id='table_pageA'></span>
 
     <script>
-        $("#tblA").tablepage($("#table_pageA"), 10);
+        $("#trQList").tablepage($("#table_pageA"), 10);
     </script>
 </asp:Content>

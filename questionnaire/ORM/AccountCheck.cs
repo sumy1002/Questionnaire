@@ -10,12 +10,13 @@ namespace questionnaire.ORM
     public partial class AccountCheck
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int CheckID { get; set; }
 
         public Guid AccountID { get; set; }
 
-        public int TitleID { get; set; }
+        public Guid QuestionnaireID { get; set; }
+
+        public bool Checks { get; set; }
 
         public virtual Account Account { get; set; }
     }

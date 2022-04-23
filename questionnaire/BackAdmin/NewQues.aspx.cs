@@ -181,6 +181,8 @@ namespace questionnaire.BackAdmin
                 this.rptQuesItem.DataSource = queslist;
                 this.rptQuesItem.DataBind();
 
+                //Response.Write("<script>GoTotab2()</script>");
+
                 //生成問題的編號
                 if (queslist != null || queslist.Count > 0)
                 {
@@ -230,6 +232,12 @@ namespace questionnaire.BackAdmin
             //回列表頁
             Response.Redirect("ListPageAdmin.aspx");
             //Response.Redirect("NewQues.aspx?ID=" + ques.QuestionnaireID);
+        }
+
+        protected void Button2_Click(object sender, EventArgs e)
+        {
+            this.txtContent.Text = "123";
+            this.txtTitle.Text = "123";
         }
     }
 }
