@@ -12,10 +12,8 @@ namespace questionnaire
 {
     public partial class checkPage : System.Web.UI.Page
     {
-        //private QuesContentsManager _mgrQues = new QuesContentsManager();
         private QuesContentsManager _mgrContent = new QuesContentsManager();
         private QuesDetailManager _mgrQuesDetail = new QuesDetailManager();
-        private static List<QuesDetailModel> _answerList;
         int i = 1;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -83,7 +81,6 @@ namespace questionnaire
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
             foreach (QuesDetail question in questionList)
             {
-                //string q = $"<br/>{question.TitleID}. {question.QuesID}";
                 string title = $"<br /><br />{i}. {question.QuesTitle}";
                 if (question.Necessary)
                     title += "(*)";
@@ -93,23 +90,6 @@ namespace questionnaire
 
                 this.plcDynamic.Controls.Add(ltlQuestion);
 
-                //if (isEditMode)
-                //{
-                //    switch (question.Type)
-                //    {
-                //        case QuestionType.單選方塊:
-                //            EditRdb(question);
-                //            break;
-                //        case QuestionType.複選方塊:
-                //            EditCkb(question);
-                //            break;
-                //        case QuestionType.文字:
-                //            EditTxt(question);
-                //            break;
-                //    }
-                //}
-                //else
-                //{
                 switch (question.QuesTypeID)
                 {
                     case 1:
@@ -131,37 +111,20 @@ namespace questionnaire
             }
         }
 
-        protected void btnChange_Click(object sender, EventArgs e)
-        {
-            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('確定要返回嗎？')", true);
-            //Response.Redirect("mainPage.aspx");
-        }
-
-        protected void btnSend_Click(object sender, EventArgs e)
-        {
-            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('資料都正確嗎？確定要送出囉？')", true);
-        }
-
-        private void BackToListPage()
-        {
-            //this.Response.Redirect("listPage.aspx", true);
-        }
-
-        protected void btnCancel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void btnSend_Click1(object sender, EventArgs e)
-        {
-
-        }
+        //取Session值
         public static string GetSession(string key)
         {
             if (key.Length == 0)
                 return string.Empty;
             return HttpContext.Current.Session[key] as string;
+        }
 
+        //取SessionList
+        public List<UserQuesDetailModel> GetSessionList(string key)
+        {
+            if (key.Length == 0)
+                return null;
+            return HttpContext.Current.Session[key] as List<UserQuesDetailModel>;
         }
 
         //建立單選問題
@@ -171,45 +134,75 @@ namespace questionnaire
             radioButtonList.ID = "Q" + question.QuesID;
             this.plcDynamic.Controls.Add(radioButtonList);
 
-            //
-            string[] arrQ = question.QuesChoice.Split(';');
+            //取ID
+            string ID = Request.QueryString["ID"];
+            Guid id = new Guid(ID);
+            List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
+            List<UserQuesDetailModel> answerList = GetSessionList("Answer");
 
-            //for (int i = 0; i < arrQ.Length; i++)
-            //{
-            //    ListItem item = new ListItem(arrQ[i], i.ToString());
-            //    radioButtonList.Items.Add(item);
-            //}
-
-            for (int i = 0; i < arrQ.Length; i++)
+            for (int i = 0; i < questionList.Count; i++)
             {
-                RadioButton item = new RadioButton();
-                item.Text = arrQ[i].ToString();
-                item.GroupName = "group" + question.QuesID;
-                this.plcDynamic.Controls.Add(item);
-                this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
+                foreach (var q in answerList)
+                {
+                    if (q.QuesID == questionList[i].QuesID)
+                    {
+                        Label lbl = new Label();
+                        lbl.ID = "Q" + question.QuesID;
+                        lbl.Text = q.Answer.TrimEnd(';');
+                        this.plcDynamic.Controls.Add(lbl);
+                    }
+                    break;
+                }
+                break;
             }
         }
 
         //建立複選問題
         private void CreateCkb(QuesDetail question)
         {
-            CheckBoxList checkBoxList = new CheckBoxList();
-            checkBoxList.ID = "Q" + question.QuesID;
-            this.plcDynamic.Controls.Add(checkBoxList);
-            string[] arrQ = question.QuesChoice.Split(';');
-            for (int i = 0; i < arrQ.Length; i++)
+            //取ID
+            string ID = Request.QueryString["ID"];
+            Guid id = new Guid(ID);
+            List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
+            List<UserQuesDetailModel> answerList = GetSessionList("Answer");
+
+            foreach (var q in answerList)
             {
-                ListItem item = new ListItem(arrQ[i], i.ToString());
-                checkBoxList.Items.Add(item);
+                if (q.QuesID == question.QuesID)
+                {
+                    Label lbl = new Label();
+                    lbl.ID = "Q" + question.QuesID;
+                    lbl.Text = q.Answer.TrimEnd(';');
+                    this.plcDynamic.Controls.Add(lbl);
+                }
             }
         }
 
         //建立文字問題
         private void CreateTxt(QuesDetail question)
         {
-            TextBox textBox = new TextBox();
-            textBox.ID = "Q" + question.QuesID;
-            this.plcDynamic.Controls.Add(textBox);
+            List<UserQuesDetailModel> answerList = GetSessionList("Answer");
+
+            foreach (var q in answerList)
+            {
+                if (q.QuesID == question.QuesID)
+                {
+                    Label lbl = new Label();
+                    lbl.ID = "Q" + question.QuesID;
+                    lbl.Text = q.Answer.TrimEnd(';');
+                    this.plcDynamic.Controls.Add(lbl);
+                }
+            }
+        }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void btnSend_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

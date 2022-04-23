@@ -75,6 +75,9 @@ namespace questionnaire
                 }
 
                 this.ltlVote.Text = Ques.IsEnable.ToString();
+                if (this.ltlVote.Text == "True")
+                    this.ltlVote.Text = "開放中";
+
                 this.lvlTime.Text = Ques.strStartTime.ToString();
 
                 string count = questionList.Count.ToString();
@@ -89,14 +92,7 @@ namespace questionnaire
             radioButtonList.ID = "Q" + question.QuesID;
             this.plcDynamic.Controls.Add(radioButtonList);
 
-            //
             string[] arrQ = question.QuesChoice.Split(';');
-
-            //for (int i = 0; i < arrQ.Length; i++)
-            //{
-            //    ListItem item = new ListItem(arrQ[i], i.ToString());
-            //    radioButtonList.Items.Add(item);
-            //}
 
             for (int i = 0; i < arrQ.Length; i++)
             {
@@ -115,11 +111,20 @@ namespace questionnaire
             CheckBoxList checkBoxList = new CheckBoxList();
             checkBoxList.ID = "Q" + question.QuesID;
             this.plcDynamic.Controls.Add(checkBoxList);
+
             string[] arrQ = question.QuesChoice.Split(';');
+
             for (int i = 0; i < arrQ.Length; i++)
             {
-                ListItem item = new ListItem(arrQ[i], i.ToString());
-                checkBoxList.Items.Add(item);
+
+                CheckBox item = new CheckBox();
+                item.Text = arrQ[i].ToString();
+                item.ID = question.QuesID + i.ToString();
+                this.plcDynamic.Controls.Add(item);
+                this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
+
+                //ListItem item2 = new ListItem(arrQ[i], i.ToString());
+                //checkBoxList.Items.Add(item);
             }
         }
 
@@ -127,7 +132,7 @@ namespace questionnaire
         private void CreateTxt(QuesDetail question)
         {
             TextBox textBox = new TextBox();
-            textBox.ID = "Q" + question.QuesID;
+            textBox.ID = "Q" +question.QuesID.ToString();
             this.plcDynamic.Controls.Add(textBox);
         }
 
@@ -138,7 +143,7 @@ namespace questionnaire
 
         protected void btnSend_Click(object sender, EventArgs e)
         {
-            #region 防呆
+            #region 個人資料防呆
             bool isNameRight = false;
             bool isPhoneRight = false;
             bool isEmailRight = false;
@@ -162,13 +167,7 @@ namespace questionnaire
                 this.Session["Phone"] = this.txtPhone.Text;
                 this.Session["Email"] = this.txtEmail.Text;
                 this.Session["Age"] = this.txtAge.Text;
-
-                //取ID
-                string ID = Request.QueryString["ID"];
-
-                //Response.Redirect($"checkPage.aspx?ID={ID}");
             }
-
             #endregion
 
             //取ID
@@ -177,28 +176,6 @@ namespace questionnaire
 
             var QID = this._mgrQuesDetail.GetQuesDetailList(ID3);
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(ID3);
-
-            //foreach (RepeaterItem item in this.plcDynamic.Controls)
-            //{
-            //    foreach (var Q in QID)
-            //    {
-            //        if (item.ID == "Q" + Q.QuesID)
-            //        {
-            //            if (Q.QuesTypeID == 2)
-            //            {
-            //                item.ToString();
-            //
-            //                UserQuesDetailModel userQuesDetailModel = new UserQuesDetailModel()
-            //                {
-            //                    QuestionnaireID = ID3,
-            //                    QuesID = Q.QuesID,
-            //                    //Answer = Q
-            //                };
-            //            }
-            //            //_answerList.Add(userQuesDetailModel);
-            //        }
-            //    }
-            //}
 
             // 取得動態控制項的值
             List<UserQuesDetailModel> answerList = new List<UserQuesDetailModel>();
@@ -216,52 +193,74 @@ namespace questionnaire
                 //判斷一下問題種類
                 switch (questionList[i].QuesTypeID)
                 {
-                   // //單選
-                   // case 2:
-                   //     for (var j = -1; j < i; j++)
-                   //     {
-                   //         int check = 0;
-                   //         RadioButtonList rdblist = (RadioButtonList)this.plcDynamic.FindControl($"Q{questionList[i].QuesID}");
-                   //         string[] arrQ = questionList[i].QuesChoice.Split(';');
-                   //         //RadioButton rdb = (RadioButton)rdblist.FindControl($"{questionList[i].QuesID}{arrQ[i]}");
-                   //         for (var k = 0; k < arrQ.Length; k++)
-                   //         {
-                   //             RadioButton rdb = (RadioButton)this.plcDynamic.FindControl($"{questionList[i].QuesID}{k}");
-                   //             if (rdb.Checked == true)
-                   //             {
-                   //                 Ans.Answer = rdb.Text;
-                   //                 answerList.Add(Ans);
-                   //                 check = 1;
-                   //                 break;
-                   //             }
-                   //         }
-                   //         if (check == 1)
-                   //             break;
-                   //     }
-                   //     break;
-                   // case 3:
-                   //     List<string> ckbl = new List<string>();
-                   //     //for (var j = 0; j < this._qtll[i].NaiyoList.Count; j++)
-                   //     {
-                   //         CheckBoxList ckb = (CheckBoxList)this.plcDynamic.FindControl($"Mondai{i}");
-                   //         for (var k = 0; k < ckb.Items.Count; k++)
-                   //         {
-                   //             if (ckb.Items[k].Selected == true)
-                   //             {
-                   //                 ckbl.Add(ckb.Items[k].Text);
-                   //             }
-                   //         }
-                   //     }
-                   //     krkl.ckbNaiyo = ckbl;
-                   //     krkll.Add(krkl);
-                   //     break;
-                    //default:
-                    //    TextBox txb = (TextBox)this.plh.FindControl($"Mondai{i}");
-                    //    krkl.Naiyo = txb.Text;
-                    //    krkll.Add(krkl);
-                    //    break;
+                    //單選
+                    case 2:
+                        for (var j = -1; j < i; j++)
+                        {
+                            int check = 0;
+                            RadioButtonList rdblist = (RadioButtonList)this.plcDynamic.FindControl($"Q{questionList[i].QuesID}");
+                            string[] arrQ = questionList[i].QuesChoice.Split(';');
+                            //RadioButton rdb = (RadioButton)rdblist.FindControl($"{questionList[i].QuesID}{arrQ[i]}");
+                            for (var k = 0; k < arrQ.Length; k++)
+                            {
+                                RadioButton rdb = (RadioButton)this.plcDynamic.FindControl($"{questionList[i].QuesID}{k}");
+                                if (rdb.Checked == true)
+                                {
+                                    Ans.Answer = rdb.Text + ";";
+                                    answerList.Add(Ans);
+                                    check = 1;
+                                    break;
+                                }
+                            }
+                            if (check == 1)
+                                break;
+                        }
+                        break;
+                    //複選
+                    case 3:
+                        int check2 = 0;
+                        //List<string> ckbl = new List<string>();
+                        CheckBoxList ckblist = (CheckBoxList)this.plcDynamic.FindControl($"Q{questionList[i].QuesID}");
+                        string[] arrQ2 = questionList[i].QuesChoice.Split(';');
+                        for (var j = 0; j < arrQ2.Length; j++)
+                        {
+                            for (var k = 0; k < arrQ2.Length; k++)
+                            {
+                                CheckBox ckb = (CheckBox)this.plcDynamic.FindControl($"{questionList[i].QuesID}{k}");
+                                if (ckb.Checked == true)
+                                {
+                                    Ans.Answer += ckb.Text + ";";
+                                    check2++;
+                                }
+                                else if (ckb.Checked == false)
+                                    check2++;
+
+                                if (check2 == arrQ2.Length)
+                                {
+                                    answerList.Add(Ans);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                        break;
+                    //文字
+                    case 1:
+                        TextBox txb = (TextBox)this.plcDynamic.FindControl($"Q{questionList[i].QuesID}");
+                        Ans.Answer = txb.Text + ";";
+                        answerList.Add(Ans);
+                        break;
                 }
             }
+
+            //寫進Session
+            Session["Answer"] = answerList;
+
+            //取ID
+            string ID = Request.QueryString["ID"];
+            Guid id = new Guid(ID);
+
+            Response.Redirect($"checkPage.aspx?ID={ID}");
         }
     }
 }

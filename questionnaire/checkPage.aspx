@@ -72,6 +72,6 @@
     <div id="btnSpace">
         <asp:Literal ID="ltlQCount" runat="server"></asp:Literal>
         <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click"/>
-        <asp:Button ID="btnSend" runat="server" Text="送出" OnClick="btnSend_Click1"/>
+        <asp:Button ID="btnSend" runat="server" Text="送出" OnClick="btnSend_Click"/>
     </div>
 </asp:Content>
