@@ -40,7 +40,6 @@
         <asp:Label ID="lblAnsRedEdit2" runat="server" Text="單選及多選選項必須以;分隔" Visible="false" ForeColor="Red"></asp:Label><br />
         <asp:Button ID="btnQuesEdit" runat="server" Text="確定修改" OnClick="btnQuesEdit_Click" />
         <asp:Button ID="btnQuesAddCancelEdit" runat="server" Text="取消" OnClick="btnQuesAddCancelEdit_Click" /><br />
-
     </asp:PlaceHolder>
 
     <table border="1" id="tblA">

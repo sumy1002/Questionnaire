@@ -15,7 +15,7 @@ namespace questionnaire.Managers
         /// </summary>
         /// <param name="keyword"></param>
         /// <returns></returns>
-        public List<UserInfo> GetUserInfoList(int userID)
+        public List<UserInfo> GetUserInfoList(Guid userID)
         {
             try
             {
@@ -94,7 +94,7 @@ namespace questionnaire.Managers
                 using (ContextModel contextModel = new ContextModel())
                 {
                     //建立要新增的帳戶資料
-                    var newInfo = new UserInfo()
+                    UserInfo newInfo = new UserInfo()
                     {
                         UserID = member.UserID,
                         AccountID = member.AccountID,
@@ -106,18 +106,8 @@ namespace questionnaire.Managers
                         Email = member.Email,
                     };
 
-
-                    int i = Convert.ToInt32(string.Empty);
-                    var list = this.GetUserInfoList(i);
-                    foreach (UserInfo item in list)
-                    {
-                        if (!(newInfo.AccountID == item.AccountID &&
-                            newInfo.QuestionnaireID == item.QuestionnaireID))
-                        {
-                            //將新資料插入EF的集合中
-                            contextModel.UserInfos.Add(newInfo);
-                        }
-                    }
+                    //將新資料插入EF的集合中
+                    contextModel.UserInfos.Add(newInfo);
 
                     //確定存檔
                     contextModel.SaveChanges();
@@ -129,6 +119,5 @@ namespace questionnaire.Managers
                 throw;
             }
         }
-
     }
 }

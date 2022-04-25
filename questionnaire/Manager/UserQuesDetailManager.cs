@@ -60,7 +60,7 @@ namespace questionnaire.Managers
         /// </summary>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public UserQuesDetail GetUserInfo(int userID)
+        public UserQuesDetail GetUserInfo(Guid userID)
         {
             try
             {
@@ -91,6 +91,8 @@ namespace questionnaire.Managers
                 throw;
             }
         }
+
+
 
         /// <summary>
         /// 新增新的問卷回答
@@ -125,6 +127,9 @@ namespace questionnaire.Managers
                     //        contextModel.UserInfos.Add(newInfo);
                     //    }
                     //}
+
+                    //將新資料插入EF的集合中
+                    contextModel.UserQuesDetails.Add(newInfo);
 
                     //確定存檔
                     contextModel.SaveChanges();

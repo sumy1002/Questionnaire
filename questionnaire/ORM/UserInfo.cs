@@ -16,7 +16,7 @@ namespace questionnaire.ORM
         }
 
         [Key]
-        public int UserID { get; set; }
+        public Guid UserID { get; set; }
 
         public Guid? AccountID { get; set; }
 
@@ -42,6 +42,8 @@ namespace questionnaire.ORM
         public string Email { get; set; }
 
         public virtual Account Account { get; set; }
+
+        public virtual Content Content { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserQuesDetail> UserQuesDetails { get; set; }

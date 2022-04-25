@@ -8,7 +8,7 @@ namespace questionnaire.ORM
     public partial class ContextModel : DbContext
     {
         public ContextModel()
-            : base("name=ContextModel8")
+            : base("name=ContextModel14")
         {
         }
 
@@ -18,6 +18,7 @@ namespace questionnaire.ORM
         public virtual DbSet<CQ> CQs { get; set; }
         public virtual DbSet<QuesDetail> QuesDetails { get; set; }
         public virtual DbSet<QuesType> QuesTypes { get; set; }
+        public virtual DbSet<Statistic> Statistics { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<UserInfo> UserInfos { get; set; }
         public virtual DbSet<UserQuesDetail> UserQuesDetails { get; set; }
@@ -40,6 +41,21 @@ namespace questionnaire.ORM
             modelBuilder.Entity<Content>()
                 .HasMany(e => e.QuesDetails)
                 .WithRequired(e => e.Content)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Content>()
+                .HasMany(e => e.UserInfos)
+                .WithRequired(e => e.Content)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<QuesDetail>()
+                .HasMany(e => e.Statistics)
+                .WithRequired(e => e.QuesDetail)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<QuesDetail>()
+                .HasMany(e => e.UserQuesDetails)
+                .WithRequired(e => e.QuesDetail)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<QuesType>()

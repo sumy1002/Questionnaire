@@ -76,11 +76,11 @@
                     <br />
                     <br />
                     <asp:Literal ID="ltlQues" runat="server">問題</asp:Literal>
-                    <asp:TextBox ID="txtQues" runat="server" Width="250px" Text='<%#Eval("QuesTitle") %>'></asp:TextBox>&nbsp;
+                    <asp:TextBox ID="txtQues" runat="server" Width="250px"></asp:TextBox>&nbsp;
                 <asp:DropDownList ID="ddlQuesType" runat="server"></asp:DropDownList>&nbsp;
                 <asp:CheckBox ID="ckbNess" runat="server" Text="必填" /><br />
                     <asp:Label ID="lblQuesRed" runat="server" Text="未輸入問題" Visible="false" ForeColor="Red"></asp:Label><br />
-                    <asp:Literal ID="ltlAnswer" runat="server" Text='<%#Eval("QuesTitle") %>'>回答</asp:Literal>
+                    <asp:Literal ID="ltlAnswer" runat="server">回答</asp:Literal>
                     <asp:TextBox ID="txtAnswer" runat="server"></asp:TextBox>&nbsp;
                 <span>(多個答案以；分隔)</span>&emsp;<br />
                     <asp:Label ID="lblAnsRed" runat="server" Text="選項格式錯誤" Visible="false" ForeColor="Red"></asp:Label>
@@ -100,19 +100,18 @@
             <%-- 修改問題 --%>
             <asp:PlaceHolder ID="plcUpdate" runat="server" Visible="false">
                 <asp:Literal ID="ltlQuesEdit" runat="server">問題</asp:Literal>
-                <asp:TextBox ID="txtQuesEdit" runat="server" Width="250px" Text='<%#Eval("QuesTitle") %>'></asp:TextBox>&nbsp;
+                <asp:TextBox ID="txtQuesEdit" runat="server" Width="250px"></asp:TextBox>&nbsp;
                 <asp:DropDownList ID="ddlQuesTypeEdit" runat="server"></asp:DropDownList>&nbsp;
                 <asp:CheckBox ID="ckbNessEdit" runat="server" Text="必填" /><br />
                 <asp:Label ID="lblQuesRedEdit" runat="server" Text="未輸入問題" Visible="false" ForeColor="Red"></asp:Label><br />
-                <asp:Literal ID="ltlAnswerEdit" runat="server" Text='<%#Eval("QuesTitle") %>'>回答</asp:Literal>
+                <asp:Literal ID="ltlAnswerEdit" runat="server">回答</asp:Literal>
                 <asp:TextBox ID="txtAnswerEdit" runat="server"></asp:TextBox>&nbsp;
                 <span>(多個答案以；分隔)</span>&emsp;<br />
                 <asp:Label ID="lblAnsRedEdit" runat="server" Text="選項格式錯誤" Visible="false" ForeColor="Red"></asp:Label>
                 <asp:Label ID="lblAnsRed2Edit" runat="server" Text="單選及多選選項必須以;分隔，且不可以;結尾" Visible="false" ForeColor="Red"></asp:Label>
                 <asp:Label ID="lblAnsRed3Edit" runat="server" Text="文字題無須輸入選項" Visible="false" ForeColor="Red"></asp:Label><br />
-                <asp:Button ID="btnQuesAddEdit" runat="server" Text="確定修改" CommandName='<%# Eval("QuesID") %>' OnCommand="btnQuesAddEdit_Command" />
+                <asp:Button ID="btnQuesAddEdit" runat="server" Text="確定修改" OnCommand="btnQuesAddEdit_Command" />
                 <asp:Button ID="btnQuesAddEditCancel" runat="server" Text="取消" OnClick="btnQuesAddEditCancel_Click" /><br />
-
                 <br />
             </asp:PlaceHolder>
 

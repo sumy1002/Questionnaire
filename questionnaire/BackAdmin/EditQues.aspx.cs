@@ -325,6 +325,10 @@ namespace questionnaire.BackAdmin
                     {
                         _mgrQuesDetail.CreateQuesDetail(question);
                     }
+                    else
+                    {
+                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('已有相同問題。')", true);
+                    }
                     questionNo++;
                 }
 

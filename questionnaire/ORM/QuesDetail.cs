@@ -9,6 +9,13 @@ namespace questionnaire.ORM
     [Table("QuesDetail")]
     public partial class QuesDetail
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public QuesDetail()
+        {
+            Statistics = new HashSet<Statistic>();
+            UserQuesDetails = new HashSet<UserQuesDetail>();
+        }
+
         [Key]
         public int QuesID { get; set; }
 
@@ -26,8 +33,16 @@ namespace questionnaire.ORM
 
         public bool Necessary { get; set; }
 
+        public int? Count { get; set; }
+
         public virtual Content Content { get; set; }
 
         public virtual QuesType QuesType { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Statistic> Statistics { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserQuesDetail> UserQuesDetails { get; set; }
     }
 }

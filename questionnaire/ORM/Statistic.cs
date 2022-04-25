@@ -6,24 +6,18 @@ namespace questionnaire.ORM
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class UserQuesDetail
+    [Table("Statistic")]
+    public partial class Statistic
     {
         [Key]
-        public int AnsID { get; set; }
-
         public Guid QuestionnaireID { get; set; }
-
-        public Guid UserID { get; set; }
 
         public int QuesID { get; set; }
 
-        [Required]
         public string Answer { get; set; }
 
-        public Guid? AccountID { get; set; }
+        public int? AnsCount { get; set; }
 
         public virtual QuesDetail QuesDetail { get; set; }
-
-        public virtual UserInfo UserInfo { get; set; }
     }
 }

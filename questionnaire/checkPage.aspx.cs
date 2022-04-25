@@ -14,6 +14,8 @@ namespace questionnaire
     {
         private QuesContentsManager _mgrContent = new QuesContentsManager();
         private QuesDetailManager _mgrQuesDetail = new QuesDetailManager();
+        private UserInfoManager _mgrUserInfo = new UserInfoManager();
+        private UserQuesDetailManager _mgrUserDetail = new UserQuesDetailManager();
         int i = 1;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -202,7 +204,62 @@ namespace questionnaire
 
         protected void btnSend_Click(object sender, EventArgs e)
         {
+            var name = GetSession("Name");
+            var phone = GetSession("Phone");
+            var email = GetSession("Email");
+            var age = GetSession("Age");
 
+            //取ID
+            string ID = Request.QueryString["ID"];
+            Guid id = new Guid(ID);
+
+            //尋找該ID的問卷及問題列表
+            var Ques = this._mgrContent.GetQuesContent2(id);
+            var QuesDetail = this._mgrQuesDetail.GetQuesDetailList(id);
+            //var QuesDetail2 = this._mgrQuesDetail.GetOneQuesDetail(ID);
+
+            Guid userid = Guid.NewGuid();
+
+            //個人資訊存入資料庫
+            UserInfoModel user = new UserInfoModel()
+            {
+                QuestionnaireID = id,
+                CreateDate = DateTime.Now,
+                UserID = userid,
+                Name = name,
+                Phone = phone,
+                Email = email,
+                Age = age,
+            };
+
+            this._mgrUserInfo.CreateUserInfo(user);
+
+            List<UserQuesDetailModel> answerList = GetSessionList("Answer");
+
+
+            UserQuesDetailModel userAns = new UserQuesDetailModel()
+            {
+                QuestionnaireID = id,
+                UserID = userid,
+            };
+
+            for (int i = 0; i < QuesDetail.Count; i++)
+            {
+                foreach (var q in answerList)
+                {
+                    if (q.QuesID == QuesDetail[i].QuesID)
+                    {
+                        userAns.QuesID = QuesDetail[i].QuesID;
+                        userAns.Answer = q.Answer;
+                        userAns.QuesTypeID = QuesDetail[i].QuesTypeID;
+
+                        this._mgrUserDetail.CreateUserQuesDetail(userAns);
+                    }
+                }
+            }
+
+            //Response.Redirect($"listPage.aspx");
+            Response.Redirect($"statisticPage.aspx?ID={ID}");
         }
     }
 }

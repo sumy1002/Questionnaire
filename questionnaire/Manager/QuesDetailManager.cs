@@ -226,7 +226,7 @@ namespace questionnaire.Managers
                 using (ContextModel contextModel = new ContextModel())
                 {
                     //組查詢條件
-                    var query = contextModel.QuesDetails.Where(item => item.QuestionnaireID == ques.QuestionnaireID);
+                    var query = contextModel.QuesDetails.Where(item => item.QuesID == ques.QuesID);
 
                     //取得資料
                     var updateQues = query.FirstOrDefault();

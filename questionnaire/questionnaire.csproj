@@ -201,14 +201,7 @@
     <Compile Include="Form.aspx.designer.cs">
       <DependentUpon>Form.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Managers\AccountCheckManager.cs" />
-    <Compile Include="Managers\AccountManager.cs" />
-    <Compile Include="Managers\CQManager.cs" />
-    <Compile Include="Managers\QuesContentsManager.cs" />
-    <Compile Include="Managers\QuesDetailManager.cs" />
-    <Compile Include="Managers\QuesTypeManager.cs" />
-    <Compile Include="Managers\UserInfoManager.cs" />
-    <Compile Include="Managers\UserQuesDetailManager.cs" />
+    <Compile Include="Manager\StatisticManager.cs" />
     <Compile Include="Models\AccountCheckModel.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\CQModel.cs" />
@@ -217,6 +210,7 @@
     <Compile Include="Models\CQAndTypeModel.cs" />
     <Compile Include="Models\QuesDetailModel.cs" />
     <Compile Include="Models\QuesTypeModel.cs" />
+    <Compile Include="Models\StatisticModel.cs" />
     <Compile Include="Models\UserInfoModel.cs" />
     <Compile Include="Models\UserQuesDetailModel.cs" />
     <Compile Include="ORM\Account.cs" />
@@ -226,10 +220,19 @@
     <Compile Include="ORM\CQ.cs" />
     <Compile Include="ORM\QuesDetail.cs" />
     <Compile Include="ORM\QuesType.cs" />
+    <Compile Include="ORM\Statistic.cs" />
     <Compile Include="ORM\sysdiagram.cs" />
     <Compile Include="ORM\UserInfo.cs" />
     <Compile Include="ORM\UserQuesDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Manager\AccountCheckManager.cs" />
+    <Compile Include="Manager\AccountManager.cs" />
+    <Compile Include="Manager\CQManager.cs" />
+    <Compile Include="Manager\QuesContentsManager.cs" />
+    <Compile Include="Manager\QuesDetailManager.cs" />
+    <Compile Include="Manager\QuesTypeManager.cs" />
+    <Compile Include="Manager\UserInfoManager.cs" />
+    <Compile Include="Manager\UserQuesDetailManager.cs" />
     <Compile Include="statisticPage.aspx.cs">
       <DependentUpon>statisticPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
