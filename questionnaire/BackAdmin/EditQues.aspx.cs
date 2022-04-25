@@ -18,7 +18,14 @@ namespace questionnaire.BackAdmin
         private QuesContentsManager _mgrContent = new QuesContentsManager();
         private QuesDetailManager _mgrQuesDetail = new QuesDetailManager();
         private QuesTypeManager _mgrQuesType = new QuesTypeManager();
+        private UserInfoManager _mgrUserInfo = new UserInfoManager();
+        private UserQuesDetailManager _mgrUserDetail = new UserQuesDetailManager();
         private CQManager _mgrCQ = new CQManager();
+
+        int i = 1;
+        string rdbAns;
+        string[] ckbAns;
+        string txt;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -67,6 +74,19 @@ namespace questionnaire.BackAdmin
                 var QList = this._mgrQuesDetail.GetQuesDetailAndTypeList(id);
                 this.rptQuesItem.DataSource = QList;
                 this.rptQuesItem.DataBind();
+
+                //填寫狀況繫結
+                var UserList = this._mgrUserInfo.GetUserInfoList(id);
+                this.rptDetail.DataSource = UserList;
+                this.rptDetail.DataBind();
+
+                foreach (RepeaterItem item in this.rptDetail.Items)
+                {
+                    Label ltlDate = item.FindControl("lblCreateDate") as Label;
+                    var DT = Convert.ToDateTime(ltlDate.Text);
+                    ltlDate.Text = DT.ToString("yyyy-MM-dd");
+                }
+
                 #endregion
 
                 //生成問題的編號
@@ -76,6 +96,18 @@ namespace questionnaire.BackAdmin
                     foreach (RepeaterItem item in this.rptQuesItem.Items)
                     {
                         Label lblNumber = item.FindControl("lblNumber") as Label;
+                        lblNumber.Text = i.ToString();
+                        i++;
+                    }
+                }
+
+                //生成問題的編號
+                if (UserList != null || UserList.Count > 0)
+                {
+                    int i = 1;
+                    foreach (RepeaterItem item in this.rptDetail.Items)
+                    {
+                        Label lblNumber = item.FindControl("lblNumber2") as Label;
                         lblNumber.Text = i.ToString();
                         i++;
                     }
@@ -457,6 +489,158 @@ namespace questionnaire.BackAdmin
         {
             var li = (HtmlGenericControl)Page.FindControl("li1");
             li.Visible = false;
+        }
+
+        protected void btnDetail_Command(object sender, CommandEventArgs e)
+        {
+            //取ID
+            string ID = Request.QueryString["ID"];
+            Guid id = new Guid(ID);
+
+            this.plcInfo2.Visible = true;
+            Guid userID = new Guid(e.CommandName);
+            this.hfUserID.Value = e.CommandName.ToString();
+            var Info = this._mgrUserInfo.GetUserInfoList2(userID);
+            var Detail = this._mgrUserDetail.GetUserInfo(userID);
+
+            List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
+            foreach (QuesDetail question in questionList)
+            {
+                //string q = $"<br/>{question.TitleID}. {question.QuesID}";
+                string title = $"<br /><br />{i}. {question.QuesTitle}";
+                if (question.Necessary)
+                    title += "(*)";
+                i = i + 1;
+                Literal ltlQuestion = new Literal();
+                ltlQuestion.Text = title + "<br/>";
+
+                this.plcDynamic.Controls.Add(ltlQuestion);
+
+                switch (question.QuesTypeID)
+                {
+                    case 1:
+                        CreateTxt(question);
+                        break;
+                    case 2:
+                        CreateRdb(question);
+                        break;
+                    case 3:
+                        CreateCkb(question);
+                        break;
+                }
+            }
+        }
+
+
+        //建立單選問題
+        private void CreateRdb(QuesDetail question)
+        {
+            Guid userId = new Guid(this.hfUserID.Value);
+            var d = this._mgrUserDetail.GetUserInfo(userId);
+            foreach (var item in d)
+            {
+                if (item.QuesID == question.QuesID)
+                {
+                    var detail = item.Answer.TrimEnd(';');
+                    rdbAns = detail;
+                }
+            }
+
+            RadioButtonList radioButtonList = new RadioButtonList();
+            radioButtonList.ID = "Q" + question.QuesID;
+            this.plcDynamic.Controls.Add(radioButtonList);
+
+            string[] arrQ = question.QuesChoice.Split(';');
+
+            for (int i = 0; i < arrQ.Length; i++)
+            {
+                if (rdbAns == arrQ[i])
+                {
+                    RadioButton item = new RadioButton();
+                    item.Text = arrQ[i].ToString();
+                    item.ID = question.QuesID + i.ToString();
+                    item.GroupName = "group" + question.QuesID;
+                    this.plcDynamic.Controls.Add(item);
+                    item.Checked = true;
+                    item.Enabled = false;
+                    this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
+                }
+                else
+                {
+                    RadioButton item = new RadioButton();
+                    item.Text = arrQ[i].ToString();
+                    item.ID = question.QuesID + i.ToString();
+                    item.GroupName = "group" + question.QuesID;
+                    this.plcDynamic.Controls.Add(item);
+                    item.Checked = false;
+                    item.Enabled = false;
+                    this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
+                }
+            }
+        }
+
+        //建立複選問題
+        private void CreateCkb(QuesDetail question)
+        {
+            Guid userId = new Guid(this.hfUserID.Value);
+            var d = this._mgrUserDetail.GetUserInfo(userId);
+            foreach (var item in d)
+            {
+                if (item.QuesID == question.QuesID)
+                {
+                    var detail = item.Answer.TrimEnd(';');
+                    ckbAns = detail.Split(';');
+                }
+            }
+
+            CheckBoxList checkBoxList = new CheckBoxList();
+            checkBoxList.ID = "Q" + question.QuesID;
+            this.plcDynamic.Controls.Add(checkBoxList);
+
+            string[] arrQ = question.QuesChoice.Split(';');
+
+            for (int i = 0; i < arrQ.Length; i++)
+            {
+                CheckBox item = new CheckBox();
+                item.Text = arrQ[i].ToString();
+                item.ID = question.QuesID + i.ToString();
+                item.Enabled = false;
+                this.plcDynamic.Controls.Add(item);
+                this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
+                foreach (string ans in ckbAns)
+                {
+                    if (ans == arrQ[i])
+                    {
+                        item.Checked = true;
+                        break;
+                    }
+                    else
+                    {
+                        item.Checked = false;
+                    }
+                }
+            }
+        }
+
+        //建立文字問題
+        private void CreateTxt(QuesDetail question)
+        {
+            Guid userId = new Guid(this.hfUserID.Value);
+            var d = this._mgrUserDetail.GetUserInfo(userId);
+            foreach (var item in d)
+            {
+                if (item.QuesID == question.QuesID)
+                {
+                    var detail = item.Answer.TrimEnd(';');
+                    txt = detail;
+                }
+            }
+
+            TextBox textBox = new TextBox();
+            textBox.ID = "Q" + question.QuesID.ToString();
+            textBox.Text = txt;
+            textBox.Enabled = false;
+            this.plcDynamic.Controls.Add(textBox);
         }
     }
 }

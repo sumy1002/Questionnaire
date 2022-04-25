@@ -501,6 +501,24 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.Button btnExport;
 
         /// <summary>
+        /// hfUserID 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfUserID;
+
+        /// <summary>
+        /// rptDetail 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptDetail;
+
+        /// <summary>
         /// plcInfo2 控制項。
         /// </summary>
         /// <remarks>
@@ -519,15 +537,6 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.Literal ltlName;
 
         /// <summary>
-        /// txtName 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtName;
-
-        /// <summary>
         /// ltlPhone 控制項。
         /// </summary>
         /// <remarks>
@@ -535,15 +544,6 @@ namespace questionnaire.BackAdmin
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Literal ltlPhone;
-
-        /// <summary>
-        /// txtPhone 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPhone;
 
         /// <summary>
         /// ltlEmail 控制項。
@@ -555,15 +555,6 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.Literal ltlEmail;
 
         /// <summary>
-        /// txtEmail 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmail;
-
-        /// <summary>
         /// ltlAge 控制項。
         /// </summary>
         /// <remarks>
@@ -573,12 +564,30 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.Literal ltlAge;
 
         /// <summary>
-        /// txtAge 控制項。
+        /// ltlDate 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAge;
+        protected global::System.Web.UI.WebControls.Literal ltlDate;
+
+        /// <summary>
+        /// plcDynamic 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder plcDynamic;
+
+        /// <summary>
+        /// Repeater1 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater Repeater1;
     }
 }

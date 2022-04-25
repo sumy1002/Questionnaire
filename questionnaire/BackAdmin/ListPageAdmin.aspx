@@ -13,6 +13,14 @@
             padding-top: 20px;
             margin-top: 10px;
         }
+
+        div {
+            border: 0px solid #000000;
+        }
+
+        .divCenter {
+            text-align: center;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -45,7 +53,7 @@
                 <th>開始時間</th>
                 <th>結束時間</th>
                 <th>觀看統計</th>
-                <th>關閉問卷</th>
+                <th>關閉/開啟</th>
             </tr>
         </thead>
         <tbody>
@@ -56,18 +64,28 @@
                         <asp:CheckBox ID="CheckBox1" runat="server" Checked='<%# Eval("IsEnable") %>' Visible="false" />
                         <tr id="trQList" runat="server">
                             <td width="50px">
-                                <asp:Label ID="lblTitleID" runat="server" Text='<%# Eval("TitleID") %>'></asp:Label></td>
+                                <div class="divCenter">
+                                    <asp:Label ID="lblTitleID" runat="server" Text='<%# Eval("TitleID") %>'></asp:Label>
+                                </div>
+                            </td>
                             <td width="350px">
                                 <asp:Label ID="lblTitle" runat="server" Text='<%# Eval("Title") %>'></asp:Label></td>
-                            <td width="80px">
-                                <asp:Label ID="lblIsEnable" runat="server" Text='<%# Eval("strIsEnable") %>'></asp:Label></td>
-                            <td width="120px">
+                            <td width="70px">
+                                <asp:Label ID="lblIsEnable" runat="server" Text='<%# Eval("strIsEnable") %>'></asp:Label>
+                            </td>
+                            <td width="100px">
                                 <asp:Label ID="lblSDT" runat="server" Text='<%# Eval("strStartTime") %>'></asp:Label></td>
-                            <td width="120px">
+                            <td width="100px">
                                 <asp:Label ID="lblEDT" runat="server" Text='<%# Eval("strEndTime") %>'></asp:Label></td>
-                            <td width="80px"><a href="EditQues.aspx?ID=<%#Eval("QuestionnaireID") %>">前往</a></td>
-                            <td>
-                                <asp:ImageButton ID="ImgBtnDel" runat="server" ImageUrl="../images/del.png" Width="40px" CommandName='<%# Eval("QuestionnaireID") %>' OnCommand="ImgBtnDel_Command" OnClientClick="return confirm('確定要關閉問卷嗎？')" />
+                            <td width="85px">
+                                <div class="divCenter">
+                                    <a href="EditQues.aspx?ID=<%#Eval("QuestionnaireID") %>">前往</a>
+                                </div>
+                            </td>
+                            <td width="90px">
+                                <div class="divCenter">
+                                    <asp:ImageButton ID="ImgBtnClose" runat="server" ImageUrl="../images/del.png" Width="40px" CommandName='<%# Eval("QuestionnaireID") %>' OnCommand="ImgBtnDel_Command" OnClientClick="return confirm('確定要關閉問卷嗎？')" />
+                                </div>
                             </td>
                         </tr>
                     </asp:PlaceHolder>
@@ -104,11 +122,5 @@
             });
 
         });
-
-        //$(document).ready(function () {
-        //    $('#example').DataTable({
-        //        "order": [[3, "desc"]]
-        //    });
-        //});
     </script>
 </asp:Content>

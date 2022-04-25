@@ -36,6 +36,16 @@ namespace questionnaire
             this.ltlTitle.Text = questionnaire.Title;
             this.ltlContent.Text = questionnaire.Body;
 
+            //過濾狀態
+            if (questionnaire.StartDate > DateTime.Now)
+            {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('問卷尚未開始。');location.href='listPage.aspx';", true);
+            }
+            else if (questionnaire.EndDate < DateTime.Now)
+            {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('問卷已截止。');location.href='listPage.aspx';", true);
+            }
+
             //取得該問卷的問題細節
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
 
@@ -61,8 +71,6 @@ namespace questionnaire
                     {
                         item.AnsCount = NoList.Count;
                         total = item.AnsCount;
-                        //item.Answer = item.Answer.Split(';');
-                        //this._mgrSta.CreateStatistic(item);
                     }
 
                     if (total == 0)
@@ -73,35 +81,51 @@ namespace questionnaire
                     }
                     else
                     {
+                        //取問題的答案
                         string[] arrQue = question.QuesChoice.Split(';');
-                        //string[] arrAns = NoList.
+                        int ckbAns = 0;
                         for (int i = 0; i < arrQue.Length; i++)
                         {
+                            ckbAns = 0;
                             int ansCount = 0;
                             string ans = arrQue[i].ToString();
                             foreach (var s in NoList)
                             {
                                 var ansTrim = s.Answer.TrimEnd(';');
                                 string[] sAns = ansTrim.Split(';');
-                                foreach(string sans in sAns)
+                                ckbAns += sAns.Length; //問題
+                                foreach (string sans in sAns)
                                 {
-                                    if(sans == ans)
+                                    if (sans == ans)
+                                    {
                                         ansCount++;
+                                    }
                                 }
                             }
 
                             StatisticModel stastic = NoList.Find(x => x.Answer == arrQue[i].ToString());
 
-                            Literal ltlSelection = new Literal();
-                            ltlSelection.Text = $"{arrQue[i]} : {ansCount * 100 / total}% ({ansCount})";
-                            this.plcDynamic.Controls.Add(ltlSelection);
+                            switch (question.QuesTypeID)
+                            {
+                                case 2:
+                                    Literal ltlSelection = new Literal();
+                                    ltlSelection.Text = $"{arrQue[i]} : {ansCount * 100 / total}% ({ansCount})";
+                                    this.plcDynamic.Controls.Add(ltlSelection);
+                                    break;
+                                case 3:
+                                    double aaa = Convert.ToInt32(((double)ansCount / ckbAns) * 100);
+                                    Literal ltlSelection2 = new Literal();
+                                    ltlSelection2.Text = $"{arrQue[i]} : {aaa}% ({ansCount})";
+                                    this.plcDynamic.Controls.Add(ltlSelection2);
+                                    break;
+                            }
 
-                            HtmlGenericControl outterDiv = new HtmlGenericControl("div");
-                            outterDiv.Style.Value = "width:100%;height:20px;border:1px solid black;";
-                            this.plcDynamic.Controls.Add(outterDiv);
-                            HtmlGenericControl innerDiv = new HtmlGenericControl("div");
-                            innerDiv.Style.Value = $"width:{ansCount * 100 / total}%;height:20px;background-color:gray;color:white;font-//weight:bold;";
-                            outterDiv.Controls.Add(innerDiv);
+                            HtmlGenericControl outsideDiv = new HtmlGenericControl("div");
+                            outsideDiv.Style.Value = "width:100%;height:20px;border:1px solid black;";
+                            this.plcDynamic.Controls.Add(outsideDiv);
+                            HtmlGenericControl colorDiv = new HtmlGenericControl("div");
+                            colorDiv.Style.Value = $"width:{ansCount * 100 / ckbAns}%;height:18px;background-color:cadetblue;color:white;font-//weight:bold;";
+                            outsideDiv.Controls.Add(colorDiv);
                         }
                     }
                 }

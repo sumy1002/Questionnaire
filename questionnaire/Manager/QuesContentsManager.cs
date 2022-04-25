@@ -72,6 +72,7 @@ namespace questionnaire.Managers
             }
         }
 
+        #region 搜尋日期
         /// <summary>
         /// 取得所有或附加查詢條件(起始日)的問卷，及其所有資料
         /// </summary>
@@ -213,7 +214,7 @@ namespace questionnaire.Managers
                     {
                         query =
                         from item in contextModel.Contents
-                        where item.StartDate >= startDT && item.EndDate >= endDT
+                        where item.StartDate >= startDT && item.EndDate <= endDT
                         orderby item.TitleID descending
                         select item;
                     }
@@ -253,6 +254,7 @@ namespace questionnaire.Managers
                 throw;
             }
         }
+        #endregion
 
         /// <summary>
         /// 輸入GUID取得問卷所有資料
@@ -336,6 +338,258 @@ namespace questionnaire.Managers
             }
         }
 
+        #region 前台列表夜的搜尋
+        /// <summary>
+        /// 取得所有或附加查詢條件的問卷，及其所有資料
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public List<QuesContentsModel> GetContentsList(string keyword)
+        {
+            try
+            {
+                using (ContextModel contextModel = new ContextModel())
+                {
+                    //取得所有或加查詢條件的問卷
+                    IQueryable<Content> query;
+                    if (!string.IsNullOrWhiteSpace(keyword))
+                    {
+                        query =
+                            from item in contextModel.Contents
+                            where item.Title.Contains(keyword)
+                            where item.IsEnable == true
+                            orderby item.TitleID descending
+                            select item;
+                    }
+                    else
+                    {
+                        query =
+                            from item in contextModel.Contents
+                            orderby item.TitleID descending
+                            where item.IsEnable == true
+                            select item;
+                    }
+
+                    //組合，並取回結果
+                    var list = query.ToList();
+                    var Qlist = new List<QuesContentsModel>();
+                    foreach (var item in list)
+                    {
+                        var Q = new QuesContentsModel()
+                        {
+                            QuestionnaireID = item.QuestionnaireID,
+                            TitleID = item.TitleID,
+                            Title = item.Title,
+                            Body = item.Body,
+                            StartDate = item.StartDate,
+                            EndDate = item.EndDate,
+                            strStartTime = item.StartDate.ToString("yyyy-MM-dd"),
+                            strEndTime = item.EndDate.ToString("yyyy-MM-dd"),
+                            State1 = item.EndDate < DateTime.Now ? "已完結" : "開放中",
+                            State2 = item.StartDate > DateTime.Now ? "尚未開始" : "開放中",
+                            State3 = item.EndDate < DateTime.Now ? "已完結" : "開放中",
+                            IsEnable = item.IsEnable,
+                            strIsEnable = item.IsEnable ? "開放中" : "已關閉",
+                        };
+                        Qlist.Add(Q);
+                    }
+                    return Qlist;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuesContentsManager.GetQuesContentsList", ex);
+                throw;
+            }
+        }
+
+        #region 前台列表頁搜尋日期
+        /// <summary>
+        /// 取得所有或附加查詢條件(起始日)的問卷，及其所有資料
+        /// </summary>
+        /// <param name="startDT"></param>
+        /// <returns></returns>
+        public List<QuesContentsModel> GetContentsList_DateStart(DateTime startDT)
+        {
+            try
+            {
+                var startDTString = startDT.ToString();
+
+                using (ContextModel contextModel = new ContextModel())
+                {
+                    //取得加查詢條件的問卷
+                    IQueryable<Content> query;
+                    if (!string.IsNullOrWhiteSpace(startDTString))
+                    {
+                        query =
+                        from item in contextModel.Contents
+                        where item.StartDate >= startDT
+                        where item.IsEnable == true
+                        orderby item.StartDate descending
+                        select item;
+                    }
+                    else
+                    {
+                        query =
+                            from item in contextModel.Contents
+                            select item;
+                    }
+
+                    //組合，並取回結果
+                    var list = query.ToList();
+                    var Qlist = new List<QuesContentsModel>();
+                    foreach (var item in list)
+                    {
+                        var Q = new QuesContentsModel()
+                        {
+                            QuestionnaireID = item.QuestionnaireID,
+                            TitleID = item.TitleID,
+                            Title = item.Title,
+                            Body = item.Body,
+                            StartDate = item.StartDate,
+                            EndDate = item.EndDate,
+                            strStartTime = item.StartDate.ToString("yyyy-MM-dd"),
+                            strEndTime = item.EndDate.ToString("yyyy-MM-dd"),
+                            IsEnable = item.IsEnable,
+                            strIsEnable = item.IsEnable ? "開放中" : "已關閉",
+                        };
+                        Qlist.Add(Q);
+                    }
+                    return Qlist;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuesContentsManager.GetQuesContentsList", ex);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 取得所有或附加查詢條件(結束日)的問卷，及其所有資料
+        /// </summary>
+        /// <param name="endDT"></param>
+        /// <returns></returns>
+        public List<QuesContentsModel> GetContentsList_DateEnd(DateTime endDT)
+        {
+            try
+            {
+                var endDTString = endDT.ToString();
+
+                using (ContextModel contextModel = new ContextModel())
+                {
+                    //取得加查詢條件的問卷
+                    IQueryable<Content> query;
+                    if (!string.IsNullOrWhiteSpace(endDTString))
+                    {
+                        query =
+                        from item in contextModel.Contents
+                        where item.EndDate <= endDT
+                        where item.IsEnable == true
+                        orderby item.EndDate descending
+                        select item;
+                    }
+                    else
+                    {
+                        query =
+                            from item in contextModel.Contents
+                            select item;
+                    }
+
+                    //組合，並取回結果
+                    var list = query.ToList();
+                    var Qlist = new List<QuesContentsModel>();
+                    foreach (var item in list)
+                    {
+                        var Q = new QuesContentsModel()
+                        {
+                            QuestionnaireID = item.QuestionnaireID,
+                            TitleID = item.TitleID,
+                            Title = item.Title,
+                            Body = item.Body,
+                            StartDate = item.StartDate,
+                            EndDate = item.EndDate,
+                            strStartTime = item.StartDate.ToString("yyyy-MM-dd"),
+                            strEndTime = item.EndDate.ToString("yyyy-MM-dd"),
+                            IsEnable = item.IsEnable,
+                            strIsEnable = item.IsEnable ? "開放中" : "已關閉",
+                        };
+                        Qlist.Add(Q);
+                    }
+                    return Qlist;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuesContentsManager.GetQuesContentsList", ex);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 取得所有查詢條件(起始日+結束日)的問卷，及其所有資料
+        /// </summary>
+        /// <param name="startDT"></param>
+        /// <param name="endDT"></param>
+        /// <returns></returns>
+        public List<QuesContentsModel> GetsContentsList_Date2(DateTime startDT, DateTime endDT)
+        {
+            try
+            {
+                var startDTString = startDT.ToString();
+                var endDTString = endDT.ToString();
+
+                using (ContextModel contextModel = new ContextModel())
+                {
+                    //取得加查詢條件的問卷
+                    IQueryable<Content> query;
+                    if (!string.IsNullOrWhiteSpace(startDTString) && !string.IsNullOrWhiteSpace(endDTString))
+                    {
+                        query =
+                        from item in contextModel.Contents
+                        where item.StartDate >= startDT && item.EndDate <= endDT
+                        where item.IsEnable == true
+                        orderby item.TitleID descending
+                        select item;
+                    }
+                    else
+                    {
+                        query =
+                            from item in contextModel.Contents
+                            select item;
+                    }
+
+                    //組合，並取回結果
+                    var list = query.ToList();
+                    var Qlist = new List<QuesContentsModel>();
+                    foreach (var item in list)
+                    {
+                        var Q = new QuesContentsModel()
+                        {
+                            QuestionnaireID = item.QuestionnaireID,
+                            TitleID = item.TitleID,
+                            Title = item.Title,
+                            Body = item.Body,
+                            StartDate = item.StartDate,
+                            EndDate = item.EndDate,
+                            strStartTime = item.StartDate.ToString("yyyy-MM-dd"),
+                            strEndTime = item.EndDate.ToString("yyyy-MM-dd"),
+                            IsEnable = item.IsEnable,
+                            strIsEnable = item.IsEnable ? "開放中" : "已關閉",
+                        };
+                        Qlist.Add(Q);
+                    }
+                    return Qlist;
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuesContentsManager.GetQuesContentsList", ex);
+                throw;
+            }
+        }
+        #endregion
+        #endregion
         #region "增刪修"
         /// <summary>
         /// 新增問卷
@@ -417,14 +671,14 @@ namespace questionnaire.Managers
         }
 
         /// <summary>
-        /// 刪除問卷
+        /// 關閉問卷
         /// </summary>
         /// <param name="id"></param>
         public void DeleteQues(Guid id)
         {
             try
             {
-                //刪除資料
+                //關閉資料
                 using (ContextModel contextModel = new ContextModel())
                 {
                     //組查詢條件
@@ -447,6 +701,41 @@ namespace questionnaire.Managers
             catch (Exception ex)
             {
                 Logger.WriteLog("QuesContentsManager.DeleteQues", ex);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// 關閉問卷
+        /// </summary>
+        /// <param name="id"></param>
+        public void OpenQues(Guid id)
+        {
+            try
+            {
+                //關閉資料
+                using (ContextModel contextModel = new ContextModel())
+                {
+                    //組查詢條件
+                    var query = contextModel.Contents.Where(item => item.QuestionnaireID == id);
+
+                    //取得資料
+                    var openQues = query.FirstOrDefault();
+
+                    //檢查是否存在
+                    if (openQues != null)
+                    {
+                        openQues.IsEnable = true;
+                    }
+                    //contextModel.Contents.Remove(deleteQues);
+
+                    //確定存檔
+                    contextModel.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("QuesContentsManager.OpenQues", ex);
                 throw;
             }
         }

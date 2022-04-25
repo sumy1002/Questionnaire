@@ -60,7 +60,7 @@ namespace questionnaire.Managers
         /// </summary>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public UserQuesDetail GetUserInfo(Guid userID)
+        public List<UserQuesDetail> GetUserInfo(Guid userID)
         {
             try
             {
@@ -74,12 +74,12 @@ namespace questionnaire.Managers
                            where item.UserID == userID
                            select item;
 
-                    //取得Account所有資料
-                    var userInfo = query.FirstOrDefault();
+                    //組合，並取回結果
+                    var list = query.ToList();
 
                     //檢查是否存在
-                    if (userInfo != null)
-                        return userInfo;
+                    if (list != null)
+                        return list;
 
                     return null;
                 }

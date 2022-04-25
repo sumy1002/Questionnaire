@@ -2,12 +2,14 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>--%>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <!--套用jQuery-->
-    <script src="../JavaScript/jquery-tablepage-1.0.js"></script>
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <%--<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>--%>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
     <style>
         li {
             width: auto;
@@ -17,12 +19,8 @@
     </style>
 
     <script>
-        $("#tblUserInfo").tablepage($("#table_pageA2"), 10);
-        $("#tblQDetail").tablepage($("#table_QuesDetail"), 10);
-
-        $("#a1").click(function () {
-            alert("123");
-        });
+        //$("#tblUserInfo").tablepage($("#table_pageA2"), 10);
+        //$("#tblQDetail").tablepage($("#table_QuesDetail"), 10);
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -156,38 +154,50 @@
         <div id="userInfo" class="tab-pane fade">
             <asp:PlaceHolder runat="server" ID="plcInfo1">
                 <asp:Button ID="btnExport" runat="server" Text="匯出" />
+                <asp:HiddenField ID="hfUserID" runat="server" />
                 <p></p>
-                <table id="tblUserInfo2" border="1">
-                    <tr>
-                        <th>編號</th>
-                        <th>姓名</th>
-                        <th>填寫時間</th>
-                        <th>觀看細節</th>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><a>前往</a></td>
-                    </tr>
+                <table border="1" id="QList" class="display">
+                    <thead>
+                        <tr>
+                            <th>編號</th>
+                            <th>姓名</th>
+                            <th>填寫日期</th>
+                            <th>觀看細節</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <asp:Repeater ID="rptDetail" runat="server">
+                            <ItemTemplate>
+                                <tr>
+                                    <td>
+                                        <asp:Label ID="lblNumber2" runat="server" Text=""></asp:Label></td>
+                                    <td>
+                                        <asp:Label ID="lblName" runat="server" Text='<%#Eval("Name") %>'></asp:Label></td>
+                                    <td>
+                                        <asp:Label ID="lblCreateDate" runat="server" Text='<%#Eval("CreateDate") %>'></asp:Label></td>
+                                    <td>
+                                        <asp:Button ID="btnDetail" runat="server" Text="Button" OnCommand="btnDetail_Command" CommandName='<%#Eval("UserID") %>' /></td>
+                                </tr>
+                            </ItemTemplate>
+                        </asp:Repeater>
+                    </tbody>
                 </table>
-                <span id='table_pageA2'></span>
             </asp:PlaceHolder>
 
             <asp:PlaceHolder runat="server" ID="plcInfo2" Visible="false">
                 <asp:Literal ID="ltlName" runat="server">姓名</asp:Literal>
-                <asp:TextBox ID="txtName" runat="server"></asp:TextBox>&emsp;&emsp;&emsp;
-            <asp:Literal ID="ltlPhone" runat="server">手機</asp:Literal>
-                <asp:TextBox ID="txtPhone" runat="server" TextMode="Phone"></asp:TextBox><br />
+                <asp:Literal ID="ltlPhone" runat="server">手機</asp:Literal><br />
                 <asp:Literal ID="ltlEmail" runat="server">Email</asp:Literal>
-                <asp:TextBox ID="txtEmail" runat="server" TextMode="Email"></asp:TextBox>&emsp;&emsp;&emsp;
-            <asp:Literal ID="ltlAge" runat="server">年齡</asp:Literal>
-                <asp:TextBox ID="txtAge" runat="server" TextMode="Number"></asp:TextBox><br />
-                <br />
-                填寫時間
-            <p>2022/12/12 21:09:23</p>
-                <br />
-                <br />
+                <asp:Literal ID="ltlAge" runat="server">年齡</asp:Literal><br />
+                <asp:Literal ID="ltlDate" runat="server">填寫時間</asp:Literal>
+                <div id="divDynamic" class="col-lg-5" align="center">
+                    <asp:PlaceHolder ID="plcDynamic" runat="server"></asp:PlaceHolder>
+                    <asp:Repeater ID="Repeater1" runat="server">
+                        <ItemTemplate>
+
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </div>
             </asp:PlaceHolder>
         </div>
 
@@ -197,7 +207,27 @@
                 ddd
             </p>
         </div>
-
     </div>
 
+    <script>
+        $(document).ready(function () {
+            $('#QList').DataTable({
+                "searching": false,
+                language: {
+                    //url: "https://cdn.datatables.net/plug-ins/1.11.5/i18n/zh-HANT.json",
+                    "lengthMenu": "顯示 _MENU_ 項結果",
+                    "info": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                    "paginate": {
+                        "first": "第一頁",
+                        "last": "尾頁",
+                        "next": "下一頁",
+                        "previous": "前一頁"
+                    },
+                },
+                "lengthMenu": [[10, 15, 20, "All"], [10, 15, 20, "All"]],
+                "order": [[0, "desc"]],
+            });
+
+        });
+    </script>
 </asp:Content>

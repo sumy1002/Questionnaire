@@ -19,7 +19,7 @@ namespace questionnaire
             {
                 //列表資料繫結
                 string a = string.Empty;
-                var quesList = this._mgrQues.GetQuesContentsList(a);
+                var quesList = this._mgrQues.GetContentsList(a);
                 this.rptQues.DataSource = quesList;
                 this.rptQues.DataBind();
 
@@ -172,31 +172,51 @@ namespace questionnaire
 
                 this.ltlMsg.Visible = false;
             }
+
+            //判斷一下狀態
+            foreach (RepeaterItem item in this.rptQues.Items)
+            {
+                Literal ltl1 = item.FindControl("ltlState") as Literal;
+                HiddenField hfID = item.FindControl("hfID") as HiddenField;
+                HiddenField hfSta = item.FindControl("hfSta") as HiddenField;
+                HiddenField hfEnd = item.FindControl("hfEnd") as HiddenField;
+
+                var SDT = Convert.ToDateTime(hfSta.Value);
+                var EDT = Convert.ToDateTime(hfEnd.Value);
+                if (EDT < DateTime.Now && int.TryParse(hfID.Value, out int titleID))
+                {
+                    ltl1.Text = "已截止";
+                }
+                else if (SDT > DateTime.Now && int.TryParse(hfID.Value, out int titleID2))
+                {
+                    ltl1.Text = "尚未開始";
+                }
+            }
         }
 
         #region 日期搜尋
         //以標題搜尋
         private List<QuesContentsModel> TitleSearch(string id)
         {
-            var List = this._mgrQues.GetQuesContentsList(id);
+            var List = this._mgrQues.GetContentsList(id);
             return List;
         }
         //以起始日搜尋
         private List<QuesContentsModel> OneDateSearch1(DateTime Sdt)
         {
-            var List = this._mgrQues.GetQuesContentsList_DateStart(Sdt);
+            var List = this._mgrQues.GetContentsList_DateStart(Sdt);
             return List;
         }
         //以結束日搜尋
         private List<QuesContentsModel> OneDateSearch2(DateTime Edt)
         {
-            var List = this._mgrQues.GetQuesContentsList_DateEnd(Edt);
+            var List = this._mgrQues.GetContentsList_DateEnd(Edt);
             return List;
         }
         //以起始日+結束日搜尋
         private List<QuesContentsModel> BothDateSearch(DateTime Sdt, DateTime Edt)
         {
-            var List = this._mgrQues.GetQuesContentsList_Date2(Sdt, Edt);
+            var List = this._mgrQues.GetsContentsList_Date2(Sdt, Edt);
             return List;
         }
         #endregion

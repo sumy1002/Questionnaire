@@ -105,6 +105,7 @@
     <Content Include="checkPage.aspx" />
     <Content Include="Global.asax" />
     <Content Include="images\addICON.png" />
+    <Content Include="images\check.png" />
     <Content Include="images\del.png" />
     <Content Include="images\deleteICON.png" />
     <Content Include="images\edit.png" />
@@ -172,6 +173,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ConfigHelper.cs" />
+    <Compile Include="Helpers\CSVHelper.cs" />
     <Compile Include="Helpers\Logger.cs" />
     <Compile Include="Index.Master.cs">
       <DependentUpon>Index.Master</DependentUpon>

@@ -27,6 +27,16 @@ namespace questionnaire
             var Ques = this._mgrContent.GetQuesContent2(id);
             var QuesDetail = this._mgrQuesDetail.GetQuesDetailList(id);
 
+            //過濾問卷狀態
+            if (Ques.StartDate > DateTime.Now)
+            {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('問卷尚未開始。');location.href='listPage.aspx';", true);
+            }
+            else if (Ques.EndDate < DateTime.Now)
+            {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('問卷已截止。');location.href='listPage.aspx';", true);
+            }
+
             this.hfID.Value = Ques.QuestionnaireID.ToString();
             this.ltlTitle.Text = Ques.Title;
             this.ltlContent.Text = Ques.Body;
@@ -132,7 +142,7 @@ namespace questionnaire
         private void CreateTxt(QuesDetail question)
         {
             TextBox textBox = new TextBox();
-            textBox.ID = "Q" +question.QuesID.ToString();
+            textBox.ID = "Q" + question.QuesID.ToString();
             this.plcDynamic.Controls.Add(textBox);
         }
 

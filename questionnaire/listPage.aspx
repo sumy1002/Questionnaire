@@ -8,62 +8,91 @@
     <style>
         #topDiv {
             border: 2px solid #000000;
-            margin: 20px;
+            margin:auto;
             padding-left: 30px;
             padding-top: 20px;
+        }
+
+        #tbDiv {
+            margin: 20px auto;
+        }
+
+        .centerDiv {
+            text-align: center;
+        }
+
+        #searchDiv {
+            //margin-top: -20px;
+            margin: 2px auto;
+        }
+
+        #bigDiv{
+            margin: 20px auto;
         }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <div id="topDiv">
-        <p>
-            <asp:Literal ID="ltlTitle" runat="server">問卷標題</asp:Literal>
-            <asp:TextBox ID="txtTitle" runat="server"></asp:TextBox>
-        </p>
-        <p>
-            <asp:Literal ID="ltlDate" runat="server">開始／結束</asp:Literal>
-            <asp:TextBox ID="txtStartDate" runat="server" TextMode="Date"></asp:TextBox>&nbsp;
+    <div id="bigDiv" class="col-lg-10">
+        <div id="topDiv" class="col-lg-6">
+            <p>
+                <asp:Literal ID="ltlTitle" runat="server">問卷標題</asp:Literal>
+                <asp:TextBox ID="txtTitle" runat="server"></asp:TextBox>
+            </p>
+            <p>
+                <asp:Literal ID="ltlDate" runat="server">開始／結束</asp:Literal>
+                <asp:TextBox ID="txtStartDate" runat="server" TextMode="Date"></asp:TextBox>&nbsp;
             <asp:TextBox ID="txtEndDate" runat="server" TextMode="Date"></asp:TextBox>
-            &emsp;&emsp;
+                &emsp;&emsp;
             <asp:Button ID="btnSearch" runat="server" Text="搜尋" OnClick="btnSearch_Click" />
-        </p>
-    </div>
-    <asp:Literal ID="ltlMsg" runat="server" Visible="false"></asp:Literal>
-    <br />
-    <br />
+            </p>
+        </div>
+        <div id="searchDiv" class="col-lg-6">
+            &ensp;<asp:Literal ID="ltlMsg" runat="server" Visible="false"></asp:Literal>
+        </div>
 
-    <table id="QList" class="display">
-        <thead>
-            <tr>
-                <th>編號</th>
-                <th>問卷標題</th>
-                <th>狀態</th>
-                <th>開始時間</th>
-                <th>結束時間</th>
-                <th>觀看統計</th>
-            </tr>
-        </thead>
-        <tbody>
-            <asp:Repeater ID="rptQues" runat="server">
-                <ItemTemplate>
-                    <asp:HiddenField ID="hfID" runat="server" Value='<%# Eval("TitleID") %>' />
-                    <asp:HiddenField ID="hfSta" runat="server" Value='<%# Eval("StartDate") %>' />
-                    <asp:HiddenField ID="hfEnd" runat="server" Value='<%# Eval("EndDate") %>' />
+        <div id="tbDiv" class="col-lg-10">
+            <table id="QList" class="display">
+                <thead>
                     <tr>
-                        <td width="50px"><%# Eval("TitleID") %></td>
-                        <td width="350px"><a href="Form.aspx?ID=<%#Eval("QuestionnaireID") %>"><%# Eval("Title") %></a></td>
-                        <td width="150px">
-                            <asp:Literal ID="ltlState" runat="server" Text='<%# Eval("strIsEnable") %>'></asp:Literal></td>
-                        <td width="150px">
-                            <asp:Literal ID="Literal1" runat="server" Text='<%# Eval("strStartTime") %>'></asp:Literal></td>
-                        <td width="150px">
-                            <asp:Literal ID="Literal2" runat="server" Text='<%# Eval("strEndTime") %>'></asp:Literal></td>
-                        <td><a>前往</a></td>
+                        <th>編號</th>
+                        <th>問卷標題</th>
+                        <th>狀態</th>
+                        <th>開始時間</th>
+                        <th>結束時間</th>
+                        <th>觀看統計</th>
                     </tr>
-                </ItemTemplate>
-            </asp:Repeater>
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    <asp:Repeater ID="rptQues" runat="server">
+                        <ItemTemplate>
+                            <asp:HiddenField ID="hfID" runat="server" Value='<%# Eval("TitleID") %>' />
+                            <asp:HiddenField ID="hfSta" runat="server" Value='<%# Eval("StartDate") %>' />
+                            <asp:HiddenField ID="hfEnd" runat="server" Value='<%# Eval("EndDate") %>' />
+                            <tr>
+                                <td width="45px">
+                                    <div class="centerDiv">
+                                        <%# Eval("TitleID") %>
+                                    </div>
+                                </td>
+                                <td width="350px"><a href="Form.aspx?ID=<%#Eval("QuestionnaireID") %>"><%# Eval("Title") %></a></td>
+                                <td width="100px">
+                                    <asp:Literal ID="ltlState" runat="server" Text='<%# Eval("strIsEnable") %>'></asp:Literal></td>
+                                <td width="100px">
+                                    <asp:Literal ID="Literal1" runat="server" Text='<%# Eval("strStartTime") %>'></asp:Literal></td>
+                                <td width="100px">
+                                    <asp:Literal ID="Literal2" runat="server" Text='<%# Eval("strEndTime") %>'></asp:Literal></td>
+                                <td width="75px">
+                                    <div class="centerDiv">
+                                        <a href="statisticPage.aspx?ID=<%#Eval("QuestionnaireID") %>">前往</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </tbody>
+            </table>
+        </div>
+    </div>
     <span id='table_page'></span>
 
     <script>
@@ -83,7 +112,7 @@
                         "previous": "前一頁"
                     },
                 },
-                "lengthMenu": [[10, 15, 20, "All"], [5, 15, 20, "All"]],
+                "lengthMenu": [[10, 15, 20, "All"], [10, 15, 20, "All"]],
                 "order": [[0, "desc"]],
             });
 

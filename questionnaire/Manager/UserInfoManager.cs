@@ -15,13 +15,13 @@ namespace questionnaire.Managers
         /// </summary>
         /// <param name="keyword"></param>
         /// <returns></returns>
-        public List<UserInfo> GetUserInfoList(Guid userID)
+        public List<UserInfo> GetUserInfoList(Guid Qid)
         {
             try
             {
                 using (ContextModel contextModel = new ContextModel())
                 {
-                    var id = userID.ToString();
+                    var id = Qid.ToString();
 
                     //取得所有或加查詢條件的帳戶
                     IQueryable<UserInfo> query;
@@ -29,7 +29,7 @@ namespace questionnaire.Managers
                     {
                         query =
                             from item in contextModel.UserInfos
-                            where item.UserID == userID
+                            where item.QuestionnaireID == Qid
                             select item;
                     }
                     else
@@ -51,6 +51,50 @@ namespace questionnaire.Managers
                 throw;
             }
         }
+
+
+        /// <summary>
+        /// 取得所有或附加查詢條件的UserInfo，及其所有資料
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public List<UserInfo> GetUserInfoList2(Guid Userid)
+        {
+            try
+            {
+                using (ContextModel contextModel = new ContextModel())
+                {
+                    var id = Userid.ToString();
+
+                    //取得所有或加查詢條件的帳戶
+                    IQueryable<UserInfo> query;
+                    if (!string.IsNullOrWhiteSpace(id))
+                    {
+                        query =
+                            from item in contextModel.UserInfos
+                            where item.UserID == Userid
+                            select item;
+                    }
+                    else
+                    {
+                        query =
+                            from item in contextModel.UserInfos
+                            select item;
+                    }
+
+                    //組合，並取回結果
+                    var list = query.ToList();
+                    return list;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("UserInfoManager.GetUserInfoList", ex);
+                throw;
+            }
+        }
+
 
         /// <summary>
         /// 取得指定帳戶的UserInfo列表

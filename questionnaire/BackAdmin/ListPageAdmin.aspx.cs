@@ -30,16 +30,24 @@ namespace questionnaire.BackAdmin
                 {
                     HiddenField hfID = item.FindControl("hfID") as HiddenField;
                     CheckBox ckbDel = item.FindControl("CheckBox1") as CheckBox;
+                    Label lbl0 = item.FindControl("lblTitleID") as Label;
                     Label lbl1 = item.FindControl("lblTitle") as Label;
-                    ImageButton imgbtn = item.FindControl("ImgBtnDel") as ImageButton;
+                    Label lbl2 = item.FindControl("lblIsEnable") as Label;
+                    Label lbl3 = item.FindControl("lblSDT") as Label;
+                    Label lbl4 = item.FindControl("lblEDT") as Label;
+                    ImageButton imgbtnClose = item.FindControl("ImgBtnClose") as ImageButton;
                     if (!ckbDel.Checked && Guid.TryParse(hfID.Value, out Guid questionnaireID))
                     {
+                        lbl0.ForeColor = System.Drawing.Color.Red;
                         lbl1.ForeColor = System.Drawing.Color.Red;
-                        imgbtn.Enabled = false;
+                        lbl2.ForeColor = System.Drawing.Color.Red;
+                        lbl3.ForeColor = System.Drawing.Color.Red;
+                        lbl4.ForeColor = System.Drawing.Color.Red;
+
+                        imgbtnClose.ImageUrl = "../images/check.png";
                     }
                 }
             }
-
         }
 
         //新建問卷按鈕
@@ -246,7 +254,7 @@ namespace questionnaire.BackAdmin
                 this.txtTitle.Enabled = true;
         }
 
-        //刪除問卷
+        //關閉/開啟問卷
         protected void ImgBtnDel_Command(object sender, CommandEventArgs e)
         {
             Guid id = Guid.Parse(e.CommandName);
@@ -260,8 +268,6 @@ namespace questionnaire.BackAdmin
                 strEndTime = quesList.Title,
                 strIsEnable = quesList.Title,
             };
-
-            //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('已刪除。');location.href='ListPageAdmin.aspx';", true);
         }
     }
 }
