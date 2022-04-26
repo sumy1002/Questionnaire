@@ -92,8 +92,6 @@ namespace questionnaire.Managers
             }
         }
 
-
-
         /// <summary>
         /// 新增新的問卷回答
         /// </summary>

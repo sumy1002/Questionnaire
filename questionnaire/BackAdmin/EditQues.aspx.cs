@@ -1,8 +1,11 @@
-﻿using questionnaire.Managers;
+﻿using questionnaire.Helpers;
+using questionnaire.Managers;
 using questionnaire.Models;
 using questionnaire.ORM;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -493,6 +496,8 @@ namespace questionnaire.BackAdmin
 
         protected void btnDetail_Command(object sender, CommandEventArgs e)
         {
+            this.btnExport.Visible = true;
+
             //取ID
             string ID = Request.QueryString["ID"];
             Guid id = new Guid(ID);
@@ -532,7 +537,7 @@ namespace questionnaire.BackAdmin
         }
 
 
-        //建立單選問題
+        //建立單選
         private void CreateRdb(QuesDetail question)
         {
             Guid userId = new Guid(this.hfUserID.Value);
@@ -579,7 +584,7 @@ namespace questionnaire.BackAdmin
             }
         }
 
-        //建立複選問題
+        //建立複選
         private void CreateCkb(QuesDetail question)
         {
             Guid userId = new Guid(this.hfUserID.Value);
@@ -615,14 +620,12 @@ namespace questionnaire.BackAdmin
                         break;
                     }
                     else
-                    {
                         item.Checked = false;
-                    }
                 }
             }
         }
 
-        //建立文字問題
+        //建立文字
         private void CreateTxt(QuesDetail question)
         {
             Guid userId = new Guid(this.hfUserID.Value);
@@ -641,6 +644,133 @@ namespace questionnaire.BackAdmin
             textBox.Text = txt;
             textBox.Enabled = false;
             this.plcDynamic.Controls.Add(textBox);
+        }
+
+        protected void btnExport_Click(object sender, EventArgs e)
+        {
+            //取問卷ID
+            string ID = Request.QueryString["ID"];
+            Guid id = new Guid(ID);
+
+            //尋找該ID的問卷及問題列表
+            var Ques = this._mgrContent.GetQuesContent(id);
+
+            string Path = "D:\\CSV\\";
+
+            //確認路徑是否存在
+            if (!Directory.Exists(Path))
+            {
+                Directory.CreateDirectory(Path);
+            }
+            if (!File.Exists($"{Ques.Title}.csv"))
+            {
+                File.Create(Ques.Title);
+            }
+
+            string fullPath = $"D:\\CSV\\{Ques.Title}.csv";
+
+            DataTable dtTable = new DataTable();
+            SaveCSV(dtTable, fullPath);
+        }
+
+        //將資料寫入CSV
+        public void SaveCSV(DataTable dt, string fullPath)
+        {
+            DataTable dtTable = new DataTable();
+            DataRow row;
+
+            //建立欄位
+            dtTable.Columns.Add("Name", typeof(string));
+            dtTable.Columns.Add("Phone", typeof(string));
+            dtTable.Columns.Add("Email", typeof(string));
+            dtTable.Columns.Add("Age", typeof(int));
+            dtTable.Columns.Add("CreateDate", typeof(DateTime));
+            dtTable.Columns.Add("Question", typeof(string));
+            dtTable.Columns.Add("Answer", typeof(string));
+
+            //取問卷ID
+            string ID = Request.QueryString["ID"];
+            Guid id = new Guid(ID);
+
+            //尋找該ID的問卷及問題列表
+            var Ques = this._mgrContent.GetQuesContent(id);
+            var QuesDetail = this._mgrQuesDetail.GetQuesDetailList(id);
+            var UserInfo = this._mgrUserInfo.GetUserInfoList(id);
+
+            //新增資料到DataTable
+            for (int i = 0; i < UserInfo.Count; i++)
+            {
+                row = dtTable.NewRow();
+                row["Name"] = UserInfo[i].Name;
+                row["Phone"] = UserInfo[i].Phone;
+                row["Email"] = UserInfo[i].Email;
+                row["Age"] = UserInfo[i].Age;
+                row["CreateDate"] = UserInfo[i].CreateDate;
+
+                for (int j = 0; j < QuesDetail.Count; j++)
+                {
+                    if (dtTable.Columns.Contains($"q{j + 1}") == false)
+                        dtTable.Columns.Add($"Q{j + 1}", typeof(string));
+                    row["Question"] = QuesDetail[j].QuesTitle;
+                    Guid usID = UserInfo[i].UserID;
+                    var thisUSans = this._mgrUserDetail.GetUserInfo(usID);
+                    foreach (var ans in thisUSans)
+                    {
+                        if (ans.QuesID == QuesDetail[j].QuesID)
+                        {
+                            row["Answer"] = ans.Answer;
+                        }
+                    }
+                }
+                dtTable.Rows.Add(row);
+            }
+            FileInfo fi = new FileInfo(fullPath);
+
+            //檔案不存在就建立檔案
+            if (!fi.Directory.Exists)
+            {
+                fi.Directory.Create();
+            }
+            FileStream fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
+            StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+            string data = "";
+
+            for (int i = 0; i < dtTable.Columns.Count; i++)//寫入列名
+            {
+                data += dtTable.Columns[i].ColumnName.ToString();
+                if (i < dtTable.Columns.Count - 1)
+                {
+                    data += ",";
+                }
+            }
+            sw.WriteLine(data);
+
+            //寫入各行資料
+            for (int i = 0; i < dtTable.Rows.Count; i++)
+            {
+                data = "";
+                for (int j = 0; j < dtTable.Columns.Count; j++)
+                {
+                    string str = dtTable.Rows[i][j].ToString();
+                    //替換英文冒號 英文冒號需要換成兩個冒號
+                    str = str.Replace("\"", "\"\"");
+                    //含逗號 冒號 換行符的需要放到引號中
+                    if (str.Contains(',') || str.Contains('"')
+                      || str.Contains('\r') || str.Contains('\n'))
+                    {
+                        str = string.Format("\"{0}\"", str);
+                    }
+
+                    data += str;
+                    if (j < dtTable.Columns.Count - 1)
+                    {
+                        data += ",";
+                    }
+                }
+                sw.WriteLine(data);
+            }
+            sw.Close();
+            fs.Close();
         }
     }
 }

@@ -95,7 +95,6 @@ namespace questionnaire.Managers
             }
         }
 
-
         /// <summary>
         /// 取得指定帳戶的UserInfo列表
         /// </summary>

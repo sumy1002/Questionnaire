@@ -153,7 +153,7 @@
         <%-- 填寫資料 --%>
         <div id="userInfo" class="tab-pane fade">
             <asp:PlaceHolder runat="server" ID="plcInfo1">
-                <asp:Button ID="btnExport" runat="server" Text="匯出" />
+                <asp:Button ID="btnExport" runat="server" Text="匯出" OnClick="btnExport_Click"/>
                 <asp:HiddenField ID="hfUserID" runat="server" />
                 <p></p>
                 <table border="1" id="QList" class="display">

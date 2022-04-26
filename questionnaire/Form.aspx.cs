@@ -44,7 +44,6 @@ namespace questionnaire
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
             foreach (QuesDetail question in questionList)
             {
-                //string q = $"<br/>{question.TitleID}. {question.QuesID}";
                 string title = $"<br /><br />{i}. {question.QuesTitle}";
                 if (question.Necessary)
                     title += "(*)";
@@ -96,53 +95,50 @@ namespace questionnaire
         }
 
         //建立單選問題
-        private void CreateRdb(QuesDetail question)
+        private void CreateRdb(QuesDetail q)
         {
             RadioButtonList radioButtonList = new RadioButtonList();
-            radioButtonList.ID = "Q" + question.QuesID;
+            radioButtonList.ID = "Q" + q.QuesID;
             this.plcDynamic.Controls.Add(radioButtonList);
 
-            string[] arrQ = question.QuesChoice.Split(';');
+            string[] arrQ = q.QuesChoice.Split(';');
 
             for (int i = 0; i < arrQ.Length; i++)
             {
                 RadioButton item = new RadioButton();
                 item.Text = arrQ[i].ToString();
-                item.ID = question.QuesID + i.ToString();
-                item.GroupName = "group" + question.QuesID;
+                item.ID = q.QuesID + i.ToString();
+                item.GroupName = "group" + q.QuesID;
                 this.plcDynamic.Controls.Add(item);
                 this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
             }
+            this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
         }
 
         //建立複選問題
-        private void CreateCkb(QuesDetail question)
+        private void CreateCkb(QuesDetail q)
         {
             CheckBoxList checkBoxList = new CheckBoxList();
-            checkBoxList.ID = "Q" + question.QuesID;
+            checkBoxList.ID = "Q" + q.QuesID;
             this.plcDynamic.Controls.Add(checkBoxList);
 
-            string[] arrQ = question.QuesChoice.Split(';');
+            string[] arrQ = q.QuesChoice.Split(';');
 
             for (int i = 0; i < arrQ.Length; i++)
             {
-
                 CheckBox item = new CheckBox();
                 item.Text = arrQ[i].ToString();
-                item.ID = question.QuesID + i.ToString();
+                item.ID = q.QuesID + i.ToString();
                 this.plcDynamic.Controls.Add(item);
                 this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
-
-                //ListItem item2 = new ListItem(arrQ[i], i.ToString());
-                //checkBoxList.Items.Add(item);
             }
         }
 
         //建立文字問題
-        private void CreateTxt(QuesDetail question)
+        private void CreateTxt(QuesDetail q)
         {
             TextBox textBox = new TextBox();
-            textBox.ID = "Q" + question.QuesID.ToString();
+            textBox.ID = "Q" + q.QuesID.ToString();
             this.plcDynamic.Controls.Add(textBox);
         }
 
