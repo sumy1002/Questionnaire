@@ -1,4 +1,4 @@
-﻿using questionnaire.Helpers;
+﻿using questionnaire.Manager;
 using questionnaire.Managers;
 using questionnaire.Models;
 using questionnaire.ORM;
@@ -17,18 +17,22 @@ namespace questionnaire.BackAdmin
 {
     public partial class mainPageA : System.Web.UI.Page
     {
+        #region Manager跟一些變數
         private static List<QuesDetailModel> _questionSession = new List<QuesDetailModel>();
         private QuesContentsManager _mgrContent = new QuesContentsManager();
         private QuesDetailManager _mgrQuesDetail = new QuesDetailManager();
         private QuesTypeManager _mgrQuesType = new QuesTypeManager();
         private UserInfoManager _mgrUserInfo = new UserInfoManager();
         private UserQuesDetailManager _mgrUserDetail = new UserQuesDetailManager();
+        private StatisticManager _mgrSta = new StatisticManager();
         private CQManager _mgrCQ = new CQManager();
 
         int i = 1;
         string rdbAns;
         string[] ckbAns;
         string txt;
+        #endregion
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -41,7 +45,6 @@ namespace questionnaire.BackAdmin
 
                 //尋找該ID的問卷及問題列表
                 var Ques = this._mgrContent.GetQuesContent(id);
-                var QuesDetail = this._mgrQuesDetail.GetQuesDetailList(id);
 
                 //取資料放進輸入框
                 this.hfTitleID.Value = Ques.QuestionnaireID.ToString();
@@ -115,9 +118,13 @@ namespace questionnaire.BackAdmin
                         i++;
                     }
                 }
+
+                //統計頁
+                Statistic();
             }
         }
 
+        #region 編輯問題
         //編輯問題
         protected void imgbtnEdit_Command(object sender, CommandEventArgs e)
         {
@@ -221,7 +228,9 @@ namespace questionnaire.BackAdmin
             this.imgbtnDel.Visible = true;
             this.imgbtnPlus.Visible = true;
         }
+        #endregion
 
+        #region 建立問題
         //建立問題
         protected void imgbtnPlus_Click(object sender, ImageClickEventArgs e)
         {
@@ -402,6 +411,7 @@ namespace questionnaire.BackAdmin
             this.imgbtnDel.Visible = true;
             this.imgbtnPlus.Visible = true;
         }
+        #endregion
 
         #region 刪除問題
         //刪除按鈕
@@ -488,15 +498,10 @@ namespace questionnaire.BackAdmin
 
         #endregion
 
-        protected void Button2_Click(object sender, EventArgs e)
-        {
-            var li = (HtmlGenericControl)Page.FindControl("li1");
-            li.Visible = false;
-        }
-
+        #region 顯示填寫資訊
         protected void btnDetail_Command(object sender, CommandEventArgs e)
         {
-            this.btnExport.Visible = true;
+            this.plcExport.Visible = true;
 
             //取ID
             string ID = Request.QueryString["ID"];
@@ -505,13 +510,13 @@ namespace questionnaire.BackAdmin
             this.plcInfo2.Visible = true;
             Guid userID = new Guid(e.CommandName);
             this.hfUserID.Value = e.CommandName.ToString();
-            var Info = this._mgrUserInfo.GetUserInfoList2(userID);
-            var Detail = this._mgrUserDetail.GetUserInfo(userID);
 
+            //取得問題清單
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
+
+            //建立問題
             foreach (QuesDetail question in questionList)
             {
-                //string q = $"<br/>{question.TitleID}. {question.QuesID}";
                 string title = $"<br /><br />{i}. {question.QuesTitle}";
                 if (question.Necessary)
                     title += "(*)";
@@ -534,8 +539,21 @@ namespace questionnaire.BackAdmin
                         break;
                 }
             }
-        }
 
+            var UList = this._mgrUserInfo.GetUserInfoList2(userID);
+            this.rptDetail.DataSource = UList;
+            this.rptDetail.DataBind();
+
+            for (int i = 0; i < UList.Count; i++)
+            {
+                this.txtName.Text = UList[i].Name;
+                this.txtPhone.Text = UList[i].Phone;
+                this.txtEmail.Text = UList[i].Email;
+                this.txtAge.Text = UList[i].Age;
+                this.ltlDate.Text = "填寫日期  " + UList[i].CreateDate.ToString("yyyy-MM-dd");
+            }
+
+        }
 
         //建立單選
         private void CreateRdb(QuesDetail question)
@@ -645,7 +663,10 @@ namespace questionnaire.BackAdmin
             textBox.Enabled = false;
             this.plcDynamic.Controls.Add(textBox);
         }
+        #endregion
 
+        #region 匯出
+        //匯出按鈕
         protected void btnExport_Click(object sender, EventArgs e)
         {
             //取問卷ID
@@ -685,8 +706,6 @@ namespace questionnaire.BackAdmin
             dtTable.Columns.Add("Email", typeof(string));
             dtTable.Columns.Add("Age", typeof(int));
             dtTable.Columns.Add("CreateDate", typeof(DateTime));
-            dtTable.Columns.Add("Question", typeof(string));
-            dtTable.Columns.Add("Answer", typeof(string));
 
             //取問卷ID
             string ID = Request.QueryString["ID"];
@@ -697,80 +716,205 @@ namespace questionnaire.BackAdmin
             var QuesDetail = this._mgrQuesDetail.GetQuesDetailList(id);
             var UserInfo = this._mgrUserInfo.GetUserInfoList(id);
 
-            //新增資料到DataTable
-            for (int i = 0; i < UserInfo.Count; i++)
+            try
             {
-                row = dtTable.NewRow();
-                row["Name"] = UserInfo[i].Name;
-                row["Phone"] = UserInfo[i].Phone;
-                row["Email"] = UserInfo[i].Email;
-                row["Age"] = UserInfo[i].Age;
-                row["CreateDate"] = UserInfo[i].CreateDate;
-
-                for (int j = 0; j < QuesDetail.Count; j++)
+                //新增資料到DataTable
+                for (int i = 0; i < UserInfo.Count; i++)
                 {
-                    if (dtTable.Columns.Contains($"q{j + 1}") == false)
-                        dtTable.Columns.Add($"Q{j + 1}", typeof(string));
-                    row["Question"] = QuesDetail[j].QuesTitle;
-                    Guid usID = UserInfo[i].UserID;
-                    var thisUSans = this._mgrUserDetail.GetUserInfo(usID);
-                    foreach (var ans in thisUSans)
+                    row = dtTable.NewRow();
+                    row["Name"] = UserInfo[i].Name;
+                    row["Phone"] = UserInfo[i].Phone;
+                    row["Email"] = UserInfo[i].Email;
+                    row["Age"] = UserInfo[i].Age;
+                    row["CreateDate"] = UserInfo[i].CreateDate;
+
+                    for (int j = 0; j < QuesDetail.Count; j++)
                     {
-                        if (ans.QuesID == QuesDetail[j].QuesID)
+                        if (dtTable.Columns.Contains($"Question{j + 1}") == false)
                         {
-                            row["Answer"] = ans.Answer;
+                            dtTable.Columns.Add($"Question{j + 1}", typeof(string));
+                            dtTable.Columns.Add($"Answer{j + 1}", typeof(string));
+                        }
+
+                        row[$"Question{j + 1}"] = QuesDetail[j].QuesTitle;
+                        Guid usID = UserInfo[i].UserID;
+                        var thisUSans = this._mgrUserDetail.GetUserInfo(usID);
+                        foreach (var ans in thisUSans)
+                        {
+                            if (ans.QuesID == QuesDetail[j].QuesID)
+                                row[$"Answer{j + 1}"] = ans.Answer;
                         }
                     }
+                    dtTable.Rows.Add(row);
                 }
-                dtTable.Rows.Add(row);
-            }
-            FileInfo fi = new FileInfo(fullPath);
+                FileInfo fi = new FileInfo(fullPath);
 
-            //檔案不存在就建立檔案
-            if (!fi.Directory.Exists)
-            {
-                fi.Directory.Create();
-            }
-            FileStream fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
-            StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
-            string data = "";
-
-            for (int i = 0; i < dtTable.Columns.Count; i++)//寫入列名
-            {
-                data += dtTable.Columns[i].ColumnName.ToString();
-                if (i < dtTable.Columns.Count - 1)
+                //檔案不存在就建立檔案
+                if (!fi.Directory.Exists)
                 {
-                    data += ",";
+                    fi.Directory.Create();
                 }
-            }
-            sw.WriteLine(data);
+                FileStream fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
+                StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
+                string data = "";
 
-            //寫入各行資料
-            for (int i = 0; i < dtTable.Rows.Count; i++)
-            {
-                data = "";
-                for (int j = 0; j < dtTable.Columns.Count; j++)
+                for (int i = 0; i < dtTable.Columns.Count; i++)//寫入列名
                 {
-                    string str = dtTable.Rows[i][j].ToString();
-                    //替換英文冒號 英文冒號需要換成兩個冒號
-                    str = str.Replace("\"", "\"\"");
-                    //含逗號 冒號 換行符的需要放到引號中
-                    if (str.Contains(',') || str.Contains('"')
-                      || str.Contains('\r') || str.Contains('\n'))
-                    {
-                        str = string.Format("\"{0}\"", str);
-                    }
-
-                    data += str;
-                    if (j < dtTable.Columns.Count - 1)
+                    data += dtTable.Columns[i].ColumnName.ToString();
+                    if (i < dtTable.Columns.Count - 1)
                     {
                         data += ",";
                     }
                 }
                 sw.WriteLine(data);
+
+                //寫入各行資料
+                for (int i = 0; i < dtTable.Rows.Count; i++)
+                {
+                    data = "";
+                    for (int j = 0; j < dtTable.Columns.Count; j++)
+                    {
+                        string str = dtTable.Rows[i][j].ToString();
+                        //替換英文冒號 英文冒號需要換成兩個冒號
+                        str = str.Replace("\"", "\"\"");
+                        //含逗號 冒號 換行符的需要放到引號中
+                        if (str.Contains(',') || str.Contains('"')
+                          || str.Contains('\r') || str.Contains('\n'))
+                        {
+                            str = string.Format("\"{0}\"", str);
+                        }
+
+                        data += str;
+                        if (j < dtTable.Columns.Count - 1)
+                        {
+                            data += ",";
+                        }
+                    }
+                    sw.WriteLine(data);
+                }
+                sw.Close();
+                fs.Close();
+
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", $"alert('匯出完成。');", true);
             }
-            sw.Close();
-            fs.Close();
+            catch (Exception ex)
+            {
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", $"alert('{ex}。');", true);
+            }
+        }
+        #endregion
+
+        #region 統計頁
+        private void Statistic()
+        {
+            //取ID
+            string ID = Request.QueryString["ID"];
+            Guid id = new Guid(ID);
+
+            this._mgrSta.GetStasticList(id);
+
+            //取得該問卷的問題細節
+            List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
+
+            //List<UserQuesDetail> UserAns = _mgrUQDetail.GetUserInfo();
+            List<StatisticModel> staList = _mgrSta.GetStasticList(id);
+
+            foreach (QuesDetail question in questionList)
+            {
+                string q = $"<br/>{question.QuesTitle}";
+                Label lblNess = new Label();
+
+                //必填的部分
+                if (question.Necessary)
+                {
+                    lblNess.Text = "(*必填)<br />";
+                    lblNess.ForeColor = System.Drawing.Color.Red;
+                    lblNess.Style.Value = "font-size:10px;";
+                }
+                Label lblQues = new Label();
+                lblQues.Text = q;
+                lblQues.Style.Value = "font-weight:bold";
+                this.plcStatistic.Controls.Add(lblQues);
+                this.plcStatistic.Controls.Add(lblNess);
+
+
+                //複選&單選
+                if (question.QuesTypeID != 1)
+                {
+                    List<StatisticModel> NoList = staList.FindAll(x => x.QuesID == question.QuesID);
+                    int total = 0;
+
+
+                    foreach (StatisticModel item in NoList)
+                    {
+                        item.AnsCount = NoList.Count;
+                        total = item.AnsCount;
+                    }
+
+                    if (total == 0)
+                    {
+                        Literal ltlNoAns = new Literal();
+                        ltlNoAns.Text = "尚無資料<br/>";
+                        this.plcStatistic.Controls.Add(ltlNoAns);
+                    }
+                    else
+                    {
+                        //取問題的答案
+                        string[] arrQue = question.QuesChoice.Split(';');
+                        int ckbAns = 0;
+                        for (int i = 0; i < arrQue.Length; i++)
+                        {
+                            ckbAns = 0;
+                            int ansCount = 0;
+                            string ans = arrQue[i].ToString();
+                            foreach (var s in NoList)
+                            {
+                                var ansTrim = s.Answer.TrimEnd(';');
+                                string[] sAns = ansTrim.Split(';');
+                                ckbAns += sAns.Length;
+                                foreach (string sans in sAns)
+                                {
+                                    if (sans == ans)
+                                    {
+                                        ansCount++;
+                                    }
+                                }
+                            }
+
+                            //篩選一下問題種類
+                            switch (question.QuesTypeID)
+                            {
+                                //單選
+                                case 2:
+                                    Literal ltlAns = new Literal();
+                                    ltlAns.Text = $"{arrQue[i]} : {ansCount * 100 / total}% ({ansCount}) <br />";
+                                    this.plcStatistic.Controls.Add(ltlAns);
+                                    break;
+                                //複選
+                                case 3:
+                                    double aaa = Convert.ToInt32(((double)ansCount / ckbAns) * 100);
+                                    Literal ltlAns2 = new Literal();
+                                    ltlAns2.Text = $"{arrQue[i]} : {aaa}% ({ansCount}) <br />";
+                                    this.plcStatistic.Controls.Add(ltlAns2);
+                                    break;
+                            }
+                        }
+                    }
+                }
+                //文字選項
+                else
+                {
+                    Literal ltlSelection = new Literal();
+                    ltlSelection.Text = "<br />無資料，回答為文字輸入<br/>";
+                    this.plcStatistic.Controls.Add(ltlSelection);
+                }
+            }
+        }
+        #endregion
+
+        protected void btnBack_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

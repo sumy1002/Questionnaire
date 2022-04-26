@@ -16,12 +16,34 @@
             font-weight: 600;
             font-size: 18px;
         }
-    </style>
 
-    <script>
-        //$("#tblUserInfo").tablepage($("#table_pageA2"), 10);
-        //$("#tblQDetail").tablepage($("#table_QuesDetail"), 10);
-    </script>
+        #InfoDiv {
+            border: 0px solid #ff0000;
+            margin: 10px auto;
+            text-align: center;
+            padding: 10px;
+            padding-top: 20px;
+        }
+
+        #divDynamic {
+            border: 0px solid #000000;
+            margin: 10px auto;
+            text-align: center;
+        }
+
+        #InfoDate {
+            text-align: right;
+            margin-right: 20px;
+        }
+
+        #userInfo{
+            width:70%;
+        }
+
+        .tdCenter{
+            text-align:center;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <asp:Label ID="Label1" runat="server" Text="Label" Visible="false"></asp:Label>
@@ -40,21 +62,20 @@
             <div id="paper" class="tab-pane fade in active">
                 <p>
                     <asp:HiddenField ID="hfQid" runat="server" />
-                    <asp:HiddenField ID="hfTitleID" runat="server" />
+                    <asp:HiddenField ID="hfTitleID" runat="server" /><br />
                     <asp:Literal ID="ltltitle" runat="server">問卷名稱 </asp:Literal>
-                    <asp:TextBox ID="txtTitle" runat="server" Width="250" Enabled="false"></asp:TextBox><br />
+                    <asp:TextBox ID="txtTitle" runat="server" Width="250" Enabled="false"></asp:TextBox><br /><br />
                     <asp:Literal ID="ltlcontent" runat="server">描述內容 </asp:Literal>
-                    <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine" Enabled="false"></asp:TextBox><br />
+                    <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine" Enabled="false" Width="550" Height="150px"></asp:TextBox><br /><br />
                     <asp:Literal ID="ltlStart" runat="server">開始時間 </asp:Literal>
-                    <asp:TextBox ID="txtStart" runat="server" TextMode="Date" Width="250" Enabled="false"></asp:TextBox><br>
+                    <asp:TextBox ID="txtStart" runat="server" TextMode="Date" Width="250" Enabled="false"></asp:TextBox><br><br />
                     <asp:Literal ID="ltlEnd" runat="server">結束時間 </asp:Literal>
-                    <asp:TextBox ID="txtEnd" runat="server" TextMode="Date" Width="250" Enabled="false"></asp:TextBox><br />
-                    <br />
+                    <asp:TextBox ID="txtEnd" runat="server" TextMode="Date" Width="250" Enabled="false"></asp:TextBox><br /><br />
                     <asp:Literal ID="ltlEnable" runat="server">開放狀態 </asp:Literal>
                     <asp:CheckBox ID="ckbEnable" runat="server" Text="" Checked='<%# Eval("IsEnable") %>' Visible="false" />
                     <asp:RadioButton ID="rdbEnableT" runat="server" GroupName="Enable" Text="開放中" Enabled="false" />
                     <asp:RadioButton ID="rdbEnableF" runat="server" GroupName="Enable" Text="已關閉" Enabled="false" />
-                    <br />
+                    <br /><br />
 
                     <asp:Button ID="btnQuesEdit" runat="server" Text="編輯問卷資訊" OnClick="btnQuesEdit_Click" />
                     <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" Visible="false" />&emsp;
@@ -90,6 +111,7 @@
                 <br />
             </asp:PlaceHolder>
 
+            <br />
             <asp:ImageButton ID="imgbtnDel" runat="server" ImageUrl="~/images/del.png" OnClick="imgbtnDel_Click" OnClientClick="return confirm('確定要刪除嗎？')" />
             <asp:ImageButton ID="imgbtnPlus" runat="server" ImageUrl="~/images/plus.png" OnClick="imgbtnPlus_Click" />
 
@@ -117,10 +139,10 @@
             <table border="1" id="tblQDetail">
                 <tr>
                     <th width="20px"></th>
-                    <th width="40px">編號</th>
-                    <th width="250px">問題</th>
-                    <th width="100px">種類</th>
-                    <th width="100px">必填</th>
+                    <th width="40px"  class="tdCenter">編號</th>
+                    <th width="400px">問題</th>
+                    <th width="100px" class="tdCenter">種類</th>
+                    <th width="100px" class="tdCenter">必填</th>
                     <th></th>
                 </tr>
 
@@ -128,17 +150,17 @@
                     <ItemTemplate>
                         <asp:HiddenField ID="hfid" runat="server" Value='<%# Eval("QuesID") %>' />
                         <tr>
-                            <td>
+                            <td class="tdCenter">
                                 <asp:CheckBox ID="ckbDel" runat="server" Checked="false" /></td>
-                            <td>
+                            <td  class="tdCenter">
                                 <asp:Label ID="lblnumber" runat="server"></asp:Label></td>
                             <td>
                                 <asp:Label ID="lblQues" runat="server" Text='<%#Eval("QuesTitle") %>'></asp:Label></td>
-                            <td>
+                            <td class="tdCenter">
                                 <asp:Label ID="lblQType" runat="server" Text='<%#Eval("QuesType1") %>'></asp:Label></td>
-                            <td>
+                            <td class="tdCenter">
                                 <asp:CheckBox ID="ckbNecessary" runat="server" Checked='<%#Eval("Necessary") %>' Enabled="false" /></td>
-                            <td>
+                            <td class="tdCenter">
                                 <asp:ImageButton ID="imgbtnEdit" runat="server" ImageUrl="~/images/edit.png" CommandName='<%# Eval("QuesID") %>' OnCommand="imgbtnEdit_Command" /></td>
                         </tr>
                     </ItemTemplate>
@@ -153,9 +175,14 @@
         <%-- 填寫資料 --%>
         <div id="userInfo" class="tab-pane fade">
             <asp:PlaceHolder runat="server" ID="plcInfo1">
-                <asp:Button ID="btnExport" runat="server" Text="匯出" OnClick="btnExport_Click"/>
+                <asp:PlaceHolder ID="plcExport" runat="server" Visible="false" >
+                    <br />
+                    <asp:Button ID="btnExport" runat="server" Text="匯出成CSV檔" OnClick="btnExport_Click" OnClientClick="return confirm('確定要匯出所有資料嗎？')"/><br />
+                    <br />
+                </asp:PlaceHolder>
                 <asp:HiddenField ID="hfUserID" runat="server" />
                 <p></p>
+                <br />
                 <table border="1" id="QList" class="display">
                     <thead>
                         <tr>
@@ -165,47 +192,51 @@
                             <th>觀看細節</th>
                         </tr>
                     </thead>
+
                     <tbody>
                         <asp:Repeater ID="rptDetail" runat="server">
                             <ItemTemplate>
                                 <tr>
-                                    <td>
-                                        <asp:Label ID="lblNumber2" runat="server" Text=""></asp:Label></td>
-                                    <td>
-                                        <asp:Label ID="lblName" runat="server" Text='<%#Eval("Name") %>'></asp:Label></td>
-                                    <td>
-                                        <asp:Label ID="lblCreateDate" runat="server" Text='<%#Eval("CreateDate") %>'></asp:Label></td>
-                                    <td>
-                                        <asp:Button ID="btnDetail" runat="server" Text="Button" OnCommand="btnDetail_Command" CommandName='<%#Eval("UserID") %>' /></td>
+                                    <td width="8%" class="tdCenter"><asp:Label ID="lblNumber2" runat="server" Text=""></asp:Label></td>
+                                    <td width="50%"><asp:Label ID="lblName" runat="server" Text='<%#Eval("Name") %>'></asp:Label></td>
+                                    <td width="40%"><asp:Label ID="lblCreateDate" runat="server" Text='<%#Eval("CreateDate") %>'></asp:Label></td>
+                                    <td  width="70%"><asp:Button ID="btnDetail" runat="server" Text="觀看細節" OnCommand="btnDetail_Command" CommandName='<%#Eval("UserID") %>' />
+                                        <asp:Button ID="btnBack" runat="server" Text="返回列表" Visible="false" OnClick="btnBack_Click"/>
+                                    </td>
                                 </tr>
                             </ItemTemplate>
                         </asp:Repeater>
                     </tbody>
+
                 </table>
             </asp:PlaceHolder>
 
-            <asp:PlaceHolder runat="server" ID="plcInfo2" Visible="false">
-                <asp:Literal ID="ltlName" runat="server">姓名</asp:Literal>
-                <asp:Literal ID="ltlPhone" runat="server">手機</asp:Literal><br />
-                <asp:Literal ID="ltlEmail" runat="server">Email</asp:Literal>
-                <asp:Literal ID="ltlAge" runat="server">年齡</asp:Literal><br />
-                <asp:Literal ID="ltlDate" runat="server">填寫時間</asp:Literal>
-                <div id="divDynamic" class="col-lg-5" align="center">
-                    <asp:PlaceHolder ID="plcDynamic" runat="server"></asp:PlaceHolder>
-                    <asp:Repeater ID="Repeater1" runat="server">
-                        <ItemTemplate>
-
-                        </ItemTemplate>
-                    </asp:Repeater>
-                </div>
-            </asp:PlaceHolder>
+            <div id="InfoDiv">
+                <asp:PlaceHolder runat="server" ID="plcInfo2" Visible="false">
+                    <asp:Literal ID="ltlName" runat="server">姓名  </asp:Literal>
+                    <asp:TextBox ID="txtName" runat="server" Enabled="false"></asp:TextBox>&nbsp;&nbsp;
+                        <asp:Literal ID="ltlPhone" runat="server">手機  </asp:Literal>
+                    <asp:TextBox ID="txtPhone" runat="server" Enabled="false"></asp:TextBox>&nbsp;&nbsp;
+                        <br />
+                    <br />
+                    <asp:Literal ID="ltlEmail" runat="server">Email  </asp:Literal>
+                    <asp:TextBox ID="txtEmail" runat="server" Enabled="false"></asp:TextBox>&nbsp;&nbsp;
+                        <asp:Literal ID="ltlAge" runat="server">年齡  </asp:Literal>
+                    <asp:TextBox ID="txtAge" runat="server" Enabled="false"></asp:TextBox>&nbsp;&nbsp;
+                    <br />
+                    <div id="InfoDate">
+                        <asp:Literal ID="ltlDate" runat="server">填寫時間</asp:Literal>
+                    </div>
+                    <div id="divDynamic" align="center">
+                        <asp:PlaceHolder ID="plcDynamic" runat="server"></asp:PlaceHolder>
+                    </div>
+                </asp:PlaceHolder>
+            </div>
         </div>
 
         <%-- 統計 --%>
         <div id="statistic" class="tab-pane fade">
-            <p>
-                ddd
-            </p>
+            <asp:PlaceHolder ID="plcStatistic" runat="server"></asp:PlaceHolder>
         </div>
     </div>
 
