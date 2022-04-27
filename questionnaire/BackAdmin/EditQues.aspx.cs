@@ -31,6 +31,7 @@ namespace questionnaire.BackAdmin
         string rdbAns;
         string[] ckbAns;
         string txt;
+        bool checkInfo = false;
         #endregion
 
         protected void Page_Load(object sender, EventArgs e)
@@ -501,58 +502,97 @@ namespace questionnaire.BackAdmin
         #region 顯示填寫資訊
         protected void btnDetail_Command(object sender, CommandEventArgs e)
         {
-            this.plcExport.Visible = true;
-
             //取ID
             string ID = Request.QueryString["ID"];
             Guid id = new Guid(ID);
 
-            this.plcInfo2.Visible = true;
-            Guid userID = new Guid(e.CommandName);
-            this.hfUserID.Value = e.CommandName.ToString();
-
-            //取得問題清單
-            List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
-
-            //建立問題
-            foreach (QuesDetail question in questionList)
+            foreach (RepeaterItem item in this.rptDetail.Items)
             {
-                string title = $"<br /><br />{i}. {question.QuesTitle}";
-                if (question.Necessary)
-                    title += "(*)";
-                i = i + 1;
-                Literal ltlQuestion = new Literal();
-                ltlQuestion.Text = title + "<br/>";
-
-                this.plcDynamic.Controls.Add(ltlQuestion);
-
-                switch (question.QuesTypeID)
+                Button btnDe = item.FindControl("btnDetail") as Button;
+                if(btnDe.Text == "返回列表")
                 {
-                    case 1:
-                        CreateTxt(question);
-                        break;
-                    case 2:
-                        CreateRdb(question);
-                        break;
-                    case 3:
-                        CreateCkb(question);
-                        break;
+                    checkInfo = true;
                 }
             }
 
-            var UList = this._mgrUserInfo.GetUserInfoList2(userID);
-            this.rptDetail.DataSource = UList;
-            this.rptDetail.DataBind();
-
-            for (int i = 0; i < UList.Count; i++)
+            //觀看細節
+            if (checkInfo == false)
             {
-                this.txtName.Text = UList[i].Name;
-                this.txtPhone.Text = UList[i].Phone;
-                this.txtEmail.Text = UList[i].Email;
-                this.txtAge.Text = UList[i].Age;
-                this.ltlDate.Text = "填寫日期  " + UList[i].CreateDate.ToString("yyyy-MM-dd");
+                this.plcExport.Visible = true;
+
+                this.plcInfo2.Visible = true;
+                Guid userID = new Guid(e.CommandName);
+                this.hfUserID.Value = e.CommandName.ToString();
+
+                //取得問題清單
+                List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
+
+                //建立問題
+                foreach (QuesDetail question in questionList)
+                {
+                    string title = $"<br /><br />{i}. {question.QuesTitle}";
+                    if (question.Necessary)
+                        title += "(*)";
+                    i = i + 1;
+                    Literal ltlQuestion = new Literal();
+                    ltlQuestion.Text = title + "<br/>";
+
+                    this.plcDynamic.Controls.Add(ltlQuestion);
+
+                    switch (question.QuesTypeID)
+                    {
+                        case 1:
+                            CreateTxt(question);
+                            break;
+                        case 2:
+                            CreateRdb(question);
+                            break;
+                        case 3:
+                            CreateCkb(question);
+                            break;
+                    }
+                }
+
+                var UList = this._mgrUserInfo.GetUserInfoList2(userID);
+                this.rptDetail.DataSource = UList;
+                this.rptDetail.DataBind();
+
+                foreach (RepeaterItem item in this.rptDetail.Items)
+                {
+                    Button btnDe = item.FindControl("btnDetail") as Button;
+                    btnDe.Text = "返回列表";
+                }
+
+                for (int i = 0; i < UList.Count; i++)
+                {
+                    this.txtName.Text = UList[i].Name;
+                    this.txtPhone.Text = UList[i].Phone;
+                    this.txtEmail.Text = UList[i].Email;
+                    this.txtAge.Text = UList[i].Age;
+                    this.ltlDate.Text = "填寫日期  " + UList[i].CreateDate.ToString("yyyy-MM-dd");
+                }
+                checkInfo = true;
+            }
+            //返回列表
+            else
+            {
+                this.plcExport.Visible = false;
+                this.plcInfo2.Visible = false;
+
+                //填寫狀況繫結
+                var UserList = this._mgrUserInfo.GetUserInfoList(id);
+                this.rptDetail.DataSource = UserList;
+                this.rptDetail.DataBind();
+
+                foreach (RepeaterItem item in this.rptDetail.Items)
+                {
+                    Label ltlDate = item.FindControl("lblCreateDate") as Label;
+                    var DT = Convert.ToDateTime(ltlDate.Text);
+                    ltlDate.Text = DT.ToString("yyyy-MM-dd");
+                }
             }
 
+            Statistic();
         }
 
         //建立單選
@@ -816,8 +856,6 @@ namespace questionnaire.BackAdmin
 
             //取得該問卷的問題細節
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
-
-            //List<UserQuesDetail> UserAns = _mgrUQDetail.GetUserInfo();
             List<StatisticModel> staList = _mgrSta.GetStasticList(id);
 
             foreach (QuesDetail question in questionList)
@@ -844,7 +882,6 @@ namespace questionnaire.BackAdmin
                 {
                     List<StatisticModel> NoList = staList.FindAll(x => x.QuesID == question.QuesID);
                     int total = 0;
-
 
                     foreach (StatisticModel item in NoList)
                     {

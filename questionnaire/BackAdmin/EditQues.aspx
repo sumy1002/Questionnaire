@@ -175,10 +175,9 @@
         <%-- 填寫資料 --%>
         <div id="userInfo" class="tab-pane fade">
             <asp:PlaceHolder runat="server" ID="plcInfo1">
-                <asp:PlaceHolder ID="plcExport" runat="server" Visible="false" >
+                <asp:PlaceHolder ID="plcExport" runat="server">
                     <br />
                     <asp:Button ID="btnExport" runat="server" Text="匯出成CSV檔" OnClick="btnExport_Click" OnClientClick="return confirm('確定要匯出所有資料嗎？')"/><br />
-                    <br />
                 </asp:PlaceHolder>
                 <asp:HiddenField ID="hfUserID" runat="server" />
                 <p></p>
@@ -223,7 +222,7 @@
                     <asp:TextBox ID="txtEmail" runat="server" Enabled="false"></asp:TextBox>&nbsp;&nbsp;
                         <asp:Literal ID="ltlAge" runat="server">年齡  </asp:Literal>
                     <asp:TextBox ID="txtAge" runat="server" Enabled="false"></asp:TextBox>&nbsp;&nbsp;
-                    <br />
+                    <br /><br />
                     <div id="InfoDate">
                         <asp:Literal ID="ltlDate" runat="server">填寫時間</asp:Literal>
                     </div>
