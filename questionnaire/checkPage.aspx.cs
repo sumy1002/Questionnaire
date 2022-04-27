@@ -17,7 +17,7 @@ namespace questionnaire
         private UserInfoManager _mgrUserInfo = new UserInfoManager();
         private UserQuesDetailManager _mgrUserDetail = new UserQuesDetailManager();
         int i = 1;
-
+        int ansCount = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
             #region 1
@@ -142,22 +142,20 @@ namespace questionnaire
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
             List<UserQuesDetailModel> answerList = GetSessionList("Answer");
 
-            for (int i = 0; i < questionList.Count; i++)
+            for (; ansCount < questionList.Count; ansCount++)
             {
-                foreach (var q in answerList)
+                if (answerList[ansCount].QuesID == questionList[ansCount].QuesID)
                 {
-                    if (q.QuesID == questionList[i].QuesID)
-                    {
-                        Label lbl = new Label();
-                        lbl.ID = "Q" + question.QuesID;
-                        lbl.Text = q.Answer.TrimEnd(';');
-                        this.plcDynamic.Controls.Add(lbl);
-                    }
+                    Label lbl = new Label();
+                    lbl.ID = "Q" + question.QuesID;
+                    lbl.Text = answerList[ansCount].Answer.TrimEnd(';');
+                    this.plcDynamic.Controls.Add(lbl);
+                    ansCount++;
                     break;
                 }
-                break;
             }
         }
+
 
         //建立複選問題
         private void CreateCkb(QuesDetail question)

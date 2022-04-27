@@ -3,6 +3,11 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <!--套用jQuery-->
     <script src="../JavaScript/jquery-tablepage-1.0.js"></script>
+    <style>
+        .cneter{
+            text-align:center;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <h3>常用問題管理</h3>
@@ -22,8 +27,8 @@
         <asp:Label ID="lblAnsRed" runat="server" Text="選項格式錯誤" Visible="false" ForeColor="Red"></asp:Label>
         <asp:Label ID="lblAnsRed2" runat="server" Text="單選及多選選項必須以;分隔，且不可以;結尾" Visible="false" ForeColor="Red"></asp:Label>
         <asp:Label ID="lblAnsRed3" runat="server" Text="文字題無須輸入選項" Visible="false" ForeColor="Red"></asp:Label><br />
-        <asp:Button ID="btnQuesAdd" runat="server" Text="加入" OnClick="btnQuesAdd_Click" />
-        <asp:Button ID="btnQuesAddCancel" runat="server" Text="取消" OnClick="btnQuesAddCancel_Click" /><br />
+        <asp:Button ID="btnQuesAdd" runat="server" Text="加入" OnClick="btnQuesAdd_Click" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <asp:Button ID="btnQuesAddCancel" runat="server" Text="取消" OnClick="btnQuesAddCancel_Click" /><br /><br />
     </asp:PlaceHolder>
 
     <%-- 修改問題 --%>
@@ -45,22 +50,22 @@
     <table border="1" id="tblA">
         <tr>
             <th></th>
-            <th>編號</th>
+            <th class="cneter">編號</th>
             <th>問題</th>
             <th>選項</th>
-            <th>必填</th>
-            <th>編輯</th>
-            <th>刪除</th>
+            <th class="cneter">必填</th>
+            <th class="cneter">編輯</th>
+            <th class="cneter">刪除</th>
         </tr>
 
         <asp:HiddenField ID="hfCQID" runat="server" />
         <asp:Repeater ID="rptCQ" runat="server">
             <ItemTemplate>
                 <tr>
-                    <td>
+                    <td class="cneter">
                         <asp:CheckBox ID="ckbCQ" runat="server" />
                     </td>
-                    <td width="50px">
+                    <td width="50px" class="cneter">
                         <asp:Label ID="lblNumber" runat="server" Text="Label"></asp:Label>
                     </td>
                     <td width="250px">
@@ -69,13 +74,13 @@
                     <td width="250px">
                         <%# Eval("CQChoice") %>
                     </td>
-                    <td width="50px">
+                    <td width="50px" class="cneter">
                         <asp:CheckBox ID="ckbNess" runat="server" Enabled="false" Checked='<%#Eval("Necessary") %>' />
                     </td>
-                    <td>
+                    <td class="cneter">
                         <asp:ImageButton ID="imgbtnedit" runat="server" ImageUrl="~/images/edit.png" Width="39px" CommandName='<%# Eval("CQID") %>' OnCommand="imgbtnedit_Command" />
                     </td>
-                    <td>
+                    <td class="cneter">
                         <asp:ImageButton ID="imgbtnDel" runat="server" ImageUrl="~/images/del.png" Width="40px" CommandName='<%# Eval("CQID") %>' OnCommand="imgbtnDel_Command" OnClientClick="return confirm('確定要刪除嗎？')" />
                     </td>
             </ItemTemplate>

@@ -87,7 +87,7 @@ namespace questionnaire
                 if (this.ltlVote.Text == "True")
                     this.ltlVote.Text = "開放中";
 
-                this.lvlTime.Text = Ques.strStartTime.ToString();
+                this.lvlTime.Text = $"{Ques.strStartTime} ~ {Ques.strEndTime}";
 
                 string count = questionList.Count.ToString();
                 this.ltlQCount.Text = "共 " + count + " 個問題";
@@ -174,6 +174,10 @@ namespace questionnaire
                 this.Session["Email"] = this.txtEmail.Text;
                 this.Session["Age"] = this.txtAge.Text;
             }
+            else
+            {
+
+            }
             #endregion
 
             //取ID
@@ -183,7 +187,7 @@ namespace questionnaire
             var QID = this._mgrQuesDetail.GetQuesDetailList(ID3);
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(ID3);
 
-            // 取得動態控制項的值
+            //取得動態控制項的值
             List<UserQuesDetailModel> answerList = new List<UserQuesDetailModel>();
             for (var i = 0; i < questionList.Count; i++)
             {
@@ -193,20 +197,17 @@ namespace questionnaire
                     QuestionnaireID = q.QuestionnaireID,
                     QuesID = q.QuesID,
                     QuesTypeID = q.QuesTypeID,
-                    //Answer = this.answerList[i].Title,
                 };
 
                 //判斷一下問題種類
                 switch (questionList[i].QuesTypeID)
                 {
-                    //單選
+                    //單選 //有問題
                     case 2:
                         for (var j = -1; j < i; j++)
                         {
                             int check = 0;
-                            RadioButtonList rdblist = (RadioButtonList)this.plcDynamic.FindControl($"Q{questionList[i].QuesID}");
                             string[] arrQ = questionList[i].QuesChoice.Split(';');
-                            //RadioButton rdb = (RadioButton)rdblist.FindControl($"{questionList[i].QuesID}{arrQ[i]}");
                             for (var k = 0; k < arrQ.Length; k++)
                             {
                                 RadioButton rdb = (RadioButton)this.plcDynamic.FindControl($"{questionList[i].QuesID}{k}");
@@ -225,7 +226,6 @@ namespace questionnaire
                     //複選
                     case 3:
                         int check2 = 0;
-                        //List<string> ckbl = new List<string>();
                         CheckBoxList ckblist = (CheckBoxList)this.plcDynamic.FindControl($"Q{questionList[i].QuesID}");
                         string[] arrQ2 = questionList[i].QuesChoice.Split(';');
                         for (var j = 0; j < arrQ2.Length; j++)
