@@ -46,7 +46,7 @@
             <p>
                 <asp:Literal ID="ltlType" runat="server">種類</asp:Literal>
                 <asp:DropDownList ID="ddlType" runat="server"></asp:DropDownList>
-                <asp:Button ID="btnAddCQ" runat="server" Text="Button" OnClick="btnAddCQ_Click" />
+                <asp:Button ID="btnAddCQ" runat="server" Text="加入常用問題" OnClick="btnAddCQ_Click" />
                 <br />
                 <br />
                 <asp:Literal ID="ltlQues" runat="server">問題</asp:Literal>

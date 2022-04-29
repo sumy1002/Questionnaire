@@ -40,10 +40,20 @@ namespace questionnaire
             {
                 Response.Redirect(Request.RawUrl);
             }
+            //帳號密碼錯誤
             else
             {
+                this.txtAccount.Text = String.Empty;
+                this.txtPassword.Text = String.Empty;
                 this.lblMessage.Visible = true;
             }
         }
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("listPage.aspx");
+        }
+
+        
     }
 }

@@ -97,9 +97,9 @@ namespace questionnaire
 
                 this.ltlVote.Text = Ques.IsEnable.ToString();
                 if (this.ltlVote.Text == "True")
-                    this.ltlVote.Text = "開放中";
+                    this.ltlVote.Text = "投票中";
 
-                this.lvlTime.Text = $"{Ques.strStartTime} ~ {Ques.strEndTime}";
+                this.ltlTime.Text = $"{Ques.strStartTime} ~ {Ques.strEndTime}";
 
                 string count = questionList.Count.ToString();
                 this.ltlQCount.Text = "共 " + count + " 個問題";
@@ -204,7 +204,7 @@ namespace questionnaire
                     var ans1 = answerList[ansCount].Answer.TrimEnd(';');
                     var ans2 = ans1.Split(';');
 
-                    foreach(var item2 in ans2)
+                    foreach (var item2 in ans2)
                     {
                         if (item.Text == item2)
                         {
@@ -238,10 +238,10 @@ namespace questionnaire
                 {
                     if (Q.QuesID == answerList[ansCount].QuesID)
                     {
-                        Label lbl = new Label();
-                        lbl.ID = "Q" + Q.QuesID;
-                        lbl.Text = answerList[ansCount].Answer.TrimEnd(';');
-                        this.plcDynamic.Controls.Add(lbl);
+                        TextBox txt = new TextBox();
+                        txt.ID = "Q" + Q.QuesID;
+                        txt.Text = answerList[ansCount].Answer.TrimEnd(';');
+                        this.plcDynamic.Controls.Add(txt);
                     }
                 }
                 ansCount++;
@@ -290,96 +290,172 @@ namespace questionnaire
             Guid ID3 = new Guid(ID2);
 
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(ID3);
+            bool ansCheck = false;
 
-            //取得動態控制項的值
-            List<UserQuesDetailModel> answerList = new List<UserQuesDetailModel>();
+            #region 檢查有沒有填必選問題
             for (var i = 0; i < questionList.Count; i++)
             {
+                ansCheck = false;
+
                 var q = _mgrQuesDetail.GetOneQuesDetail(questionList[i].QuesID);
-                UserQuesDetailModel Ans = new UserQuesDetailModel()
+                if (questionList[i].Necessary == true)
                 {
-                    QuestionnaireID = q.QuestionnaireID,
-                    QuesID = q.QuesID,
-                    QuesTypeID = q.QuesTypeID,
-                };
-
-                //判斷一下問題種類
-                switch (questionList[i].QuesTypeID)
-                {
-                    //單選 //問題
-                    case 2:
-                        for (var j = -1; j < i; j++)
-                        {
-                            //判斷一下有沒有找到答案
-                            int check = 0;
-
-                            //把選項拆進陣列中
-                            string[] arrQ = questionList[i].QuesChoice.Split(';');
-
-                            for (var k = 0; k < arrQ.Length; k++)
+                    switch (questionList[i].QuesTypeID)
+                    {
+                        //單選
+                        case 2:
+                            for (int j = 0; j < q.QuesChoice.Split(';').Length; j++)
                             {
-                                RadioButton rdb = (RadioButton)this.plcDynamic.FindControl($"{questionList[i].QuesID}{k}");
-
-                                //將答案寫入清單
-                                if (rdb.Checked == true)
+                                foreach (var rdb in q.QuesChoice.Split(';'))
                                 {
-                                    Ans.Answer = rdb.Text + ";";
-                                    answerList.Add(Ans);
-                                    check = 1;
-                                    break;
+                                    RadioButton ansRdb = this.plcDynamic.FindControl($"{questionList[i].QuesID}{j}") as RadioButton;
+                                    if (ansRdb.Checked == true)
+                                    {
+                                        ansCheck = true;
+                                        break;
+                                    }
+                                }
+
+                            }
+                            break;
+                        //複選
+                        case 3:
+                            for (int j = 0; j < q.QuesChoice.Split(';').Length; j++)
+                            {
+                                foreach (var rdb in q.QuesChoice.Split(';'))
+                                {
+                                    CheckBox ansCdb = this.plcDynamic.FindControl($"{questionList[i].QuesID}{j}") as CheckBox;
+                                    if (ansCdb.Checked == true)
+                                    {
+                                        ansCheck = true;
+                                        break;
+                                    }
                                 }
                             }
-                            if (check == 1)
-                                break;
-                        }
-                        break;
-                    //複選
-                    case 3:
-                        //判斷一下有沒有找到答案
-                        int check2 = 0;
-
-                        //把選項拆進陣列中
-                        string[] arrQ2 = questionList[i].QuesChoice.Split(';');
-
-                        for (var j = 0; j < arrQ2.Length; j++)
-                        {
-                            for (var k = 0; k < arrQ2.Length; k++)
+                            break;
+                        //文字
+                        case 1:
+                            foreach (var item in this.plcDynamic.Controls)
                             {
-                                CheckBox ckb = (CheckBox)this.plcDynamic.FindControl($"{questionList[i].QuesID}{k}");
-                                if (ckb.Checked == true)
+                                TextBox txtCdb = this.plcDynamic.FindControl($"Q{questionList[i].QuesID}") as TextBox;
+                                if (!String.IsNullOrWhiteSpace(txtCdb.Text))
                                 {
-                                    Ans.Answer += ckb.Text + ";";
-                                    check2++;
-                                }
-                                else if (ckb.Checked == false)
-                                    check2++;
-
-                                if (check2 == arrQ2.Length)
-                                {
-                                    answerList.Add(Ans);
+                                    ansCheck = true;
                                     break;
                                 }
                             }
                             break;
-                        }
-                        break;
-                    //文字
-                    case 1:
-                        TextBox txb = (TextBox)this.plcDynamic.FindControl($"Q{questionList[i].QuesID}");
-                        Ans.Answer = txb.Text + ";";
-                        answerList.Add(Ans);
-                        break;
+                    }
                 }
             }
+            #endregion
 
-            //寫進Session
-            Session["Answer"] = answerList;
+            if (ansCheck)
+            {
+                //取得動態控制項的值
+                List<UserQuesDetailModel> answerList = new List<UserQuesDetailModel>();
+                for (var i = 0; i < questionList.Count; i++)
+                {
+                    var q = _mgrQuesDetail.GetOneQuesDetail(questionList[i].QuesID);
+                    UserQuesDetailModel Ans = new UserQuesDetailModel()
+                    {
+                        QuestionnaireID = q.QuestionnaireID,
+                        QuesID = q.QuesID,
+                        QuesTypeID = q.QuesTypeID,
+                    };
 
-            //取ID
-            string ID = Request.QueryString["ID"];
-            Guid id = new Guid(ID);
+                    //判斷一下問題種類
+                    switch (questionList[i].QuesTypeID)
+                    {
+                        //單選 //問題
+                        case 2:
+                            for (var j = -1; j < i; j++)
+                            {
+                                //判斷一下有沒有找到答案
+                                int check = 0;
 
-            Response.Redirect($"checkPage.aspx?ID={ID}");
+                                //把選項拆進陣列中
+                                string[] arrQ = questionList[i].QuesChoice.Split(';');
+
+                                for (var k = 0; k < arrQ.Length; k++)
+                                {
+                                    RadioButton rdb = (RadioButton)this.plcDynamic.FindControl($"{questionList[i].QuesID}{k}");
+
+                                    //將答案寫入清單
+                                    if (rdb.Checked == true)
+                                    {
+                                        Ans.Answer = rdb.Text + ";";
+                                        answerList.Add(Ans);
+                                        check = 1;
+                                        break;
+                                    }
+                                }
+                                if (check == 1)
+                                    break;
+                            }
+                            break;
+                        //複選
+                        case 3:
+                            //判斷一下有沒有找到答案
+                            int check2 = 0;
+
+                            //把選項拆進陣列中
+                            string[] arrQ2 = questionList[i].QuesChoice.Split(';');
+
+                            for (var j = 0; j < arrQ2.Length; j++)
+                            {
+                                for (var k = 0; k < arrQ2.Length; k++)
+                                {
+                                    CheckBox ckb = (CheckBox)this.plcDynamic.FindControl($"{questionList[i].QuesID}{k}");
+                                    if (ckb.Checked == true)
+                                    {
+                                        Ans.Answer += ckb.Text + ";";
+                                        check2++;
+                                    }
+                                    else if (ckb.Checked == false)
+                                        check2++;
+
+                                    if (check2 == arrQ2.Length)
+                                    {
+                                        answerList.Add(Ans);
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                            break;
+                        //文字
+                        case 1:
+                            TextBox txb = (TextBox)this.plcDynamic.FindControl($"Q{questionList[i].QuesID}");
+                            if(txb.Text != null)
+                            {
+                                Ans.Answer = txb.Text + ";";
+                                answerList.Add(Ans);
+                                break;
+                            }
+                            else
+                            {
+                                Ans.Answer = " " + ";";
+                                answerList.Add(Ans);
+                                break;
+                            }
+                            
+                    }
+                }
+
+                //寫進Session
+                Session["Answer"] = answerList;
+
+                //取ID
+                string ID = Request.QueryString["ID"];
+                Guid id = new Guid(ID);
+
+                Response.Redirect($"checkPage.aspx?ID={ID}");
+            }
+            else
+            {
+                this.lblMsg.Visible = true;
+            }
         }
 
         #endregion

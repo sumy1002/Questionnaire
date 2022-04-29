@@ -69,7 +69,7 @@
                 <ItemTemplate>
                     <asp:HiddenField ID="hfcqid" runat="server" Value='<%# Eval("CQID") %>' />
                     <tr>
-                        <td class="cneter">
+                        <td class="cneter" width="20px">
                             <asp:CheckBox ID="ckbCQ" runat="server" />
                         </td>
                         <td width="50px" class="cneter">
@@ -78,16 +78,16 @@
                         <td width="250px">
                             <%# Eval("CQTitle") %>
                         </td>
-                        <td width="250px">
+                        <td width="170px">
                             <%# Eval("CQChoice") %>
                         </td>
                         <td width="50px" class="cneter">
                             <asp:CheckBox ID="ckbNess" runat="server" Enabled="false" Checked='<%#Eval("Necessary") %>' />
                         </td>
-                        <td class="cneter">
+                        <td class="cneter" width="50px">
                             <asp:ImageButton ID="imgbtnedit" runat="server" ImageUrl="~/images/edit.png" Width="39px" CommandName='<%# Eval("CQID") %>' OnCommand="imgbtnedit_Command" />
                         </td>
-                        <td class="cneter">
+                        <td class="cneter" width="50px">
                             <asp:ImageButton ID="imgbtnDel" runat="server" ImageUrl="~/images/del.png" Width="40px" CommandName='<%# Eval("CQID") %>' OnCommand="imgbtnDel_Command" OnClientClick="return confirm('確定要刪除嗎？')" />
                         </td>
                 </ItemTemplate>
@@ -111,7 +111,7 @@
                     },
                 },
                 "lengthMenu": [[10, 15, 20, "All"], [10, 15, 20, "All"]],
-                "order": [[0, "desc"]],
+                "order": [[1, "asc"]],
             });
 
         });

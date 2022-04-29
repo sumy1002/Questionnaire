@@ -31,6 +31,7 @@ namespace questionnaire.BackAdmin
                 {
                     HiddenField hfID = item.FindControl("hfID") as HiddenField;
                     CheckBox ckbDel = item.FindControl("CheckBox1") as CheckBox;
+                    CheckBox ckb = item.FindControl("ckbDel") as CheckBox;
                     Label lbl0 = item.FindControl("lblTitleID") as Label;
                     Label lbl1 = item.FindControl("lblTitle") as Label;
                     Label lbl2 = item.FindControl("lblIsEnable") as Label;
@@ -45,7 +46,8 @@ namespace questionnaire.BackAdmin
                         lbl3.ForeColor = Color.Red;
                         lbl4.ForeColor = Color.Red;
 
-                        imgbtnClose.ImageUrl = "../images/check.png";
+                        imgbtnClose.Visible = false;
+                        ckb.Visible = false;
                     }
                 }
             }
@@ -192,6 +194,31 @@ namespace questionnaire.BackAdmin
 
                 this.ltlMsg.Visible = false;
             }
+
+            //關閉中的問卷呈現紅色
+            foreach (RepeaterItem item in this.rptList.Items)
+            {
+                HiddenField hfID = item.FindControl("hfID") as HiddenField;
+                CheckBox ckbDel = item.FindControl("CheckBox1") as CheckBox;
+                CheckBox ckb = item.FindControl("ckbDel") as CheckBox;
+                Label lbl0 = item.FindControl("lblTitleID") as Label;
+                Label lbl1 = item.FindControl("lblTitle") as Label;
+                Label lbl2 = item.FindControl("lblIsEnable") as Label;
+                Label lbl3 = item.FindControl("lblSDT") as Label;
+                Label lbl4 = item.FindControl("lblEDT") as Label;
+                ImageButton imgbtnClose = item.FindControl("ImgBtnClose") as ImageButton;
+                if (!ckbDel.Checked && Guid.TryParse(hfID.Value, out Guid questionnaireID))
+                {
+                    lbl0.ForeColor = Color.Red;
+                    lbl1.ForeColor = Color.Red;
+                    lbl2.ForeColor = Color.Red;
+                    lbl3.ForeColor = Color.Red;
+                    lbl4.ForeColor = Color.Red;
+
+                    imgbtnClose.Visible = false;
+                    ckb.Visible = false;
+                }
+            }
         }
 
         #region 日期搜尋
@@ -278,7 +305,20 @@ namespace questionnaire.BackAdmin
 
         protected void ImgBtnClose_Click(object sender, ImageClickEventArgs e)
         {
+            foreach (RepeaterItem item in this.rptList.Items)
+            {
+                HiddenField hfid = item.FindControl("hfID") as HiddenField;
+                CheckBox ckbDel = item.FindControl("ckbDel") as CheckBox;
+                ImageButton imgbtn = item.FindControl("ImgBtnClose") as ImageButton;
+                if (ckbDel.Checked)
+                {
+                    Guid Qid = new Guid(imgbtn.CommandName);
+                    //把問題從資料庫中刪除
+                    this._mgrQues.DeleteQues(Qid);
+                }
+            }
 
+            Response.Redirect("ListPageAdmin.aspx");
         }
 
         #endregion

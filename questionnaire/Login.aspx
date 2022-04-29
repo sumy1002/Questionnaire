@@ -19,11 +19,13 @@
 <body>
     <form id="form1" runat="server">
         <div id="login">
-            <asp:PlaceHolder runat="server" ID="plcLogin">Account: 
+            <asp:PlaceHolder runat="server" ID="plcLogin">Account&nbsp&nbsp
             <asp:TextBox ID="txtAccount" runat="server"></asp:TextBox><br /><br />
-                Password: 
+                Password&nbsp
             <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"></asp:TextBox><br /><br />
-                <asp:Button ID="btnLogin" runat="server" Text="登入" OnClick="btnLogin_Click" /><br />
+                <asp:Button ID="btnCancel" runat="server" Text="返回列表" OnClick="btnCancel_Click"/>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <asp:Button ID="btnLogin" runat="server" Text="登入" OnClick="btnLogin_Click" /><br /><br />
 
                 <asp:Label ID="lblMessage" runat="server" Visible="false" ForeColor="Red">登入失敗，請檢查帳號密碼。</asp:Label>
             </asp:PlaceHolder>

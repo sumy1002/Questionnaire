@@ -40,7 +40,7 @@
     <%-- 投票狀態及日期 --%>
     <div class="col-lg-10" align="right" id="topDiv">
         <asp:Literal ID="ltlVote" runat="server"></asp:Literal><br />
-        <asp:Literal ID="lvlTime" runat="server"></asp:Literal>
+        <asp:Literal ID="ltlTime" runat="server"></asp:Literal>
     </div>
 
     <%-- 標題&內文 --%>
@@ -82,6 +82,7 @@
 
     <%-- 問題數量及送出 --%>
     <div id="btnSpace" class="col-lg-10">
+        <asp:Label ID="lblMsg" runat="server" Text="有未選/未輸入的必選選項" ForeColor="Red" Visible="false"></asp:Label>
         <asp:PlaceHolder ID="plcBtn" runat="server">
             <br />
             <asp:Literal ID="ltlQCount" runat="server"></asp:Literal><br /><br />

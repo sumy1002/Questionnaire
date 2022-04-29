@@ -8,7 +8,7 @@
     <style>
         #topDiv {
             border: 2px solid #000000;
-            margin:auto;
+            margin: auto;
             padding-left: 30px;
             padding-top: 20px;
         }
@@ -26,30 +26,43 @@
             margin: 2px auto;
         }
 
-        #bigDiv{
+        #bigDiv {
             margin: 20px auto;
+        }
+
+        #login{
+            float:right;
+            margin-top: -130px;
+            margin-right: -50px;
         }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div id="bigDiv" class="col-lg-10">
-        <div id="topDiv" class="col-lg-6">
-            <p>
-                <asp:Literal ID="ltlTitle" runat="server">問卷標題</asp:Literal>
-                <asp:TextBox ID="txtTitle" runat="server"></asp:TextBox>
-            </p>
-            <p>
-                <asp:Literal ID="ltlDate" runat="server">開始／結束</asp:Literal>
-                <asp:TextBox ID="txtStartDate" runat="server" TextMode="Date"></asp:TextBox>&nbsp;
+        <div>
+            <%-- 搜尋框 --%>
+            <div id="topDiv" class="col-lg-6">
+                <p>
+                    <asp:Literal ID="ltlTitle" runat="server">問卷標題</asp:Literal>
+                    <asp:TextBox ID="txtTitle" runat="server"></asp:TextBox>
+                </p>
+                <p>
+                    <asp:Literal ID="ltlDate" runat="server">開始／結束</asp:Literal>
+                    <asp:TextBox ID="txtStartDate" runat="server" TextMode="Date"></asp:TextBox>&nbsp;
             <asp:TextBox ID="txtEndDate" runat="server" TextMode="Date"></asp:TextBox>
-                &emsp;&emsp;
+                    &emsp;&emsp;
             <asp:Button ID="btnSearch" runat="server" Text="搜尋" OnClick="btnSearch_Click" />
-            </p>
+                </p>
+            </div>
+            <%-- 登入 --%>
+            <div id="login"><asp:Button ID="btnLogin" runat="server" Text="後台登入" OnClick="btnLogin_Click"/>
+</div>
         </div>
         <div id="searchDiv" class="col-lg-6">
             &ensp;<asp:Literal ID="ltlMsg" runat="server" Visible="false"></asp:Literal>
         </div>
 
+        <%-- 問卷清單 --%>
         <div id="tbDiv" class="col-lg-10">
             <table id="QList" class="display">
                 <thead>
@@ -96,8 +109,6 @@
     <span id='table_page'></span>
 
     <script>
-        //$("#tbl").tablepage($("#table_page"), 10);
-
         $(document).ready(function () {
             $('#QList').DataTable({
                 "searching": false,

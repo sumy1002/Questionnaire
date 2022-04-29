@@ -75,8 +75,10 @@ namespace questionnaire
                         break;
                 }
 
-                this.ltlVote.Text = Ques.IsEnable.ToString();
-                this.lvlTime.Text = Ques.strStartTime.ToString();
+                this.ltlTime.Text = Ques.strStartTime.ToString();
+
+                if(Ques.IsEnable == true)
+                    this.ltlVote.Text = "投票中";
 
                 string count = questionList.Count.ToString();
                 this.ltlQCount.Text = "共 " + count + " 個問題";

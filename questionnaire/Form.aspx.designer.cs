@@ -24,13 +24,13 @@ namespace questionnaire
         protected global::System.Web.UI.WebControls.Literal ltlVote;
 
         /// <summary>
-        /// lvlTime 控制項。
+        /// ltlTime 控制項。
         /// </summary>
         /// <remarks>
         /// 自動產生的欄位。
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal lvlTime;
+        protected global::System.Web.UI.WebControls.Literal ltlTime;
 
         /// <summary>
         /// hfID 控制項。
@@ -184,6 +184,15 @@ namespace questionnaire
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
         protected global::System.Web.UI.WebControls.PlaceHolder plcDynamic;
+
+        /// <summary>
+        /// lblMsg 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblMsg;
 
         /// <summary>
         /// plcBtn 控制項。

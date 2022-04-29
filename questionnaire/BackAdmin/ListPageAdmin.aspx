@@ -49,7 +49,7 @@
                 <th>狀態</th>
                 <th>開始時間</th>
                 <th>結束時間</th>
-                <th>觀看統計</th>
+                <th  class="divCenter">觀看統計<br />與編輯</th>
                 <th>關閉/開啟</th>
             </tr>
         </thead>
@@ -75,7 +75,7 @@
                                 <asp:Label ID="lblSDT" runat="server" Text='<%# Eval("strStartTime") %>'></asp:Label></td>
                             <td width="100px">
                                 <asp:Label ID="lblEDT" runat="server" Text='<%# Eval("strEndTime") %>'></asp:Label></td>
-                            <td width="85px">
+                            <td width="85px" >
                                 <div class="divCenter">
                                     <a href="EditQues.aspx?ID=<%#Eval("QuestionnaireID") %>">前往</a>
                                 </div>

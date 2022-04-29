@@ -370,10 +370,6 @@ namespace questionnaire.BackAdmin
                     {
                         _mgrQuesDetail.CreateQuesDetail(question);
                     }
-                    else
-                    {
-                        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('已有相同問題。')", true);
-                    }
                     questionNo++;
                 }
 
@@ -951,5 +947,23 @@ namespace questionnaire.BackAdmin
         }
         #endregion
 
+        protected void btnAddCQ_Click(object sender, EventArgs e)
+        {
+            int cqid = Convert.ToInt32(this.ddlType.SelectedValue.Trim());
+            CQAndTypeModel CQs = this._mgrQuesType.GetCQType(cqid);
+
+            if (CQs != null)
+            {
+                this.txtQues.Text = this.ddlType.SelectedItem.ToString();
+                this.txtAnswer.Text = CQs.CQChoice;
+                this.ddlQuesType.SelectedIndex = CQs.QuesTypeID - 1;
+
+                var isEnable = CQs.Necessary;
+                if (isEnable)
+                {
+                    this.ckbNess.Checked = true;
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Index.Master" AutoEventWireup="true" CodeBehind="checkPage.aspx.cs" Inherits="questionnaire.checkPage" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
+         #topDiv{
+            margin-top:20px;
+        }
+
         #divTiCon {
             border: 0px solid #000000;
         }
@@ -34,9 +38,9 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <%-- 投票狀態及日期 --%>
-    <div class="col-lg-12" align="right">
+    <div class="col-lg-10" align="right" id="topDiv">
         <asp:Literal ID="ltlVote" runat="server"></asp:Literal><br />
-        <asp:Literal ID="lvlTime" runat="server"></asp:Literal>
+        <asp:Literal ID="ltlTime" runat="server"></asp:Literal>
     </div>
 
     <%-- 標題&內文 --%>
@@ -69,7 +73,7 @@
     </div>
 
     <%-- 問題數量及送出 --%>
-    <div id="btnSpace">
+    <div id="btnSpace" class="col-lg-10">
         <asp:Literal ID="ltlQCount" runat="server"></asp:Literal>
         <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click"/>
         <asp:Button ID="btnSend" runat="server" Text="送出" OnClick="btnSend_Click"/>

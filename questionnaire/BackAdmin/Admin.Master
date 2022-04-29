@@ -34,7 +34,9 @@
                 <td width="150px" id="listSpace" valign="top">
                     <a href="ListPageAdmin.aspx">問卷管理</a><br />
                     <br />
-                    <a href="CommonQuesPageA.aspx">常用問題管理</a>
+                    <a href="CommonQuesPageA.aspx">常用問題管理</a><br />
+                    <br />
+                    <a id="btnlogout" runat="server" onserverclick="btnlogout_ServerClick">登出</a>
                 </td>
                 <td>
                     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
