@@ -13,14 +13,16 @@ namespace questionnaire.BackAdmin
 {
     public partial class NewQues : System.Web.UI.Page
     {
-        //private List<QuesDetailModel> _quesDetail = new List<QuesDetailModel>();
+        #region Manager&變數
+
+        Guid _questionnaireID = Guid.NewGuid();
         private CQManager _mgrCQ = new CQManager();
         private QuesTypeManager _mgrQuesType = new QuesTypeManager();
         private QuesDetailManager _mgrQuesDetail = new QuesDetailManager();
         private QuesContentsManager _mgrContent = new QuesContentsManager();
-        Guid _questionnaireID = Guid.NewGuid();
         private static List<QuesDetailModel> _questionSession = new List<QuesDetailModel>();
-        //private List<QuesDetailModel> _questionSession;
+
+        #endregion
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -62,12 +64,6 @@ namespace questionnaire.BackAdmin
                     this.ckbNess.Checked = true;
                 }
             }
-        }
-
-        //生成問卷A送出
-        protected void btnSend_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("NewQues.aspx#question");
         }
 
         //新增問題按鈕
@@ -234,10 +230,5 @@ namespace questionnaire.BackAdmin
             //Response.Redirect("NewQues.aspx?ID=" + ques.QuestionnaireID);
         }
 
-        protected void Button2_Click(object sender, EventArgs e)
-        {
-            this.txtContent.Text = "123";
-            this.txtTitle.Text = "123";
-        }
     }
 }

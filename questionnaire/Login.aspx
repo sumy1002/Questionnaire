@@ -9,7 +9,7 @@
 
     <style>
         #login{
-            border:1px solid #000000;
+            border:0px solid #000000;
             text-align:center;
             margin:20px auto;
             padding:20px;

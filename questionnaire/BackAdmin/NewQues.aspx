@@ -18,13 +18,7 @@
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#paper">問卷</a></li>
         <li><a data-toggle="tab" href="#question">問題</a></li>
-        <li><a id="tab2_tab" data-toggle="tab" href="#tab2">頁籤 2</a></li>
     </ul>
-
-    <%-- 測一下頁籤功能 --%>
-    <button class="btn btn-info" onclick="GoTotab2()">利用btn onclick直接帶function實現跳頁籤</button>
-    <button id="btn1" class="btn btn-primary" onclick="$('#tab2_tab').trigger('click'); return false;">跳至第二頁</button>
-    <asp:Button ID="Button2" runat="server" Text="serverbtn" OnClick="Button2_Click" />
 
 
     <%-- 新增問卷資訊 --%>
@@ -44,7 +38,6 @@
                 <br />
                 <asp:Button ID="btnCancel" runat="server" Text="取消" />
                 &emsp;&emsp;&emsp;&emsp;&emsp;
-                <asp:Button ID="btnSend" runat="server" Text="送出" OnClick="btnSend_Click" />
             </p>
         </div>
 

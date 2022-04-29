@@ -26,6 +26,7 @@ namespace questionnaire.BackAdmin
                 this.rptList.DataSource = quesList;
                 this.rptList.DataBind();
 
+                //關閉中的問卷呈現紅色
                 foreach (RepeaterItem item in this.rptList.Items)
                 {
                     HiddenField hfID = item.FindControl("hfID") as HiddenField;
@@ -38,11 +39,11 @@ namespace questionnaire.BackAdmin
                     ImageButton imgbtnClose = item.FindControl("ImgBtnClose") as ImageButton;
                     if (!ckbDel.Checked && Guid.TryParse(hfID.Value, out Guid questionnaireID))
                     {
-                        lbl0.ForeColor = System.Drawing.Color.Red;
-                        lbl1.ForeColor = System.Drawing.Color.Red;
-                        lbl2.ForeColor = System.Drawing.Color.Red;
-                        lbl3.ForeColor = System.Drawing.Color.Red;
-                        lbl4.ForeColor = System.Drawing.Color.Red;
+                        lbl0.ForeColor = Color.Red;
+                        lbl1.ForeColor = Color.Red;
+                        lbl2.ForeColor = Color.Red;
+                        lbl3.ForeColor = Color.Red;
+                        lbl4.ForeColor = Color.Red;
 
                         imgbtnClose.ImageUrl = "../images/check.png";
                     }
@@ -50,12 +51,18 @@ namespace questionnaire.BackAdmin
             }
         }
 
+        #region 新建
+
         //新建問卷按鈕
         protected void ImgBtnAdd_Click(object sender, ImageClickEventArgs e)
         {
             //去新建
             Response.Redirect("~/BackAdmin/NewQues.aspx");
         }
+
+        #endregion
+
+        #region 搜尋
 
         //搜尋按鈕
         protected void btnSearch_Click(object sender, EventArgs e)
@@ -214,6 +221,8 @@ namespace questionnaire.BackAdmin
         }
         #endregion
 
+        #region 限制搜尋功能
+
         //以標題搜尋時關閉日期搜尋功能
         protected void txtTitle_TextChanged(object sender, EventArgs e)
         {
@@ -254,20 +263,24 @@ namespace questionnaire.BackAdmin
                 this.txtTitle.Enabled = true;
         }
 
+        #endregion
+
+        #endregion
+
+        #region 開啟關閉問卷
+
         //關閉/開啟問卷
         protected void ImgBtnDel_Command(object sender, CommandEventArgs e)
         {
             Guid id = Guid.Parse(e.CommandName);
             this._mgrQues.DeleteQues(id);
-
-            var quesList = this._mgrQues.GetQuesContent(id);
-            QuesContentsModel a = new QuesContentsModel
-            {
-                Title = quesList.Title,
-                strStartTime = quesList.Title,
-                strEndTime = quesList.Title,
-                strIsEnable = quesList.Title,
-            };
         }
+
+        protected void ImgBtnClose_Click(object sender, ImageClickEventArgs e)
+        {
+
+        }
+
+        #endregion
     }
 }

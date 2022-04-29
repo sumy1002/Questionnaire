@@ -200,7 +200,6 @@
                                     <td width="50%"><asp:Label ID="lblName" runat="server" Text='<%#Eval("Name") %>'></asp:Label></td>
                                     <td width="40%"><asp:Label ID="lblCreateDate" runat="server" Text='<%#Eval("CreateDate") %>'></asp:Label></td>
                                     <td  width="70%"><asp:Button ID="btnDetail" runat="server" Text="觀看細節" OnCommand="btnDetail_Command" CommandName='<%#Eval("UserID") %>' />
-                                        <asp:Button ID="btnBack" runat="server" Text="返回列表" Visible="false" OnClick="btnBack_Click"/>
                                     </td>
                                 </tr>
                             </ItemTemplate>

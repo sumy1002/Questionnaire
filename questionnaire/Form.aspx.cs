@@ -13,12 +13,27 @@ namespace questionnaire
 {
     public partial class mainPage : System.Web.UI.Page
     {
+        #region Manager&變數
+
         private QuesContentsManager _mgrContent = new QuesContentsManager();
         private QuesDetailManager _mgrQuesDetail = new QuesDetailManager();
-        //private static List<UserQuesDetailModel> _answerList;
         int i = 1;
+        bool isEdit = false;
+        int ansCount = 0;
+
+        #endregion
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            //如果沒有帶ID，跳回列表頁
+            if (Request.QueryString["ID"] == null)
+                Response.Redirect($"listPage.aspx");
+
+            //判斷是不是編輯狀態
+            bool checkEdit = Request.QueryString["Edit"] == "1";
+            if (checkEdit)
+                isEdit = true;
+
             //取ID
             string ID = Request.QueryString["ID"];
             Guid id = new Guid(ID);
@@ -41,6 +56,20 @@ namespace questionnaire
             this.ltlTitle.Text = Ques.Title;
             this.ltlContent.Text = Ques.Body;
 
+            if (isEdit)
+            {
+                var name = GetSession("Name");
+                var phone = GetSession("Phone");
+                var email = GetSession("Email");
+                var age = GetSession("Age");
+
+                this.txtName.Text = name;
+                this.txtPhone.Text = phone;
+                this.txtEmail.Text = email;
+                this.txtAge.Text = age;
+            }
+
+            //生成控制項
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
             foreach (QuesDetail question in questionList)
             {
@@ -50,26 +79,9 @@ namespace questionnaire
                 i = i + 1;
                 Literal ltlQuestion = new Literal();
                 ltlQuestion.Text = title + "<br/>";
-
                 this.plcDynamic.Controls.Add(ltlQuestion);
 
-                //if (isEditMode)
-                //{
-                //    switch (question.Type)
-                //    {
-                //        case QuestionType.單選方塊:
-                //            EditRdb(question);
-                //            break;
-                //        case QuestionType.複選方塊:
-                //            EditCkb(question);
-                //            break;
-                //        case QuestionType.文字:
-                //            EditTxt(question);
-                //            break;
-                //    }
-                //}
-                //else
-                //{
+                //判斷種類類型
                 switch (question.QuesTypeID)
                 {
                     case 1:
@@ -94,58 +106,151 @@ namespace questionnaire
             }
         }
 
+        #region 建立問題
+
         //建立單選問題
         private void CreateRdb(QuesDetail q)
         {
-            RadioButtonList radioButtonList = new RadioButtonList();
-            radioButtonList.ID = "Q" + q.QuesID;
-            this.plcDynamic.Controls.Add(radioButtonList);
-
-            string[] arrQ = q.QuesChoice.Split(';');
-
-            for (int i = 0; i < arrQ.Length; i++)
+            //不是編輯
+            if (!isEdit)
             {
-                RadioButton item = new RadioButton();
-                item.Text = arrQ[i].ToString();
-                item.ID = q.QuesID + i.ToString();
-                item.GroupName = "group" + q.QuesID;
-                this.plcDynamic.Controls.Add(item);
+                RadioButtonList radioButtonList = new RadioButtonList();
+                radioButtonList.ID = "Q" + q.QuesID;
+                this.plcDynamic.Controls.Add(radioButtonList);
+
+                string[] arrQ = q.QuesChoice.Split(';');
+
+                for (int i = 0; i < arrQ.Length; i++)
+                {
+                    RadioButton item = new RadioButton();
+                    item.Text = arrQ[i].ToString();
+                    item.ID = q.QuesID + i.ToString();
+                    item.GroupName = "group" + q.QuesID;
+                    this.plcDynamic.Controls.Add(item);
+                    this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
+                }
                 this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
             }
-            this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
+            //編輯
+            else
+            {
+                RadioButtonList radioButtonList = new RadioButtonList();
+                radioButtonList.ID = "Q" + q.QuesID;
+                this.plcDynamic.Controls.Add(radioButtonList);
+
+                //取ID
+                string ID = Request.QueryString["ID"];
+                Guid id = new Guid(ID);
+                List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
+                List<UserQuesDetailModel> answerList = GetSessionList("Answer");
+
+                string[] arrQ = q.QuesChoice.Split(';');
+
+                for (int i = 0; i < arrQ.Length; i++)
+                {
+                    RadioButton item = new RadioButton();
+                    item.Text = arrQ[i].ToString();
+                    item.ID = q.QuesID + i.ToString();
+                    item.GroupName = "group" + q.QuesID;
+
+                    if (item.Text == answerList[ansCount].Answer.TrimEnd(';'))
+                        item.Checked = true;
+
+                    this.plcDynamic.Controls.Add(item);
+                    this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
+                }
+                ansCount++;
+            }
         }
 
         //建立複選問題
         private void CreateCkb(QuesDetail q)
         {
-            CheckBoxList checkBoxList = new CheckBoxList();
-            checkBoxList.ID = "Q" + q.QuesID;
-            this.plcDynamic.Controls.Add(checkBoxList);
-
-            string[] arrQ = q.QuesChoice.Split(';');
-
-            for (int i = 0; i < arrQ.Length; i++)
+            //不是編輯
+            if (!isEdit)
             {
-                CheckBox item = new CheckBox();
-                item.Text = arrQ[i].ToString();
-                item.ID = q.QuesID + i.ToString();
-                this.plcDynamic.Controls.Add(item);
-                this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
+                CheckBoxList checkBoxList = new CheckBoxList();
+                checkBoxList.ID = "Q" + q.QuesID;
+                this.plcDynamic.Controls.Add(checkBoxList);
+
+                string[] arrQ = q.QuesChoice.Split(';');
+
+                for (int i = 0; i < arrQ.Length; i++)
+                {
+                    CheckBox item = new CheckBox();
+                    item.Text = arrQ[i].ToString();
+                    item.ID = q.QuesID + i.ToString();
+                    this.plcDynamic.Controls.Add(item);
+                    this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
+                }
+            }
+            //編輯
+            else
+            {
+                //取ID
+                string ID = Request.QueryString["ID"];
+                Guid id = new Guid(ID);
+                List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
+                List<UserQuesDetailModel> answerList = GetSessionList("Answer");
+
+                string[] arrQ = q.QuesChoice.Split(';');
+
+                for (int i = 0; i < arrQ.Length; i++)
+                {
+                    CheckBox item = new CheckBox();
+                    item.Text = arrQ[i].ToString();
+                    item.ID = q.QuesID + i.ToString();
+
+                    var ans1 = answerList[ansCount].Answer.TrimEnd(';');
+                    var ans2 = ans1.Split(';');
+
+                    foreach(var item2 in ans2)
+                    {
+                        if (item.Text == item2)
+                        {
+                            item.Checked = true;
+                        }
+                    }
+
+                    this.plcDynamic.Controls.Add(item);
+                    this.plcDynamic.Controls.Add(new LiteralControl("&nbsp&nbsp&nbsp&nbsp&nbsp"));
+                }
+                ansCount++;
             }
         }
 
         //建立文字問題
         private void CreateTxt(QuesDetail q)
         {
-            TextBox textBox = new TextBox();
-            textBox.ID = "Q" + q.QuesID.ToString();
-            this.plcDynamic.Controls.Add(textBox);
+            //不是編輯
+            if (!isEdit)
+            {
+                TextBox textBox = new TextBox();
+                textBox.ID = "Q" + q.QuesID.ToString();
+                this.plcDynamic.Controls.Add(textBox);
+            }
+            //編輯
+            else
+            {
+                List<UserQuesDetailModel> answerList = GetSessionList("Answer");
+
+                foreach (var Q in answerList)
+                {
+                    if (Q.QuesID == answerList[ansCount].QuesID)
+                    {
+                        Label lbl = new Label();
+                        lbl.ID = "Q" + Q.QuesID;
+                        lbl.Text = answerList[ansCount].Answer.TrimEnd(';');
+                        this.plcDynamic.Controls.Add(lbl);
+                    }
+                }
+                ansCount++;
+            }
         }
 
-        protected void btnCancel_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("listPage.aspx");
-        }
+        #endregion
+
+        #region 送出
 
         protected void btnSend_Click(object sender, EventArgs e)
         {
@@ -176,7 +281,7 @@ namespace questionnaire
             }
             else
             {
-
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('查無資料。');", true);
             }
             #endregion
 
@@ -184,7 +289,6 @@ namespace questionnaire
             string ID2 = Request.QueryString["ID"];
             Guid ID3 = new Guid(ID2);
 
-            var QID = this._mgrQuesDetail.GetQuesDetailList(ID3);
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(ID3);
 
             //取得動態控制項的值
@@ -202,15 +306,21 @@ namespace questionnaire
                 //判斷一下問題種類
                 switch (questionList[i].QuesTypeID)
                 {
-                    //單選 //有問題
+                    //單選 //問題
                     case 2:
                         for (var j = -1; j < i; j++)
                         {
+                            //判斷一下有沒有找到答案
                             int check = 0;
+
+                            //把選項拆進陣列中
                             string[] arrQ = questionList[i].QuesChoice.Split(';');
+
                             for (var k = 0; k < arrQ.Length; k++)
                             {
                                 RadioButton rdb = (RadioButton)this.plcDynamic.FindControl($"{questionList[i].QuesID}{k}");
+
+                                //將答案寫入清單
                                 if (rdb.Checked == true)
                                 {
                                     Ans.Answer = rdb.Text + ";";
@@ -225,9 +335,12 @@ namespace questionnaire
                         break;
                     //複選
                     case 3:
+                        //判斷一下有沒有找到答案
                         int check2 = 0;
-                        CheckBoxList ckblist = (CheckBoxList)this.plcDynamic.FindControl($"Q{questionList[i].QuesID}");
+
+                        //把選項拆進陣列中
                         string[] arrQ2 = questionList[i].QuesChoice.Split(';');
+
                         for (var j = 0; j < arrQ2.Length; j++)
                         {
                             for (var k = 0; k < arrQ2.Length; k++)
@@ -268,5 +381,36 @@ namespace questionnaire
 
             Response.Redirect($"checkPage.aspx?ID={ID}");
         }
+
+        #endregion
+
+        #region Session
+
+        //取Session值
+        public static string GetSession(string key)
+        {
+            if (key.Length == 0)
+                return string.Empty;
+            return HttpContext.Current.Session[key] as string;
+        }
+
+        //取SessionList
+        public List<UserQuesDetailModel> GetSessionList(string key)
+        {
+            if (key.Length == 0)
+                return null;
+            return HttpContext.Current.Session[key] as List<UserQuesDetailModel>;
+        }
+
+        #endregion
+
+        #region 取消
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("listPage.aspx");
+        }
+
+        #endregion
     }
 }

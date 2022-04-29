@@ -12,52 +12,25 @@ namespace questionnaire
 {
     public partial class checkPage : System.Web.UI.Page
     {
+        #region Maneger&變數
         private QuesContentsManager _mgrContent = new QuesContentsManager();
         private QuesDetailManager _mgrQuesDetail = new QuesDetailManager();
         private UserInfoManager _mgrUserInfo = new UserInfoManager();
         private UserQuesDetailManager _mgrUserDetail = new UserQuesDetailManager();
         int i = 1;
         int ansCount = 0;
+        #endregion
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            #region 1
-            //string idText = this.Request.QueryString["TitleID"];
-            //
-            //// 如果沒有帶 id ，跳回列表頁
-            //if (string.IsNullOrWhiteSpace(idText))
-            //    this.BackToListPage();
-            //
-            //Guid id;
-            //if (!Guid.TryParse(idText, out id))
-            //    this.BackToListPage();
-            //
-            //// 查資料
-            //ORM.Content quesContent = this._mgrQues.GetQuesContent(id);
-            //if (quesContent == null)
-            //    this.BackToListPage();
-            //
-            //// 不開放前台顯示
-            //if (!quesContent.IsEnable)
-            //    this.BackToListPage();
-            //
-            //
-            //string name = this.Session["Name"] as string;
-            //string phone = this.Session["Phone"] as string;
-            //string email = this.Session["Email"] as string;
-            //string age = this.Session["Age"] as string;
-            //
-            //if (!string.IsNullOrWhiteSpace(name))
-            //    this.ltlNameAns.Text = name.ToString();
-            //else
-            //    this.ltlNameAns.Text = "No Session";
-            //
-            //if (!string.IsNullOrWhiteSpace(phone))
-            //    this.ltlPhoneAns.Text = phone.ToString();
-            //if (!string.IsNullOrWhiteSpace(email))
-            //    this.ltlEmailAns.Text = email.ToString();
-            //if (!string.IsNullOrWhiteSpace(age))
-            //    this.ltlAgeAns.Text = age.ToString();
-            #endregion
+            //如果沒有帶ID，跳回列表頁
+            if (Request.QueryString["ID"] == null)
+                Response.Redirect($"listPage.aspx");
+
+            //取ID
+            string ID = Request.QueryString["ID"];
+            Guid id = new Guid(ID);
+
             var name = GetSession("Name");
             var phone = GetSession("Phone");
             var email = GetSession("Email");
@@ -68,10 +41,6 @@ namespace questionnaire
             this.txtEmail.Text = email;
             this.txtAge.Text = age;
 
-            //取ID
-            string ID = Request.QueryString["ID"];
-            Guid id = new Guid(ID);
-
             //尋找該ID的問卷及問題列表
             var Ques = this._mgrContent.GetQuesContent2(id);
             var QuesDetail = this._mgrQuesDetail.GetQuesDetailList(id);
@@ -80,6 +49,7 @@ namespace questionnaire
             this.ltlTitle.Text = Ques.Title;
             this.ltlContent.Text = Ques.Body;
 
+            //生成控制項
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
             foreach (QuesDetail question in questionList)
             {
@@ -113,6 +83,8 @@ namespace questionnaire
             }
         }
 
+        #region 取Session
+
         //取Session值
         public static string GetSession(string key)
         {
@@ -128,6 +100,10 @@ namespace questionnaire
                 return null;
             return HttpContext.Current.Session[key] as List<UserQuesDetailModel>;
         }
+
+        #endregion
+
+        #region 建立問題
 
         //建立單選問題
         private void CreateRdb(QuesDetail question)
@@ -155,7 +131,6 @@ namespace questionnaire
                 }
             }
         }
-
 
         //建立複選問題
         private void CreateCkb(QuesDetail question)
@@ -195,10 +170,9 @@ namespace questionnaire
             }
         }
 
-        protected void btnCancel_Click(object sender, EventArgs e)
-        {
+        #endregion
 
-        }
+        #region 送出按鈕
 
         protected void btnSend_Click(object sender, EventArgs e)
         {
@@ -212,9 +186,7 @@ namespace questionnaire
             Guid id = new Guid(ID);
 
             //尋找該ID的問卷及問題列表
-            var Ques = this._mgrContent.GetQuesContent2(id);
             var QuesDetail = this._mgrQuesDetail.GetQuesDetailList(id);
-            //var QuesDetail2 = this._mgrQuesDetail.GetOneQuesDetail(ID);
 
             Guid userid = Guid.NewGuid();
 
@@ -231,9 +203,7 @@ namespace questionnaire
             };
 
             this._mgrUserInfo.CreateUserInfo(user);
-
             List<UserQuesDetailModel> answerList = GetSessionList("Answer");
-
 
             UserQuesDetailModel userAns = new UserQuesDetailModel()
             {
@@ -255,9 +225,25 @@ namespace questionnaire
                     }
                 }
             }
-
-            //Response.Redirect($"listPage.aspx");
             Response.Redirect($"statisticPage.aspx?ID={ID}");
         }
+
+        #endregion
+
+        #region 取消按鈕
+
+        protected void btnCancel_Click(object sender, EventArgs e)
+        {
+            //寫進Session
+            Session["Edit"] = 1;
+
+            //取ID
+            string ID = Request.QueryString["ID"];
+            Guid id = new Guid(ID);
+
+            Response.Redirect($"Form.aspx?ID={ID}&Edit=1");
+        }
+
+        #endregion
     }
 }

@@ -2,16 +2,19 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <!--套用jQuery-->
-    <script src="../JavaScript/jquery-tablepage-1.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
     <style>
-        .cneter{
-            text-align:center;
+        .cneter {
+            text-align: center;
         }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <h3>常用問題管理</h3>
 
+    <asp:ImageButton ID="imgbtnDel" runat="server" ImageUrl="~/images/del.png" Width="40px" OnClick="imgbtnDel_Click" OnClientClick="return confirm('確定要刪除所選取的所有問題嗎嗎？')" />
     <asp:ImageButton ID="imgbtnPlus" runat="server" ImageUrl="~/images/plus.png" Width="40px" OnClick="imgbtnPlus_Click" /><br />
 
     <%-- 新建問題 --%>
@@ -28,7 +31,8 @@
         <asp:Label ID="lblAnsRed2" runat="server" Text="單選及多選選項必須以;分隔，且不可以;結尾" Visible="false" ForeColor="Red"></asp:Label>
         <asp:Label ID="lblAnsRed3" runat="server" Text="文字題無須輸入選項" Visible="false" ForeColor="Red"></asp:Label><br />
         <asp:Button ID="btnQuesAdd" runat="server" Text="加入" OnClick="btnQuesAdd_Click" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <asp:Button ID="btnQuesAddCancel" runat="server" Text="取消" OnClick="btnQuesAddCancel_Click" /><br /><br />
+        <asp:Button ID="btnQuesAddCancel" runat="server" Text="取消" OnClick="btnQuesAddCancel_Click" /><br />
+        <br />
     </asp:PlaceHolder>
 
     <%-- 修改問題 --%>
@@ -47,48 +51,69 @@
         <asp:Button ID="btnQuesAddCancelEdit" runat="server" Text="取消" OnClick="btnQuesAddCancelEdit_Click" /><br />
     </asp:PlaceHolder>
 
-    <table border="1" id="tblA">
-        <tr>
-            <th></th>
-            <th class="cneter">編號</th>
-            <th>問題</th>
-            <th>選項</th>
-            <th class="cneter">必填</th>
-            <th class="cneter">編輯</th>
-            <th class="cneter">刪除</th>
-        </tr>
-
-        <asp:HiddenField ID="hfCQID" runat="server" />
-        <asp:Repeater ID="rptCQ" runat="server">
-            <ItemTemplate>
-                <tr>
-                    <td class="cneter">
-                        <asp:CheckBox ID="ckbCQ" runat="server" />
-                    </td>
-                    <td width="50px" class="cneter">
-                        <asp:Label ID="lblNumber" runat="server" Text="Label"></asp:Label>
-                    </td>
-                    <td width="250px">
-                        <%# Eval("CQTitle") %>
-                    </td>
-                    <td width="250px">
-                        <%# Eval("CQChoice") %>
-                    </td>
-                    <td width="50px" class="cneter">
-                        <asp:CheckBox ID="ckbNess" runat="server" Enabled="false" Checked='<%#Eval("Necessary") %>' />
-                    </td>
-                    <td class="cneter">
-                        <asp:ImageButton ID="imgbtnedit" runat="server" ImageUrl="~/images/edit.png" Width="39px" CommandName='<%# Eval("CQID") %>' OnCommand="imgbtnedit_Command" />
-                    </td>
-                    <td class="cneter">
-                        <asp:ImageButton ID="imgbtnDel" runat="server" ImageUrl="~/images/del.png" Width="40px" CommandName='<%# Eval("CQID") %>' OnCommand="imgbtnDel_Command" OnClientClick="return confirm('確定要刪除嗎？')" />
-                    </td>
-            </ItemTemplate>
-        </asp:Repeater>
+    <table border="1" id="QList" class="display">
+        <thead>
+            <tr>
+                <th></th>
+                <th class="cneter">編號</th>
+                <th>問題</th>
+                <th>選項</th>
+                <th class="cneter">必填</th>
+                <th class="cneter">編輯</th>
+                <th class="cneter">刪除</th>
+            </tr>
+        </thead>
+        <tbody>
+            <asp:HiddenField ID="hfCQID" runat="server"/>
+            <asp:Repeater ID="rptCQ" runat="server">
+                <ItemTemplate>
+                    <asp:HiddenField ID="hfcqid" runat="server" Value='<%# Eval("CQID") %>' />
+                    <tr>
+                        <td class="cneter">
+                            <asp:CheckBox ID="ckbCQ" runat="server" />
+                        </td>
+                        <td width="50px" class="cneter">
+                            <asp:Label ID="lblNumber" runat="server" Text="Label"></asp:Label>
+                        </td>
+                        <td width="250px">
+                            <%# Eval("CQTitle") %>
+                        </td>
+                        <td width="250px">
+                            <%# Eval("CQChoice") %>
+                        </td>
+                        <td width="50px" class="cneter">
+                            <asp:CheckBox ID="ckbNess" runat="server" Enabled="false" Checked='<%#Eval("Necessary") %>' />
+                        </td>
+                        <td class="cneter">
+                            <asp:ImageButton ID="imgbtnedit" runat="server" ImageUrl="~/images/edit.png" Width="39px" CommandName='<%# Eval("CQID") %>' OnCommand="imgbtnedit_Command" />
+                        </td>
+                        <td class="cneter">
+                            <asp:ImageButton ID="imgbtnDel" runat="server" ImageUrl="~/images/del.png" Width="40px" CommandName='<%# Eval("CQID") %>' OnCommand="imgbtnDel_Command" OnClientClick="return confirm('確定要刪除嗎？')" />
+                        </td>
+                </ItemTemplate>
+            </asp:Repeater>
+        </tbody>
     </table>
-    <span id='table_pageA'></span>
 
     <script>
-        $("#tblA").tablepage($("#table_pageA"), 10);
+        $(document).ready(function () {
+            $('#QList').DataTable({
+                "searching": false,
+                language: {
+                    //url: "https://cdn.datatables.net/plug-ins/1.11.5/i18n/zh-HANT.json",
+                    "lengthMenu": "顯示 _MENU_ 項結果<br />*點擊標題進入修改，點擊上方加號新增問卷",
+                    "info": "顯示第 _START_ 至 _END_ 項結果，共 _TOTAL_ 項",
+                    "paginate": {
+                        "first": "第一頁",
+                        "last": "尾頁",
+                        "next": "下一頁",
+                        "previous": "前一頁"
+                    },
+                },
+                "lengthMenu": [[10, 15, 20, "All"], [10, 15, 20, "All"]],
+                "order": [[0, "desc"]],
+            });
+
+        });
     </script>
 </asp:Content>

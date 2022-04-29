@@ -79,7 +79,6 @@
     <Content Include="BackAdmin\ListPageAdmin.aspx" />
     <Content Include="BackAdmin\NewQues.aspx" />
     <Content Include="BackAdmin\EditQues.aspx" />
-    <Content Include="BackAdmin\NewQuesDetail.aspx" />
     <Content Include="bootstrap\css\bootstrap-grid.css" />
     <Content Include="bootstrap\css\bootstrap-grid.min.css" />
     <Content Include="bootstrap\css\bootstrap-grid.rtl.css" />
@@ -154,13 +153,6 @@
     </Compile>
     <Compile Include="BackAdmin\EditQues.aspx.designer.cs">
       <DependentUpon>EditQues.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="BackAdmin\NewQuesDetail.aspx.cs">
-      <DependentUpon>NewQuesDetail.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="BackAdmin\NewQuesDetail.aspx.designer.cs">
-      <DependentUpon>NewQuesDetail.aspx</DependentUpon>
     </Compile>
     <Compile Include="checkPage.aspx.cs">
       <DependentUpon>checkPage.aspx</DependentUpon>

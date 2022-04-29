@@ -795,6 +795,7 @@ namespace questionnaire.BackAdmin
                 {
                     fi.Directory.Create();
                 }
+
                 FileStream fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
                 StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
                 string data = "";
@@ -840,7 +841,7 @@ namespace questionnaire.BackAdmin
             }
             catch (Exception ex)
             {
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", $"alert('{ex}。');", true);
+                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", $"alert('匯出失敗。');", true);
             }
         }
         #endregion
@@ -950,9 +951,5 @@ namespace questionnaire.BackAdmin
         }
         #endregion
 
-        protected void btnBack_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

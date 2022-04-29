@@ -2,10 +2,9 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <!--套用jQuery-->
-    <%--<script src="../JavaScript/jquery-tablepage-1.0.js"></script>--%>
-
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
     <style>
         #topDiv {
             border: 2px solid #000000;
@@ -32,21 +31,19 @@
         <p>
             <asp:Literal ID="ltlDate" runat="server">開始／結束</asp:Literal>
             <asp:TextBox ID="txtStartDate" runat="server" TextMode="Date" OnTextChanged="txtStartDate_TextChanged" AutoPostBack="true"></asp:TextBox>&nbsp;
-            <asp:TextBox ID="txtEndDate" runat="server" TextMode="Date" OnTextChanged="txtEndDate_TextChanged" AutoPostBack="true"></asp:TextBox>
-            &emsp;&emsp;
+            <asp:TextBox ID="txtEndDate" runat="server" TextMode="Date" OnTextChanged="txtEndDate_TextChanged" AutoPostBack="true"></asp:TextBox>&emsp;&emsp;
             <asp:Button ID="btnSearch" runat="server" Text="搜尋" OnClick="btnSearch_Click" />
         </p>
     </div>
-    <asp:Literal ID="ltlMsg" runat="server" Visible="false"></asp:Literal>
-    <br />
-    <br />
-
+    <asp:Literal ID="ltlMsg" runat="server" Visible="false"></asp:Literal><br /><br />
 
     <asp:ImageButton ID="ImgBtnAdd" runat="server" ImageUrl="../images/plus.png" Width="40" OnClick="ImgBtnAdd_Click" />
+    <asp:ImageButton ID="ImgBtnClose" runat="server" ImageUrl="../images/del.png" Width="40px" OnClick="ImgBtnClose_Click" OnClientClick="return confirm('確定要關閉所選取的所有問卷嗎？')" />
 
     <table border="1" id="QList" class="display">
         <thead>
             <tr>
+                <th></th>
                 <th>編號</th>
                 <th>問卷標題</th>
                 <th>狀態</th>
@@ -63,6 +60,7 @@
                         <asp:HiddenField ID="hfID" runat="server" Value='<%#Eval("QuestionnaireID") %>' />
                         <asp:CheckBox ID="CheckBox1" runat="server" Checked='<%# Eval("IsEnable") %>' Visible="false" />
                         <tr id="trQList" runat="server">
+                            <td><asp:CheckBox ID="ckbDel" runat="server"  /></td>
                             <td width="50px">
                                 <div class="divCenter">
                                     <asp:Label ID="lblTitleID" runat="server" Text='<%# Eval("TitleID") %>'></asp:Label>
@@ -94,15 +92,7 @@
         </tbody>
     </table>
 
-    <%--<span id='table_pageA'></span>--%>
-
     <script>
-        //$("#tblA").tablepage($("#table_pageA"), 10);
-
-        //$(document).ready(function () {
-        //    $('#table_id').DataTable();
-        //});
-        //
         $(document).ready(function () {
             $('#QList').DataTable({
                 "searching": false,
@@ -118,7 +108,7 @@
                     },
                 },
                 "lengthMenu": [[10, 15, 20, "All"], [10, 15, 20, "All"]],
-                "order": [[0, "desc"]],
+                "order": [[1, "desc"]],
             });
 
         });

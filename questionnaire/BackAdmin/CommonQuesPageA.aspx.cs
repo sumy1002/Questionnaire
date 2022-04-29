@@ -35,6 +35,8 @@ namespace questionnaire.BackAdmin
             }
         }
 
+        #region 新增
+
         //新增問題按鈕
         protected void imgbtnPlus_Click(object sender, ImageClickEventArgs e)
         {
@@ -157,6 +159,10 @@ namespace questionnaire.BackAdmin
             this.imgbtnPlus.Visible = true;
         }
 
+        #endregion
+
+        #region 修改
+
         //修改問題按鈕
         protected void imgbtnedit_Command(object sender, CommandEventArgs e)
         {
@@ -240,6 +246,10 @@ namespace questionnaire.BackAdmin
             this.lblQuesRedEdit.Visible = false;
         }
 
+        #endregion
+
+        #region 刪除
+
         //刪除
         protected void imgbtnDel_Command(object sender, CommandEventArgs e)
         {
@@ -248,5 +258,24 @@ namespace questionnaire.BackAdmin
 
             ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('已刪除。');location.href='CommonQuesPageA.aspx';", true);
         }
+
+        protected void imgbtnDel_Click(object sender, ImageClickEventArgs e)
+        {
+            foreach (RepeaterItem item in this.rptCQ.Items)
+            {
+                HiddenField hfid = item.FindControl("hfcqid") as HiddenField;
+                CheckBox ckbDel = item.FindControl("ckbCQ") as CheckBox;
+                if (ckbDel.Checked && Int32.TryParse(hfid.Value, out int CQID))
+                {
+                    //把問題從資料庫中刪除
+                    this._mgrCQ.DeleteCQ(Convert.ToInt32(hfid.Value));
+                }
+            }
+
+            //導回正確的問卷編輯頁
+            Response.Redirect($"CommonQuesPageA.aspx");
+        }
+
+        #endregion
     }
 }

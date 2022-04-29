@@ -15,11 +15,15 @@ namespace questionnaire
 {
     public partial class statisticPage : System.Web.UI.Page
     {
+        #region Manager&變數
+
         private QuesContentsManager _mgrContent = new QuesContentsManager();
         private QuesDetailManager _mgrQuesDetail = new QuesDetailManager();
         private UserQuesDetailManager _mgrUQDetail = new UserQuesDetailManager();
         private StatisticManager _mgrSta = new StatisticManager();
         private string[] arrAns;
+
+        #endregion
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -66,7 +70,6 @@ namespace questionnaire
                 lblQues.Style.Value = "font-weight:bold";
                 this.plcDynamic.Controls.Add(lblQues);
                 this.plcDynamic.Controls.Add(lblNess);
-
 
                 //複選&單選
                 if (question.QuesTypeID != 1)
@@ -149,9 +152,6 @@ namespace questionnaire
                     this.plcDynamic.Controls.Add(ltlSelection);
                 }
             }
-            //}
-            //else
-            //Response.Redirect("List.aspx");
         }
     }
 }

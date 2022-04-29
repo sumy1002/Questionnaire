@@ -44,6 +44,8 @@ namespace questionnaire
             }
         }
 
+        #region 搜尋
+
         //搜尋按鈕
         protected void btnSearch_Click(object sender, EventArgs e)
         {
@@ -221,6 +223,8 @@ namespace questionnaire
         }
         #endregion
 
+        #region 限制搜尋功能
+
         //以標題搜尋時關閉日期搜尋功能
         protected void txtTitle_TextChanged(object sender, EventArgs e)
         {
@@ -261,5 +265,8 @@ namespace questionnaire
                 this.txtTitle.Enabled = true;
         }
 
+        #endregion
+
+        #endregion
     }
 }
