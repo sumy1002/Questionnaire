@@ -37,15 +37,19 @@ namespace questionnaire
             this.ltlTitle.Text = questionnaire.Title;
             this.ltlContent.Text = questionnaire.Body;
 
+            //尋找該ID的問卷及問題列表
+            var Ques = this._mgrContent.GetQuesContent2(id);
+            var QuesDetail = this._mgrQuesDetail.GetQuesDetailList(id);
+
+            this.ltlTime.Text = Ques.strStartTime + " ~ " + Ques.strEndTime;
+
             //過濾狀態
             if (questionnaire.StartDate > DateTime.Now)
-            {
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('問卷尚未開始。');location.href='listPage.aspx';", true);
-            }
             else if (questionnaire.EndDate < DateTime.Now)
-            {
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('問卷已截止。');location.href='listPage.aspx';", true);
-            }
+                this.ltlVote.Text = "已截止";
+            else
+                this.ltlVote.Text = "投票中";
 
             //取得該問卷的問題細節
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
@@ -152,6 +156,12 @@ namespace questionnaire
                     this.plcDynamic.Controls.Add(ltlSelection);
                 }
             }
+        }
+
+        //返回列表
+        protected void btnBack_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("listPage.aspx");
         }
     }
 }
