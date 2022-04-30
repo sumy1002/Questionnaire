@@ -63,7 +63,8 @@
 
         <asp:Literal ID="ltlPhone" runat="server">手機</asp:Literal>&nbsp;&nbsp;&nbsp;
         <asp:TextBox ID="txtPhone" runat="server" TextMode="Phone" Height="24px" data-bs-toggle="tooltip" data-bs-placement="top"  title="手機號碼格式為10碼數字"></asp:TextBox>
-        <asp:Label ID="lblPhone" runat="server" Text="此欄位不可空白" Visible="false"></asp:Label><br />
+        <asp:Label ID="lblPhone1" runat="server" Text="此欄位不可空白" Visible="false"></asp:Label>
+        <asp:Label ID="lblPhone2" runat="server" Text="手機號碼格式錯誤" Visible="false"></asp:Label><br />
 
         <asp:Literal ID="ltlEmail" runat="server">Email</asp:Literal>&nbsp;
         <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" Height="24px" data-bs-toggle="tooltip" data-bs-placement="top"  title="Tooltip on top"></asp:TextBox>

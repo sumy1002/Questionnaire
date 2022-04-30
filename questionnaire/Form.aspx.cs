@@ -264,16 +264,42 @@ namespace questionnaire
             bool emailCheck = Regex.IsMatch(this.txtEmail.Text.Trim(), @"@gmail.com$");
 
             if (!string.IsNullOrWhiteSpace(this.txtName.Text))
+            {
                 isNameRight = true;
+                this.lblName.Visible = false;
+            }
             else
-                ltl
+                this.lblName.Visible = true;
 
             if (!string.IsNullOrWhiteSpace(this.txtPhone.Text) && telCheck)
+            {
                 isPhoneRight = true;
+                this.lblPhone1.Visible = false;
+                this.lblPhone2.Visible = false;
+            }
+            else if (!telCheck)
+                this.lblPhone2.Visible = true;
+            else if(string.IsNullOrWhiteSpace(this.txtPhone.Text))
+                this.lblPhone1.Visible = true;
+
             if (!string.IsNullOrWhiteSpace(this.txtEmail.Text) && emailCheck)
+            {
                 isEmailRight = true;
+                this.lblEmail1.Visible = false;
+                this.lblEmail2.Visible = false;
+            }
+            else if(!emailCheck)
+                this.lblEmail2.Visible = true;
+            else if(string.IsNullOrWhiteSpace(this.txtEmail.Text))
+                this.lblEmail1.Visible = true;
+
             if (!string.IsNullOrWhiteSpace(this.txtAge.Text))
+            {
                 isAgeRight = true;
+                this.lblAge.Visible = false;
+            }
+            else
+                this.lblAge.Visible = true;
 
             if (isNameRight && isPhoneRight && isEmailRight && isAgeRight)
             {
@@ -284,7 +310,7 @@ namespace questionnaire
             }
             else
             {
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('查無資料。');", true);
+                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('查無資料。');", true);
             }
             #endregion
 
@@ -430,7 +456,7 @@ namespace questionnaire
                         //文字
                         case 1:
                             TextBox txb = (TextBox)this.plcDynamic.FindControl($"Q{questionList[i].QuesID}");
-                            if(txb.Text != null)
+                            if (txb.Text != null)
                             {
                                 Ans.Answer = txb.Text + ";";
                                 answerList.Add(Ans);
@@ -442,7 +468,7 @@ namespace questionnaire
                                 answerList.Add(Ans);
                                 break;
                             }
-                            
+
                     }
                 }
 
