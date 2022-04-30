@@ -265,6 +265,9 @@ namespace questionnaire
 
             if (!string.IsNullOrWhiteSpace(this.txtName.Text))
                 isNameRight = true;
+            else
+                ltl
+
             if (!string.IsNullOrWhiteSpace(this.txtPhone.Text) && telCheck)
                 isPhoneRight = true;
             if (!string.IsNullOrWhiteSpace(this.txtEmail.Text) && emailCheck)

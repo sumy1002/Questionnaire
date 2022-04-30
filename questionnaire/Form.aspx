@@ -59,20 +59,20 @@
     <div id="divUserInfo" class="col-lg-5" align="center">
         <asp:Literal ID="ltlName" runat="server">姓名</asp:Literal>&nbsp;&nbsp;&nbsp;
         <asp:TextBox ID="txtName" runat="server" Height="24px"></asp:TextBox>
-        <asp:Label ID="Label1" runat="server" Text="此欄位不可空白"></asp:Label><br />
+        <asp:Label ID="Label1" runat="server" Text="此欄位不可空白" Visible="false"></asp:Label><br />
 
         <asp:Literal ID="ltlPhone" runat="server">手機</asp:Literal>&nbsp;&nbsp;&nbsp;
         <asp:TextBox ID="txtPhone" runat="server" TextMode="Phone" Height="24px" data-bs-toggle="tooltip" data-bs-placement="top"  title="手機號碼格式為10碼數字"></asp:TextBox>
-        <asp:Label ID="Label2" runat="server" Text="此欄位不可空白"></asp:Label><br />
+        <asp:Label ID="Label2" runat="server" Text="此欄位不可空白" Visible="false"></asp:Label><br />
 
         <asp:Literal ID="ltlEmail" runat="server">Email</asp:Literal>&nbsp;
         <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" Height="24px" data-bs-toggle="tooltip" data-bs-placement="top"  title="Tooltip on top"></asp:TextBox>
-        <asp:Label ID="Label3" runat="server" Text="此欄位不可空白"></asp:Label><br />
-        <asp:Label ID="Label5" runat="server" Text="無效的郵件地址"></asp:Label><br />
+        <asp:Label ID="Label3" runat="server" Text="此欄位不可空白" Visible="false"></asp:Label><br />
+        <asp:Label ID="Label5" runat="server" Text="無效的郵件地址" Visible="false"></asp:Label><br />
 
         <asp:Literal ID="ltlAge" runat="server">年齡</asp:Literal>&nbsp;&nbsp;&nbsp;
         <asp:TextBox ID="txtAge" runat="server" TextMode="Number" min="1" Height="24px" data-bs-toggle="tooltip" data-bs-placement="top"  title="Tooltip on top"></asp:TextBox>
-        <asp:Label ID="Label4" runat="server" Text="此欄位不可空白"></asp:Label>
+        <asp:Label ID="Label4" runat="server" Text="此欄位不可空白" Visible="false"></asp:Label>
     </div>
 
     <%-- 問卷 --%>
