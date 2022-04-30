@@ -190,6 +190,11 @@ namespace questionnaire.BackAdmin
                         i++;
                     }
                 }
+
+                this.txtQues.Text = String.Empty;
+                this.txtAnswer.Text = String.Empty;
+                this.ddlQuesType.SelectedIndex = 0;
+                this.ckbNess.Checked = false;
             }
         }
 

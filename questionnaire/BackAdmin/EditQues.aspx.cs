@@ -398,6 +398,10 @@ namespace questionnaire.BackAdmin
                 this.imgbtnDel.Visible = true;
                 this.imgbtnPlus.Visible = true;
             }
+            this.txtQues.Text = String.Empty;
+            this.txtAnswer.Text = String.Empty;
+            this.ddlQuesType.SelectedIndex = 0;
+            this.ckbNess.Checked = false;
         }
 
         //取消建立問題
