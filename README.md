@@ -52,7 +52,7 @@
 >> 
 >> CQModel.cs `常用問題Model`
 
-> Manager
+> Manager(與資料庫溝通的所有方法)
 >> AccountManager.cs `帳號管理Manager`
 >> 
 >> QuesContentsManager.cs `問卷管理Manager`
