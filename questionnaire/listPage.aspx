@@ -30,8 +30,8 @@
             margin: 20px auto;
         }
 
-        #login{
-            float:right;
+        #login {
+            float: right;
             margin-top: -130px;
             margin-right: -50px;
         }
@@ -55,8 +55,9 @@
                 </p>
             </div>
             <%-- 登入 --%>
-            <div id="login"><asp:Button ID="btnLogin" runat="server" Text="後台登入" OnClick="btnLogin_Click"/>
-</div>
+            <div id="login">
+                <asp:Button ID="btnLogin" runat="server" Text="後台登入" OnClick="btnLogin_Click" />
+            </div>
         </div>
         <div id="searchDiv" class="col-lg-6">
             &ensp;<asp:Literal ID="ltlMsg" runat="server" Visible="false"></asp:Literal>
@@ -84,7 +85,7 @@
                             <tr>
                                 <td width="45px">
                                     <div class="centerDiv">
-                                        <%# Eval("TitleID") %>
+                                        <asp:Label ID="lblTitleID" runat="server" Text='<%# Eval("TitleID") %>'></asp:Label>
                                     </div>
                                 </td>
                                 <td width="350px"><a href="Form.aspx?ID=<%#Eval("QuestionnaireID") %>"><%# Eval("Title") %></a></td>
@@ -123,9 +124,9 @@
                         "previous": "前一頁"
                     },
                 },
-                "lengthMenu": [[10, 15, 20, "All"], [10, 15, 20, "All"]],
-                "order": [[0, "desc"]],
-                "ordering": false,
+                "bLengthChange": false,
+                "aaSorting": [[0, "desc"]],
+                "aoColumnDefs": [{ "bSortable": false, "aTargets": [1, 2, 3, 4, 5] }]
             });
 
         });

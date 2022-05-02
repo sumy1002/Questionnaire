@@ -110,8 +110,9 @@
                         "previous": "前一頁"
                     },
                 },
-                "lengthMenu": [[10, 15, 20, "All"], [10, 15, 20, "All"]],
-                "order": [[1, "asc"]],
+                "bLengthChange": false,
+                "aaSorting": [[1, "asc"]],
+                "aoColumnDefs": [{ "bSortable": false, "aTargets": [0, 2, 3, 4, 5,6] }]
             });
 
         });

@@ -43,6 +43,15 @@ namespace questionnaire
                     }
                 }
             }
+
+            //生成問卷的編號
+            int i = 1;
+            foreach (RepeaterItem item in this.rptQues.Items)
+            {
+                Label lblTitleID = item.FindControl("lblTitleID") as Label;
+                lblTitleID.Text = i.ToString();
+                i++;
+            }
         }
 
         #region 搜尋

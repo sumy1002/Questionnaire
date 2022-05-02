@@ -49,7 +49,7 @@ namespace questionnaire.BackAdmin
                     }
                 }
 
-                //生成問題的編號
+                //生成問卷的編號
                 int i = 1;
                 foreach (RepeaterItem item in this.rptList.Items)
                 {
