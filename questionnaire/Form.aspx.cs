@@ -34,6 +34,24 @@ namespace questionnaire
             if (checkEdit)
                 isEdit = true;
 
+            bool _n = String.IsNullOrWhiteSpace(this.txtName.Text);
+            bool _p = String.IsNullOrWhiteSpace(this.txtPhone.Text);
+            bool _e = String.IsNullOrWhiteSpace(this.txtEmail.Text);
+            bool _a = String.IsNullOrWhiteSpace(this.txtAge.Text);
+
+            if (isEdit && _n && _p && _e && _a)
+            {
+                var name = GetSession("Name");
+                var phone = GetSession("Phone");
+                var email = GetSession("Email");
+                var age = GetSession("Age");
+
+                this.txtName.Text = name;
+                this.txtPhone.Text = phone;
+                this.txtEmail.Text = email;
+                this.txtAge.Text = age;
+            }
+
             //取ID
             string ID = Request.QueryString["ID"];
             Guid id = new Guid(ID);
@@ -55,19 +73,6 @@ namespace questionnaire
             this.hfID.Value = Ques.QuestionnaireID.ToString();
             this.ltlTitle.Text = Ques.Title;
             this.ltlContent.Text = Ques.Body;
-
-            if (isEdit)
-            {
-                var name = GetSession("Name");
-                var phone = GetSession("Phone");
-                var email = GetSession("Email");
-                var age = GetSession("Age");
-
-                this.txtName.Text = name;
-                this.txtPhone.Text = phone;
-                this.txtEmail.Text = email;
-                this.txtAge.Text = age;
-            }
 
             //生成控制項
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
@@ -271,10 +276,9 @@ namespace questionnaire
             bool gmail = Regex.IsMatch(this.txtEmail.Text.Trim(), @"@gmail.com$");
             bool hotmail = Regex.IsMatch(this.txtEmail.Text.Trim(), @"@hotmail.com$");
             bool yahoo = Regex.IsMatch(this.txtEmail.Text.Trim(), @"@yahoo.com$");
-            bool outlook = Regex.IsMatch(this.txtEmail.Text.Trim(), @"@outlook.com$");
             bool emailCheck = false;
 
-            if (gmail || hotmail || yahoo || outlook)
+            if (gmail || hotmail || yahoo)
                 emailCheck = true;
 
             if (!string.IsNullOrWhiteSpace(this.txtName.Text))
@@ -300,10 +304,10 @@ namespace questionnaire
             {
                 isEmailRight = true;
                 this.lblEmail1.Visible = false;
-                this.lblEmail2.Visible = false;
+                this.plcEmail.Visible = false;
             }
             else if (!emailCheck)
-                this.lblEmail2.Visible = true;
+                this.plcEmail.Visible = true;
             else if (string.IsNullOrWhiteSpace(this.txtEmail.Text))
                 this.lblEmail1.Visible = true;
 

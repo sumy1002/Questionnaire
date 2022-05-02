@@ -69,7 +69,11 @@
         <asp:Literal ID="ltlEmail" runat="server">Email</asp:Literal>&nbsp;
         <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" Height="24px" data-bs-toggle="tooltip" data-bs-placement="top"  title="Tooltip on top"></asp:TextBox>
         <asp:Label ID="lblEmail1" runat="server" Text="此欄位不可空白" Visible="false" ForeColor="Red"></asp:Label>
-        <asp:Label ID="lblEmail2" runat="server" Text="無效的郵件地址，只能使用gmail/hotmail/yahoo/outlook之信箱" Visible="false" ForeColor="Red"></asp:Label><br />
+        <asp:PlaceHolder ID="plcEmail" runat="server" Visible="false">
+            <br />
+            <asp:Label ID="lblEmail2" runat="server" Text="無效的郵件地址，只能使用gmail/hotmail/yahoo之信箱" ForeColor="Red"></asp:Label>
+        </asp:PlaceHolder>
+        <br />
 
         <asp:Literal ID="ltlAge" runat="server">年齡</asp:Literal>&nbsp;&nbsp;&nbsp;
         <asp:TextBox ID="txtAge" runat="server" TextMode="Number" min="1" Height="24px" data-bs-toggle="tooltip" data-bs-placement="top"  title="Tooltip on top"></asp:TextBox>
