@@ -104,6 +104,12 @@ namespace questionnaire
                 string count = questionList.Count.ToString();
                 this.ltlQCount.Text = "共 " + count + " 個問題";
             }
+
+            //重製一下Session
+            Session.Remove("Name");
+            Session.Remove("Phone");
+            Session.Remove("Email");
+            Session.Remove("Age");
         }
 
         #region 建立問題
@@ -261,7 +267,15 @@ namespace questionnaire
             bool isAgeRight = false;
 
             bool telCheck = Regex.IsMatch(this.txtPhone.Text.Trim(), @"^09[0-9]{8}$");
-            bool emailCheck = Regex.IsMatch(this.txtEmail.Text.Trim(), @"@gmail.com$");
+
+            bool gmail = Regex.IsMatch(this.txtEmail.Text.Trim(), @"@gmail.com$");
+            bool hotmail = Regex.IsMatch(this.txtEmail.Text.Trim(), @"@hotmail.com$");
+            bool yahoo = Regex.IsMatch(this.txtEmail.Text.Trim(), @"@yahoo.com$");
+            bool outlook = Regex.IsMatch(this.txtEmail.Text.Trim(), @"@outlook.com$");
+            bool emailCheck = false;
+
+            if (gmail || hotmail || yahoo || outlook)
+                emailCheck = true;
 
             if (!string.IsNullOrWhiteSpace(this.txtName.Text))
             {
@@ -279,7 +293,7 @@ namespace questionnaire
             }
             else if (!telCheck)
                 this.lblPhone2.Visible = true;
-            else if(string.IsNullOrWhiteSpace(this.txtPhone.Text))
+            else if (string.IsNullOrWhiteSpace(this.txtPhone.Text))
                 this.lblPhone1.Visible = true;
 
             if (!string.IsNullOrWhiteSpace(this.txtEmail.Text) && emailCheck)
@@ -288,9 +302,9 @@ namespace questionnaire
                 this.lblEmail1.Visible = false;
                 this.lblEmail2.Visible = false;
             }
-            else if(!emailCheck)
+            else if (!emailCheck)
                 this.lblEmail2.Visible = true;
-            else if(string.IsNullOrWhiteSpace(this.txtEmail.Text))
+            else if (string.IsNullOrWhiteSpace(this.txtEmail.Text))
                 this.lblEmail1.Visible = true;
 
             if (!string.IsNullOrWhiteSpace(this.txtAge.Text))
@@ -301,17 +315,17 @@ namespace questionnaire
             else
                 this.lblAge.Visible = true;
 
-            if (isNameRight && isPhoneRight && isEmailRight && isAgeRight)
-            {
-                this.Session["Name"] = this.txtName.Text;
-                this.Session["Phone"] = this.txtPhone.Text;
-                this.Session["Email"] = this.txtEmail.Text;
-                this.Session["Age"] = this.txtAge.Text;
-            }
-            else
-            {
-                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('查無資料。');", true);
-            }
+            //if (isNameRight && isPhoneRight && isEmailRight && isAgeRight)
+            //{
+            //    //this.Session["Name"] = this.txtName.Text;
+            //    //this.Session["Phone"] = this.txtPhone.Text;
+            //    //this.Session["Email"] = this.txtEmail.Text;
+            //    //this.Session["Age"] = this.txtAge.Text;
+            //}
+            //else
+            //{
+            //    //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('查無資料。');", true);
+            //}
             #endregion
 
             //取ID
@@ -319,7 +333,7 @@ namespace questionnaire
             Guid ID3 = new Guid(ID2);
 
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(ID3);
-            bool ansCheck = false;
+            bool ansCheck = true; ;
 
             #region 檢查有沒有填必選問題
             for (var i = 0; i < questionList.Count; i++)
@@ -376,11 +390,20 @@ namespace questionnaire
                             break;
                     }
                 }
+                else
+                {
+                    ansCheck = true;
+                }
             }
             #endregion
 
-            if (ansCheck)
+            if (ansCheck && isNameRight && isPhoneRight && isEmailRight && isAgeRight)
             {
+                this.Session["Name"] = this.txtName.Text;
+                this.Session["Phone"] = this.txtPhone.Text;
+                this.Session["Email"] = this.txtEmail.Text;
+                this.Session["Age"] = this.txtAge.Text;
+
                 //取得動態控制項的值
                 List<UserQuesDetailModel> answerList = new List<UserQuesDetailModel>();
                 for (var i = 0; i < questionList.Count; i++)
@@ -517,5 +540,16 @@ namespace questionnaire
         }
 
         #endregion
+
+        protected void txt_TextChanged(object sender, EventArgs e)
+        {
+            if (isEdit)
+            {
+                Session.Remove("Name");
+                Session.Remove("Phone");
+                Session.Remove("Email");
+                Session.Remove("Age");
+            }
+        }
     }
 }

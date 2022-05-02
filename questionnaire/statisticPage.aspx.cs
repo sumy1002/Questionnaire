@@ -81,7 +81,6 @@ namespace questionnaire
                     List<StatisticModel> NoList = staList.FindAll(x => x.QuesID == question.QuesID);
                     int total = 0;
 
-
                     foreach (StatisticModel item in NoList)
                     {
                         item.AnsCount = NoList.Count;

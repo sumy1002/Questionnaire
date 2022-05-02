@@ -227,6 +227,13 @@ namespace questionnaire
                     }
                 }
             }
+
+            Session.Remove("Name");
+            Session.Remove("Phone");
+            Session.Remove("Email");
+            Session.Remove("Age");
+            Session.Remove("Answer");
+
             Response.Redirect($"statisticPage.aspx?ID={ID}");
         }
 

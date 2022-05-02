@@ -33,7 +33,7 @@ namespace questionnaire.ORM
 
         public bool Necessary { get; set; }
 
-        public int? Count { get; set; }
+        public int? Count { get; set; }  
 
         public virtual Content Content { get; set; }
 

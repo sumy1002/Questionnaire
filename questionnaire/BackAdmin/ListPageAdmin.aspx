@@ -38,7 +38,7 @@
     <asp:Literal ID="ltlMsg" runat="server" Visible="false"></asp:Literal><br /><br />
 
     <asp:ImageButton ID="ImgBtnAdd" runat="server" ImageUrl="../images/plus.png" Width="40" OnClick="ImgBtnAdd_Click" />
-    <asp:ImageButton ID="ImgBtnClose" runat="server" ImageUrl="../images/del.png" Width="40px" OnClick="ImgBtnClose_Click" OnClientClick="return confirm('確定要關閉所選取的所有問卷嗎？')" />
+    <asp:ImageButton ID="ImgBtnClose" runat="server" ImageUrl="../images/del.png" Width="40px" OnClick="ImgBtnClose_Click" OnClientClick="return confirm('確定要刪除所選取的所有問卷嗎？')" />
 
     <table border="1" id="QList" class="display">
         <thead>
@@ -107,8 +107,9 @@
                         "previous": "前一頁"
                     },
                 },
-                "lengthMenu": [[10, 15, 20, "All"], [10, 15, 20, "All"]],
-                "order": [[1, "desc"]],
+                "bLengthChange": false,
+                "aaSorting": [[1, "desc"]],
+                "aoColumnDefs": [{ "bSortable": false, "aTargets": [0,2,3,4,5,6,7] }]
             });
 
         });

@@ -709,7 +709,7 @@ namespace questionnaire.Managers
         /// 關閉問卷
         /// </summary>
         /// <param name="id"></param>
-        public void OpenQues(Guid id)
+        public void DelQues(Guid id)
         {
             try
             {
@@ -717,17 +717,45 @@ namespace questionnaire.Managers
                 using (ContextModel contextModel = new ContextModel())
                 {
                     //組查詢條件
-                    var query = contextModel.Contents.Where(item => item.QuestionnaireID == id);
+                    var contents = contextModel.Contents.Where(item => item.QuestionnaireID == id);
+                    var quesDetails = contextModel.QuesDetails.Where(item => item.QuestionnaireID == id);
+                    var userInfos = contextModel.UserInfos.Where(item => item.QuestionnaireID == id);
+                    var userQuesDetails = contextModel.UserQuesDetails.Where(item => item.QuestionnaireID == id);
 
                     //取得資料
-                    var openQues = query.FirstOrDefault();
+                    var Delcontents = contents.FirstOrDefault();
 
                     //檢查是否存在
-                    if (openQues != null)
+                    if (Delcontents != null)
                     {
-                        openQues.IsEnable = true;
+                        foreach(var item in quesDetails)
+                        {
+                            if(item.QuestionnaireID == id)
+                            {
+                                contextModel.QuesDetails.Remove(item);
+                            }
+                        }
+
+                        foreach (var item in userInfos)
+                        {
+                            if (item.QuestionnaireID == id)
+                            {
+                                contextModel.UserInfos.Remove(item);
+
+                            }
+                        }
+
+                        foreach (var item in userQuesDetails)
+                        {
+                            if (item.QuestionnaireID == id)
+                            {
+                                contextModel.UserQuesDetails.Remove(item);
+
+                            }
+                        }
+
+                        contextModel.Contents.Remove(Delcontents);
                     }
-                    //contextModel.Contents.Remove(deleteQues);
 
                     //確定存檔
                     contextModel.SaveChanges();

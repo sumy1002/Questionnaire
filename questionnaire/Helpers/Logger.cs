@@ -8,7 +8,8 @@ namespace questionnaire.Helpers
 {
     public class Logger
     {
-        private const string _savePath = "D:\\ccc\\Logs\\log.log";
+        private const string _savePath = @"D:\\Logs";
+        private const string _saveFile = @"D:\\Logs\\logs.log";
 
         /// <summary> 紀錄錯誤 </summary>
         /// <param name="moduleName"></param>
@@ -28,8 +29,17 @@ $@"-----
     {ex.ToString()}
 -----
 ";
+            //確認路徑是否存在
+            if (!Directory.Exists(_savePath))
+            {
+                Directory.CreateDirectory(_savePath);
+            }
+            if (!File.Exists(_saveFile))
+            {
+                File.Create(_saveFile);
+            }
 
-            File.AppendAllText(Logger._savePath, content);
+            File.AppendAllText(Logger._saveFile, content);
         }
     }
 }

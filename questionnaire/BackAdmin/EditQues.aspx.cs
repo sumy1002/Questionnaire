@@ -576,7 +576,7 @@ namespace questionnaire.BackAdmin
             //返回列表
             else
             {
-                this.plcExport.Visible = false;
+                this.plcExport.Visible = true;
                 this.plcInfo2.Visible = false;
 
                 //填寫狀況繫結
@@ -717,13 +717,14 @@ namespace questionnaire.BackAdmin
             var Ques = this._mgrContent.GetQuesContent(id);
 
             string Path = "D:\\CSV\\";
+            string FileName = $"D:\\CSV\\{Ques.Title}.csv";
 
             //確認路徑是否存在
             if (!Directory.Exists(Path))
             {
                 Directory.CreateDirectory(Path);
             }
-            if (!File.Exists($"{Ques.Title}.csv"))
+            if (!File.Exists(FileName))
             {
                 File.Create(Ques.Title);
             }

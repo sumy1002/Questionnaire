@@ -125,6 +125,7 @@
                 },
                 "lengthMenu": [[10, 15, 20, "All"], [10, 15, 20, "All"]],
                 "order": [[0, "desc"]],
+                "ordering": false,
             });
 
         });

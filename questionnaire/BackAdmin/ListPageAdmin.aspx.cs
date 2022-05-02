@@ -31,7 +31,6 @@ namespace questionnaire.BackAdmin
                 {
                     HiddenField hfID = item.FindControl("hfID") as HiddenField;
                     CheckBox ckbDel = item.FindControl("CheckBox1") as CheckBox;
-                    CheckBox ckb = item.FindControl("ckbDel") as CheckBox;
                     Label lbl0 = item.FindControl("lblTitleID") as Label;
                     Label lbl1 = item.FindControl("lblTitle") as Label;
                     Label lbl2 = item.FindControl("lblIsEnable") as Label;
@@ -47,8 +46,16 @@ namespace questionnaire.BackAdmin
                         lbl4.ForeColor = Color.Red;
 
                         imgbtnClose.Visible = false;
-                        ckb.Visible = false;
                     }
+                }
+
+                //生成問題的編號
+                int i = 1;
+                foreach (RepeaterItem item in this.rptList.Items)
+                {
+                    Label lblTitleID = item.FindControl("lblTitleID") as Label;
+                    lblTitleID.Text = i.ToString();
+                    i++;
                 }
             }
         }
@@ -296,7 +303,7 @@ namespace questionnaire.BackAdmin
 
         #region 開啟關閉問卷
 
-        //關閉/開啟問卷
+        //刪除/關閉/開啟問卷
         protected void ImgBtnDel_Command(object sender, CommandEventArgs e)
         {
             Guid id = Guid.Parse(e.CommandName);
@@ -314,7 +321,7 @@ namespace questionnaire.BackAdmin
                 {
                     Guid Qid = new Guid(imgbtn.CommandName);
                     //把問題從資料庫中刪除
-                    this._mgrQues.DeleteQues(Qid);
+                    this._mgrQues.DelQues(Qid);
                 }
             }
 
