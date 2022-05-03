@@ -19,11 +19,11 @@ namespace questionnaire.BackAdmin
     {
         #region Manager跟一些變數
         private static List<QuesDetailModel> _questionSession = new List<QuesDetailModel>();
+        private UserQuesDetailManager _mgrUserDetail = new UserQuesDetailManager();
         private QuesContentsManager _mgrContent = new QuesContentsManager();
         private QuesDetailManager _mgrQuesDetail = new QuesDetailManager();
         private QuesTypeManager _mgrQuesType = new QuesTypeManager();
         private UserInfoManager _mgrUserInfo = new UserInfoManager();
-        private UserQuesDetailManager _mgrUserDetail = new UserQuesDetailManager();
         private StatisticManager _mgrSta = new StatisticManager();
         private CQManager _mgrCQ = new CQManager();
 
@@ -438,8 +438,9 @@ namespace questionnaire.BackAdmin
                 //做拆字串的處理
                 var queslist = this._mgrQuesDetail.GetQuesList(Session["questionList"].ToString());
 
-                //this.rptQuesItem.DataSource = queslist;
-                //this.rptQuesItem.DataBind();
+                //取ID
+                string ID = Request.QueryString["ID"];
+                Guid id = new Guid(ID);
 
                 //新增問題 寫入DB
                 int questionNo = 1;
@@ -450,7 +451,7 @@ namespace questionnaire.BackAdmin
                     question.QuestionnaireID = QuesContent.QuestionnaireID;
 
                     //過濾掉已經存在的問題
-                    var originalQ = this._mgrQuesDetail.GetTitleQuesDetail(question.QuesTitle);
+                    var originalQ = this._mgrQuesDetail.GetTitleQuesDetail(question.QuesTitle, id);
                     if (originalQ == null)
                     {
                         _mgrQuesDetail.CreateQuesDetail(question);
@@ -469,10 +470,6 @@ namespace questionnaire.BackAdmin
                         i++;
                     }
                 }
-
-                //取ID
-                string ID = Request.QueryString["ID"];
-                Guid id = new Guid(ID);
 
                 var QList = this._mgrQuesDetail.GetQuesDetailAndTypeList(id);
                 this.rptQuesItem.DataSource = QList;
@@ -979,7 +976,7 @@ namespace questionnaire.BackAdmin
                     if (total == 0)
                     {
                         Literal ltlNoAns = new Literal();
-                        ltlNoAns.Text = "尚無資料<br/>";
+                        ltlNoAns.Text = "<br/>尚無資料<br/>";
                         this.plcStatistic.Controls.Add(ltlNoAns);
                     }
                     else
@@ -1061,7 +1058,6 @@ namespace questionnaire.BackAdmin
                 this.txtAnswer.Text = String.Empty;
                 this.ddlQuesType.SelectedIndex = 0;
             }
-
         }
     }
 }

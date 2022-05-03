@@ -46,9 +46,10 @@
         <asp:TextBox ID="txtAnswerEdit" runat="server"></asp:TextBox>&nbsp;
         <span>(多個答案以;分隔)</span>&emsp;<br />
         <asp:Label ID="lblAnsRedEdit" runat="server" Text="選項格式錯誤" Visible="false" ForeColor="Red"></asp:Label>
-        <asp:Label ID="lblAnsRedEdit2" runat="server" Text="單選及多選選項必須以;分隔" Visible="false" ForeColor="Red"></asp:Label><br />
+        <asp:Label ID="lblAnsRedEdit2" runat="server" Text="單選及多選選項必須以;分隔，且不可以;結尾" Visible="false" ForeColor="Red"></asp:Label>
+        <asp:Label ID="lblAnsRedEdit3" runat="server" Text="文字題無須輸入選項" Visible="false" ForeColor="Red"></asp:Label><br />
         <asp:Button ID="btnQuesEdit" runat="server" Text="確定修改" OnClick="btnQuesEdit_Click" />
-        <asp:Button ID="btnQuesAddCancelEdit" runat="server" Text="取消" OnClick="btnQuesAddCancelEdit_Click" /><br />
+        <asp:Button ID="btnQuesAddCancelEdit" runat="server" Text="取消" OnClick="btnQuesAddCancelEdit_Click" /><br /><br />
     </asp:PlaceHolder>
 
     <table border="1" id="QList" class="display">

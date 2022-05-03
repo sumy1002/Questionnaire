@@ -45,12 +45,12 @@ namespace questionnaire
             }
 
             //生成問卷的編號
-            int i = 1;
+            int i = this.rptQues.Items.Count;
             foreach (RepeaterItem item in this.rptQues.Items)
             {
                 Label lblTitleID = item.FindControl("lblTitleID") as Label;
                 lblTitleID.Text = i.ToString();
-                i++;
+                i--;
             }
         }
 
@@ -183,6 +183,8 @@ namespace questionnaire
                 this.rptQues.DataBind();
 
                 this.ltlMsg.Visible = false;
+
+                Response.Redirect("listPage.aspx");
             }
 
             //判斷一下狀態
@@ -203,6 +205,15 @@ namespace questionnaire
                 {
                     ltl1.Text = "尚未開始";
                 }
+            }
+
+            //生成問卷的編號
+            int i = this.rptQues.Items.Count;
+            foreach (RepeaterItem item in this.rptQues.Items)
+            {
+                Label lblTitleID = item.FindControl("lblTitleID") as Label;
+                lblTitleID.Text = i.ToString();
+                i--;
             }
         }
 

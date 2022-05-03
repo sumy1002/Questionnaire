@@ -50,12 +50,12 @@ namespace questionnaire.BackAdmin
                 }
 
                 //生成問卷的編號
-                int i = 1;
+                int i = this.rptList.Items.Count;
                 foreach (RepeaterItem item in this.rptList.Items)
                 {
                     Label lblTitleID = item.FindControl("lblTitleID") as Label;
                     lblTitleID.Text = i.ToString();
-                    i++;
+                    i--;
                 }
             }
         }
@@ -308,6 +308,8 @@ namespace questionnaire.BackAdmin
         {
             Guid id = Guid.Parse(e.CommandName);
             this._mgrQues.DeleteQues(id);
+
+            Response.Redirect("ListPageAdmin.aspx");
         }
 
         //刪除問卷

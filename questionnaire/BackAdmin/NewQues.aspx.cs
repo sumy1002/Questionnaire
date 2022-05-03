@@ -52,8 +52,6 @@ namespace questionnaire.BackAdmin
             }
         }
 
-
-
         //加入自訂/常用問題
         protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -482,11 +480,13 @@ namespace questionnaire.BackAdmin
 
         #endregion
 
+        //取消新建問卷
         protected void btnCancel_Click(object sender, EventArgs e)
         {
             Response.Redirect("ListPageAdmin.aspx");
         }
 
+        //限制結束日期範圍
         protected void txtEnd_TextChanged(object sender, EventArgs e)
         {
             DateTime end = Convert.ToDateTime(this.txtEnd.Text);

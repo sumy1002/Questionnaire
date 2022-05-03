@@ -63,7 +63,7 @@
                             <td><asp:CheckBox ID="ckbDel" runat="server"  /></td>
                             <td width="50px">
                                 <div class="divCenter">
-                                    <asp:Label ID="lblTitleID" runat="server" Text='<%# Eval("TitleID") %>'></asp:Label>
+                                    <asp:Label ID="lblTitleID" runat="server"></asp:Label>
                                 </div>
                             </td>
                             <td width="350px">

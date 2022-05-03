@@ -40,20 +40,22 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div id="bigDiv" class="col-lg-10">
         <div>
+
             <%-- 搜尋框 --%>
             <div id="topDiv" class="col-lg-6">
                 <p>
                     <asp:Literal ID="ltlTitle" runat="server">問卷標題</asp:Literal>
-                    <asp:TextBox ID="txtTitle" runat="server"></asp:TextBox>
+                    <asp:TextBox ID="txtTitle" runat="server" OnTextChanged="txtTitle_TextChanged" AutoPostBack="true"></asp:TextBox>
                 </p>
                 <p>
                     <asp:Literal ID="ltlDate" runat="server">開始／結束</asp:Literal>
-                    <asp:TextBox ID="txtStartDate" runat="server" TextMode="Date"></asp:TextBox>&nbsp;
-            <asp:TextBox ID="txtEndDate" runat="server" TextMode="Date"></asp:TextBox>
+                    <asp:TextBox ID="txtStartDate" runat="server" TextMode="Date" OnTextChanged="txtStartDate_TextChanged" AutoPostBack="true"></asp:TextBox>&nbsp;
+            <asp:TextBox ID="txtEndDate" runat="server" TextMode="Date" OnTextChanged="txtEndDate_TextChanged" AutoPostBack="true"></asp:TextBox>
                     &emsp;&emsp;
             <asp:Button ID="btnSearch" runat="server" Text="搜尋" OnClick="btnSearch_Click" />
                 </p>
             </div>
+
             <%-- 登入 --%>
             <div id="login">
                 <asp:Button ID="btnLogin" runat="server" Text="後台登入" OnClick="btnLogin_Click" />
@@ -85,7 +87,7 @@
                             <tr>
                                 <td width="45px">
                                     <div class="centerDiv">
-                                        <asp:Label ID="lblTitleID" runat="server" Text='<%# Eval("TitleID") %>'></asp:Label>
+                                        <asp:Label ID="lblTitleID" runat="server" ></asp:Label>
                                     </div>
                                 </td>
                                 <td width="350px"><a href="Form.aspx?ID=<%#Eval("QuestionnaireID") %>"><%# Eval("Title") %></a></td>

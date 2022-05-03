@@ -14,6 +14,7 @@ namespace questionnaire.BackAdmin
     {
         private CQManager _mgrCQ = new CQManager();
         private QuesTypeManager _mgrQuesType = new QuesTypeManager();
+        private static int _hfid;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -54,6 +55,7 @@ namespace questionnaire.BackAdmin
         //新增問題存進資料庫
         protected void btnQuesAdd_Click(object sender, EventArgs e)
         {
+            #region 防呆
             //防呆過濾
             bool TitleCheck = !String.IsNullOrWhiteSpace(this.txtQues.Text);
             bool RadioHasChoice = false;
@@ -127,6 +129,7 @@ namespace questionnaire.BackAdmin
                     this.lblAnsRed.Visible = true;
                 }
             }
+            #endregion
 
             //寫入資料庫
             if (TitleCheck == true && (RadioHasChoice == true || CkbHasChoice == true))
@@ -202,34 +205,138 @@ namespace questionnaire.BackAdmin
                 this.ddlQuesTypeEdit.SelectedValue = item.QuesTypeID.ToString();
                 this.ckbNessEdit.Checked = item.Necessary;
             }
+
+            _hfid = Convert.ToInt32(e.CommandName);
         }
 
         //確認修改問題
         protected void btnQuesEdit_Click(object sender, EventArgs e)
         {
-            int id = Convert.ToInt32(this.hfCQID.Value);
-            var item = this._mgrCQ.GetCQs(id);
+            #region 防呆
+            //防呆過濾
+            bool TitleCheck = !String.IsNullOrWhiteSpace(this.txtQuesEdit.Text);
+            bool RadioHasChoice = false;
+            bool CkbHasChoice = false;
 
-            try
+            //檢查有無輸入問題標題
+            if (TitleCheck == false)
+                this.lblQuesRedEdit.Visible = true;
+            else
+                this.lblQuesRedEdit.Visible = false;
+
+            //檢查單複選題有無輸入選項
+            if (this.ddlQuesTypeEdit.SelectedValue == "1") //文字
             {
-                CQModel updateCQ = new CQModel()
+                var ansCheck1 = String.IsNullOrWhiteSpace(this.txtAnswerEdit.Text);
+                if (ansCheck1)
                 {
-                    CQID = item.CQID,
-                    CQTitle = this.txtQuesEdit.Text,
-                    QuesTypeID = Convert.ToInt32(this.ddlQuesTypeEdit.SelectedValue),
-                    CQChoice = this.txtAnswerEdit.Text,
-                    Necessary = this.ckbNessEdit.Checked,
-                };
-
-                this._mgrCQ.UpdateCQ(updateCQ);
-
-                ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('變更成功。');location.href='CommonQuesPageA.aspx';", true);
-                this.plcEditCQ.Visible = false;
-                this.imgbtnPlus.Visible = true;
+                    RadioHasChoice = true;
+                    CkbHasChoice = true;
+                    this.lblAnsRedEdit.Visible = false;
+                    this.lblAnsRedEdit2.Visible = false;
+                    this.lblAnsRedEdit3.Visible = false;
+                }
+                else
+                {
+                    this.lblAnsRedEdit.Visible = false;
+                    this.lblAnsRedEdit2.Visible = false;
+                    this.lblAnsRedEdit3.Visible = true;
+                }
             }
-            catch (Exception)
+            else if (this.ddlQuesTypeEdit.SelectedValue == "2") //單選
             {
-                //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('入力した内容に誤りがあります。');location.href='adminMenu.aspx';", true);
+                //檢查是否有值
+                if (!String.IsNullOrWhiteSpace(this.txtAnswerEdit.Text))
+                {
+                    this.lblAnsRedEdit.Visible = false;
+                    //檢查有無分號
+                    var ansCheck1 = Regex.IsMatch(this.txtAnswerEdit.Text.Trim(), @";");
+                    var ansCheck2 = !(Regex.IsMatch(this.txtAnswerEdit.Text.Trim(), @";$"));
+                    if (ansCheck1 && ansCheck2)
+                    {
+                        RadioHasChoice = true;
+                        this.lblAnsRedEdit.Visible = false;
+                        this.lblAnsRedEdit2.Visible = false;
+                        this.lblAnsRedEdit3.Visible = false;
+                    }
+                    else
+                    {
+                        this.lblAnsRedEdit.Visible = false;
+                        this.lblAnsRedEdit3.Visible = false;
+                        this.lblAnsRedEdit2.Visible = true;
+                    }
+                        
+                }
+                else
+                {
+                    RadioHasChoice = false;
+                    this.lblAnsRedEdit.Visible = false;
+                    this.lblAnsRedEdit3.Visible = false;
+                    this.lblAnsRedEdit.Visible = true;
+                }
+            }
+            else if (this.ddlQuesTypeEdit.SelectedValue == "3") //多選
+            {
+                //檢查是否有值
+                if (!String.IsNullOrWhiteSpace(this.txtAnswerEdit.Text))
+                {
+                    this.lblAnsRedEdit.Visible = false;
+
+                    //檢查有無分號 且分號位子正確與否
+                    var ansCheck1 = Regex.IsMatch(this.txtAnswerEdit.Text.Trim(), @";");
+                    var ansCheck2 = !(Regex.IsMatch(this.txtAnswerEdit.Text.Trim(), @";$"));
+                    if (ansCheck1 && ansCheck2)
+                    {
+                        CkbHasChoice = true;
+                        this.lblAnsRedEdit.Visible = false;
+                        this.lblAnsRedEdit2.Visible = false;
+                        this.lblAnsRedEdit3.Visible = false;
+                    }
+                    else
+                    {
+                        this.lblAnsRedEdit.Visible = false;
+                        this.lblAnsRedEdit2.Visible = true;
+                        this.lblAnsRedEdit3.Visible = false;
+                    }
+                        
+                }
+                else
+                {
+                    CkbHasChoice = false;
+                    this.lblAnsRedEdit.Visible = true;
+                    this.lblAnsRedEdit2.Visible = false;
+                    this.lblAnsRedEdit3.Visible = false;
+                    
+                }
+            }
+            #endregion
+
+            if (TitleCheck == true && (RadioHasChoice == true || CkbHasChoice == true))
+            {
+                int id = _hfid;
+                var item = this._mgrCQ.GetCQs(id);
+
+                try
+                {
+                    CQModel updateCQ = new CQModel()
+                    {
+                        CQID = item.CQID,
+                        CQTitle = this.txtQuesEdit.Text,
+                        QuesTypeID = Convert.ToInt32(this.ddlQuesTypeEdit.SelectedValue),
+                        CQChoice = this.txtAnswerEdit.Text,
+                        Necessary = this.ckbNessEdit.Checked,
+                    };
+
+                    this._mgrCQ.UpdateCQ(updateCQ);
+
+                    ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('變更成功。');location.href='CommonQuesPageA.aspx';", true);
+                    this.plcEditCQ.Visible = false;
+                    this.imgbtnPlus.Visible = true;
+                }
+                catch (Exception)
+                {
+                    //ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('入力した内容に誤りがあります。');location.href='adminMenu.aspx';", true);
+                }
             }
         }
 

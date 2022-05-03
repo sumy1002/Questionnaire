@@ -90,7 +90,7 @@ namespace questionnaire.Managers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public QuesDetail GetTitleQuesDetail(string title)
+        public QuesDetail GetTitleQuesDetail(string title, Guid Qid)
         {
             string titleText = title.ToString();
 
@@ -101,7 +101,7 @@ namespace questionnaire.Managers
                     //取得加查詢條件的問題
                     var query =
                     from item in contextModel.QuesDetails
-                    where item.QuesTitle == title
+                    where item.QuesTitle == title && item.QuestionnaireID == Qid
                     select item;
 
                     var quesDetail = query.FirstOrDefault();
