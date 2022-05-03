@@ -64,22 +64,21 @@
                     <asp:HiddenField ID="hfQid" runat="server" />
                     <asp:HiddenField ID="hfTitleID" runat="server" /><br />
                     <asp:Literal ID="ltltitle" runat="server">問卷名稱 </asp:Literal>
-                    <asp:TextBox ID="txtTitle" runat="server" Width="250" Enabled="false"></asp:TextBox><br /><br />
+                    <asp:TextBox ID="txtTitle" runat="server" Width="250"></asp:TextBox><br /><br />
                     <asp:Literal ID="ltlcontent" runat="server">描述內容 </asp:Literal>
-                    <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine" Enabled="false" Width="550" Height="150px"></asp:TextBox><br /><br />
+                    <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine" Width="550" Height="150px"></asp:TextBox><br /><br />
                     <asp:Literal ID="ltlStart" runat="server">開始時間 </asp:Literal>
-                    <asp:TextBox ID="txtStart" runat="server" TextMode="Date" Width="250" Enabled="false"></asp:TextBox><br><br />
+                    <asp:TextBox ID="txtStart" runat="server" TextMode="Date" Width="250"></asp:TextBox><br><br />
                     <asp:Literal ID="ltlEnd" runat="server">結束時間 </asp:Literal>
-                    <asp:TextBox ID="txtEnd" runat="server" TextMode="Date" Width="250" Enabled="false"></asp:TextBox><br /><br />
+                    <asp:TextBox ID="txtEnd" runat="server" TextMode="Date" Width="250"></asp:TextBox><br /><br />
                     <asp:Literal ID="ltlEnable" runat="server">開放狀態 </asp:Literal>
                     <asp:CheckBox ID="ckbEnable" runat="server" Text="" Checked='<%# Eval("IsEnable") %>' Visible="false" />
-                    <asp:RadioButton ID="rdbEnableT" runat="server" GroupName="Enable" Text="開放中" Enabled="false" />
-                    <asp:RadioButton ID="rdbEnableF" runat="server" GroupName="Enable" Text="已關閉" Enabled="false" />
+                    <asp:RadioButton ID="rdbEnableT" runat="server" GroupName="Enable" Text="開放中"/>
+                    <asp:RadioButton ID="rdbEnableF" runat="server" GroupName="Enable" Text="已關閉"/>
                     <br /><br />
 
-                    <asp:Button ID="btnQuesEdit" runat="server" Text="編輯問卷資訊" OnClick="btnQuesEdit_Click" />
-                    <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" Visible="false" />&emsp;
-                    <asp:Button ID="btnSend" runat="server" Text="送出" OnClick="btnSend_Click" Visible="false" />
+                    <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click"/>&emsp;
+                    <asp:Button ID="btnSend" runat="server" Text="送出" OnClick="btnSend_Click"/>
                 </p>
             </div>
         </asp:PlaceHolder>

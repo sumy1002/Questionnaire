@@ -523,32 +523,15 @@ namespace questionnaire.BackAdmin
         #endregion
 
         #region 修改問卷資訊
-        //修改問卷資訊
-        protected void btnQuesEdit_Click(object sender, EventArgs e)
-        {
-            this.btnQuesEdit.Visible = false;
-            this.btnCancel.Visible = true;
-            this.btnSend.Visible = true;
-            this.txtTitle.Enabled = true;
-            this.txtContent.Enabled = true;
-            this.txtStart.Enabled = true;
-            this.txtEnd.Enabled = true;
-            this.rdbEnableT.Enabled = true;
-            this.rdbEnableF.Enabled = true;
-        }
-
+        
         //取消修改問卷資訊
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-            this.btnQuesEdit.Visible = true;
-            this.btnCancel.Visible = false;
-            this.btnSend.Visible = false;
-            this.txtTitle.Enabled = false;
-            this.txtContent.Enabled = false;
-            this.txtStart.Enabled = false;
-            this.txtEnd.Enabled = false;
-            this.rdbEnableT.Enabled = false;
-            this.rdbEnableF.Enabled = false;
+            //取ID
+            string ID = Request.QueryString["ID"];
+            Guid id = new Guid(ID);
+
+            Response.Redirect($"EditQues.aspx?ID={id}");
         }
 
         //儲存修改問卷資訊
@@ -576,7 +559,7 @@ namespace questionnaire.BackAdmin
             string ID = Request.QueryString["ID"];
 
             //導回正確的問卷編輯頁
-            Response.Redirect($"EditQues.aspx?ID={ID}");
+            ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", $"alert('問卷資訊編輯完成。');location.href='EditQues.aspx?ID={ID}';", true);
         }
 
         #endregion
