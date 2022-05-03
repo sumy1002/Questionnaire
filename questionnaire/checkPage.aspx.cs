@@ -120,16 +120,34 @@ namespace questionnaire
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(id);
             List<UserQuesDetailModel> answerList = GetSessionList("Answer");
 
-            for (; ansCount < questionList.Count; ansCount++)
+            if(answerList!= null)
             {
-                if (answerList[ansCount].QuesID == questionList[ansCount].QuesID)
+                for (; ansCount < questionList.Count; ansCount++)
                 {
-                    Label lbl = new Label();
-                    lbl.ID = "Q" + question.QuesID;
-                    lbl.Text = answerList[ansCount].Answer.TrimEnd(';');
-                    this.plcDynamic.Controls.Add(lbl);
-                    ansCount++;
-                    break;
+                    if (answerList[ansCount].QuesID == questionList[ansCount].QuesID)
+                    {
+                        Label lbl = new Label();
+                        lbl.ID = "Q" + question.QuesID;
+                        lbl.Text = answerList[ansCount].Answer.TrimEnd(';');
+                        this.plcDynamic.Controls.Add(lbl);
+                        ansCount++;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for (; ansCount < questionList.Count; ansCount++)
+                {
+                    if (answerList[ansCount].QuesID == questionList[ansCount].QuesID)
+                    {
+                        Label lbl = new Label();
+                        lbl.ID = "Q" + question.QuesID;
+                        lbl.Text = answerList[ansCount].Answer.TrimEnd(';');
+                        this.plcDynamic.Controls.Add(lbl);
+                        ansCount++;
+                        break;
+                    }
                 }
             }
         }
@@ -151,6 +169,7 @@ namespace questionnaire
                     lbl.ID = "Q" + question.QuesID;
                     lbl.Text = q.Answer.TrimEnd(';');
                     this.plcDynamic.Controls.Add(lbl);
+                    ansCount++;
                 }
             }
         }
@@ -168,6 +187,7 @@ namespace questionnaire
                     lbl.ID = "Q" + question.QuesID;
                     lbl.Text = q.Answer.TrimEnd(';');
                     this.plcDynamic.Controls.Add(lbl);
+                    ansCount++;
                 }
             }
         }

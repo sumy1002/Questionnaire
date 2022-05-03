@@ -20,6 +20,7 @@ namespace questionnaire
         int i = 1;
         bool isEdit = false;
         int ansCount = 0;
+        private static bool _ckbCheck;
 
         #endregion
 
@@ -362,7 +363,6 @@ namespace questionnaire
                                         break;
                                     }
                                 }
-
                             }
                             break;
                         //複選
@@ -375,8 +375,14 @@ namespace questionnaire
                                     if (ansCdb.Checked == true)
                                     {
                                         ansCheck = true;
+                                        _ckbCheck = true;
                                         break;
                                     }
+                                }
+                                if (_ckbCheck != true)
+                                {
+                                    _ckbCheck = false;
+                                    break;
                                 }
                             }
                             break;
@@ -401,7 +407,7 @@ namespace questionnaire
             }
             #endregion
 
-            if (ansCheck && isNameRight && isPhoneRight && isEmailRight && isAgeRight)
+            if (_ckbCheck && ansCheck && isNameRight && isPhoneRight && isEmailRight && isAgeRight)
             {
                 this.Session["Name"] = this.txtName.Text;
                 this.Session["Phone"] = this.txtPhone.Text;
@@ -423,7 +429,7 @@ namespace questionnaire
                     //判斷一下問題種類
                     switch (questionList[i].QuesTypeID)
                     {
-                        //單選 //問題
+                        //單選
                         case 2:
                             for (var j = -1; j < i; j++)
                             {
@@ -446,6 +452,15 @@ namespace questionnaire
                                         break;
                                     }
                                 }
+
+                                if(check != 1 && Ans.Answer == null)
+                                {
+                                    Ans.Answer = " " + ";";
+                                    answerList.Add(Ans);
+                                    check = 1;
+                                    break;
+                                }
+
                                 if (check == 1)
                                     break;
                             }
@@ -495,7 +510,6 @@ namespace questionnaire
                                 answerList.Add(Ans);
                                 break;
                             }
-
                     }
                 }
 
