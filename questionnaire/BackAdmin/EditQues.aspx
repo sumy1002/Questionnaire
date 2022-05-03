@@ -90,8 +90,7 @@
             <asp:PlaceHolder ID="plcQues" runat="server" Visible="false">
                 <p>
                     <asp:Literal ID="ltlType" runat="server">種類</asp:Literal>
-                    <asp:DropDownList ID="ddlType" runat="server"></asp:DropDownList>&nbsp&nbsp&nbsp
-                    <asp:Button ID="btnAddCQ" runat="server" Text="加入常用問題" OnClick="btnAddCQ_Click"/><br /><br />
+                    <asp:DropDownList ID="ddlType" runat="server" OnSelectedIndexChanged="ddlType_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>&nbsp&nbsp&nbsp<br /><br />
                     <asp:Literal ID="ltlQues" runat="server">問題</asp:Literal>
                     <asp:TextBox ID="txtQues" runat="server" Width="250px"></asp:TextBox>&nbsp;
                 <asp:DropDownList ID="ddlQuesType" runat="server"></asp:DropDownList>&nbsp;
@@ -112,8 +111,6 @@
             <br />
             <asp:ImageButton ID="imgbtnDel" runat="server" ImageUrl="~/images/del.png" OnClick="imgbtnDel_Click" OnClientClick="return confirm('確定要刪除嗎？')" />
             <asp:ImageButton ID="imgbtnPlus" runat="server" ImageUrl="~/images/plus.png" OnClick="imgbtnPlus_Click" />
-
-
 
             <%-- 修改問題 --%>
             <asp:PlaceHolder ID="plcUpdate" runat="server" Visible="false">

@@ -179,38 +179,123 @@ namespace questionnaire.BackAdmin
         //儲存編輯問題
         protected void btnQuesAddEdit_Command(object sender, CommandEventArgs e)
         {
+            #region 防呆
+            bool TitleCheck = !String.IsNullOrWhiteSpace(this.txtQuesEdit.Text);
+            bool RadioHasChoice = false;
+            bool CkbHasChoice = false;
+
+            //檢查有無輸入問題標題
+            if (TitleCheck == false)
+                this.lblQuesRedEdit.Visible = true;
+            else
+                this.lblQuesRedEdit.Visible = false;
+
+            //檢查單複選題有無輸入選項
+            //文字
+            if (this.ddlQuesTypeEdit.SelectedValue == "1")
+            {
+                var ansCheck1 = String.IsNullOrWhiteSpace(this.txtAnswerEdit.Text);
+                if (ansCheck1)
+                {
+                    RadioHasChoice = true;
+                    CkbHasChoice = true;
+                    this.lblAnsRed3Edit.Visible = false;
+                }
+                else
+                    this.lblAnsRed3Edit.Visible = true;
+            }
+            //單選
+            else if (this.ddlQuesTypeEdit.SelectedValue == "2")
+            {
+                this.lblAnsRed3Edit.Visible = false;
+                //檢查是否有值
+                if (!String.IsNullOrWhiteSpace(this.txtAnswerEdit.Text))
+                {
+                    this.lblAnsRed.Visible = false;
+                    //檢查有無分號
+                    var ansCheck1 = Regex.IsMatch(this.txtAnswerEdit.Text.Trim(), @";");
+                    var ansCheck2 = !(Regex.IsMatch(this.txtAnswerEdit.Text.Trim(), @";$"));
+                    if (ansCheck1 && ansCheck2)
+                    {
+                        RadioHasChoice = true;
+                        this.lblAnsRedEdit.Visible = false;
+                        this.lblAnsRed2Edit.Visible = false;
+                        this.lblAnsRed3Edit.Visible = false;
+                    }
+                    else
+                        this.lblAnsRed2Edit.Visible = true;
+                }
+                else
+                {
+                    RadioHasChoice = false;
+                    this.lblAnsRedEdit.Visible = true;
+                }
+            }
+            //多選
+            else if (this.ddlQuesTypeEdit.SelectedValue == "3")
+            {
+                this.lblAnsRed3Edit.Visible = false;
+                //檢查是否有值
+                if (!String.IsNullOrWhiteSpace(this.txtAnswerEdit.Text))
+                {
+                    this.lblAnsRedEdit.Visible = false;
+
+                    //檢查有無分號 且分號位子正確與否
+                    var ansCheck1 = Regex.IsMatch(this.txtAnswerEdit.Text.Trim(), @";");
+                    var ansCheck2 = !(Regex.IsMatch(this.txtAnswerEdit.Text.Trim(), @";$"));
+                    if (ansCheck1 && ansCheck2)
+                    {
+                        CkbHasChoice = true;
+                        this.lblAnsRedEdit.Visible = false;
+                        this.lblAnsRed2Edit.Visible = false;
+                        this.lblAnsRed3Edit.Visible = false;
+                    }
+                    else
+                        this.lblAnsRed2Edit.Visible = true;
+                }
+                else
+                {
+                    CkbHasChoice = false;
+                    this.lblAnsRedEdit.Visible = true;
+                }
+            }
+            #endregion
+
             int id = Convert.ToInt32(e.CommandName);
             var item = this._mgrQuesDetail.GetOneQuesDetail(id);
 
             try
             {
-                QuesDetailModel updateQ = new QuesDetailModel()
+                if (TitleCheck == true && (RadioHasChoice == true || CkbHasChoice == true))
                 {
-                    QuestionnaireID = item.QuestionnaireID,
-                    QuesID = item.QuesID,
-                    QuesTitle = this.txtQuesEdit.Text,
-                    QuesTypeID = Convert.ToInt32(this.ddlQuesTypeEdit.SelectedValue),
-                    QuesChoice = this.txtAnswerEdit.Text,
-                    Necessary = this.ckbNessEdit.Checked,
-                };
+                    QuesDetailModel updateQ = new QuesDetailModel()
+                    {
+                        QuestionnaireID = item.QuestionnaireID,
+                        QuesID = item.QuesID,
+                        QuesTitle = this.txtQuesEdit.Text,
+                        QuesTypeID = Convert.ToInt32(this.ddlQuesTypeEdit.SelectedValue),
+                        QuesChoice = this.txtAnswerEdit.Text,
+                        Necessary = this.ckbNessEdit.Checked,
+                    };
 
-                this._mgrQuesDetail.UpdateQuesDetail(updateQ);
+                    this._mgrQuesDetail.UpdateQuesDetail(updateQ);
 
-                //取ID
-                string ID = Request.QueryString["ID"];
-                Guid id2 = new Guid(ID);
+                    //取ID
+                    string ID = Request.QueryString["ID"];
+                    Guid id2 = new Guid(ID);
 
-                var QList = this._mgrQuesDetail.GetQuesDetailAndTypeList(id2);
-                this.rptQuesItem.DataSource = QList;
-                this.rptQuesItem.DataBind();
+                    var QList = this._mgrQuesDetail.GetQuesDetailAndTypeList(id2);
+                    this.rptQuesItem.DataSource = QList;
+                    this.rptQuesItem.DataBind();
 
-                this.plcUpdate.Visible = false;
-                this.imgbtnDel.Visible = true;
-                this.imgbtnPlus.Visible = true;
+                    this.plcUpdate.Visible = false;
+                    this.imgbtnDel.Visible = true;
+                    this.imgbtnPlus.Visible = true;
 
-                this.txtQuesEdit.Text = String.Empty;
-                this.txtAnswerEdit.Text = String.Empty;
-                this.ckbNessEdit.Checked = false;
+                    this.txtQuesEdit.Text = String.Empty;
+                    this.txtAnswerEdit.Text = String.Empty;
+                    this.ckbNessEdit.Checked = false;
+                }
             }
             catch (Exception)
             {
@@ -509,7 +594,7 @@ namespace questionnaire.BackAdmin
             foreach (RepeaterItem item in this.rptDetail.Items)
             {
                 Button btnDe = item.FindControl("btnDetail") as Button;
-                if(btnDe.Text == "返回列表")
+                if (btnDe.Text == "返回列表")
                 {
                     checkInfo = true;
                 }
@@ -952,7 +1037,7 @@ namespace questionnaire.BackAdmin
         }
         #endregion
 
-        protected void btnAddCQ_Click(object sender, EventArgs e)
+        protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
         {
             int cqid = Convert.ToInt32(this.ddlType.SelectedValue.Trim());
             CQAndTypeModel CQs = this._mgrQuesType.GetCQType(cqid);
@@ -969,6 +1054,14 @@ namespace questionnaire.BackAdmin
                     this.ckbNess.Checked = true;
                 }
             }
+
+            if (this.ddlType.SelectedIndex == 0)
+            {
+                this.txtQues.Text = String.Empty;
+                this.txtAnswer.Text = String.Empty;
+                this.ddlQuesType.SelectedIndex = 0;
+            }
+
         }
     }
 }

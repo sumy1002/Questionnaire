@@ -26,17 +26,24 @@
         <div id="paper" class="tab-pane fade in active">
             <p>
                 <asp:Literal ID="ltltitle" runat="server">問卷名稱</asp:Literal>
-                <asp:TextBox ID="txtTitle" runat="server" Width="250"></asp:TextBox><br />
+                <asp:TextBox ID="txtTitle" runat="server" Width="250"></asp:TextBox>
+                <asp:Label ID="lblname" runat="server" Text="問卷名稱不可空白" Visible="false"></asp:Label><br />
+
                 <asp:Literal ID="ltlcontent" runat="server">描述內容</asp:Literal>
-                <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine" Width="400px"></asp:TextBox><br />
+                <asp:TextBox ID="txtContent" runat="server" TextMode="MultiLine" Width="400px"></asp:TextBox>
+                <asp:Label ID="lblContent" runat="server" Text="描述內容不可空白" Visible="false"></asp:Label><br />
+
                 <asp:Literal ID="ltlStart" runat="server">開始時間</asp:Literal>
-                <asp:TextBox ID="txtStart" runat="server" TextMode="Date" Width="250"></asp:TextBox><br />
+                <asp:TextBox ID="txtStart" runat="server" TextMode="Date" Width="250"></asp:TextBox>
+                <asp:Label ID="lblStart" runat="server" Text="開始時間不可空白" Visible="false"></asp:Label><br />
+
                 <asp:Literal ID="ltlEnd" runat="server">結束時間</asp:Literal>
-                <asp:TextBox ID="txtEnd" runat="server" TextMode="Date" Width="250"></asp:TextBox><br />
+                <asp:TextBox ID="txtEnd" runat="server" TextMode="Date" Width="250" OnTextChanged="txtEnd_TextChanged" AutoPostBack="true"></asp:TextBox>
+                <asp:Label ID="lblEnd" runat="server" Text="結束時間不可空白" Visible="false"></asp:Label><br />
                 <br />
                 <asp:CheckBox ID="ckbEnable" runat="server" Text="已啟用" Checked="true" />
                 <br />
-                <asp:Button ID="btnCancel" runat="server" Text="取消" />
+                <asp:Button ID="btnCancel" runat="server" Text="取消" OnClick="btnCancel_Click" OnClientClick="return confirm('確定取消新增問卷嗎？')"/>
                 &emsp;&emsp;&emsp;&emsp;&emsp;
             </p>
         </div>
@@ -45,8 +52,7 @@
         <div id="question" class="tab-pane fade">
             <p>
                 <asp:Literal ID="ltlType" runat="server">種類</asp:Literal>
-                <asp:DropDownList ID="ddlType" runat="server"></asp:DropDownList>
-                <asp:Button ID="btnAddCQ" runat="server" Text="加入常用問題" OnClick="btnAddCQ_Click" />
+                <asp:DropDownList ID="ddlType" runat="server" OnSelectedIndexChanged="ddlType_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                 <br />
                 <br />
                 <asp:Literal ID="ltlQues" runat="server">問題</asp:Literal>
@@ -58,18 +64,18 @@
                 <asp:TextBox ID="txtAnswer" runat="server"></asp:TextBox>&nbsp;
                 <span>(多個答案以；分隔)</span>&emsp;
 
-                <asp:Button ID="btnQuesAdd" runat="server" Text="加入" OnClick="btnQuesAdd_Click"/><br />
+                <asp:Button ID="btnQuesAdd" runat="server" Text="加入" OnClick="btnQuesAdd_Click"/>
+                <asp:Button ID="btnQuesAddEdit" runat="server" Text="修改" OnClick="btnQuesAddEdit_Click" Visible="false"/>
+                <asp:Button ID="btnEditCancel" runat="server" Text="取消" OnClick="btnEditCancel_Click" Visible="false"/><br />
 
                 <asp:Label ID="lblAnsRed" runat="server" Text="選項格式錯誤" Visible="false" ForeColor="Red"></asp:Label>
                 <asp:Label ID="lblAnsRed2" runat="server" Text="單選及多選選項必須以;分隔，且不可以;結尾" Visible="false" ForeColor="Red"></asp:Label>
                 <asp:Label ID="lblAnsRed3" runat="server" Text="文字題無須輸入選項" Visible="false" ForeColor="Red"></asp:Label>
-
             </p>
 
             <br />
-            <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="~/images/del.png" />
+            <asp:ImageButton ID="ImageButton1" runat="server" ImageUrl="~/images/del.png" OnClick="ImageButton1_Click"/>
 
-            <asp:HiddenField ID="hfQuesList" runat="server" />
             <table border="1" id="tblUserInfo">
                 <tr>
                     <th width="20px"></th>
@@ -81,9 +87,10 @@
                 </tr>
                 <asp:Repeater ID="rptQuesItem" runat="server">
                     <ItemTemplate>
+                        <asp:HiddenField ID="hfQuesList" runat="server" Value='<%#Eval("QuesTitle") %>'/>
                         <tr>
                             <td>
-                                <asp:CheckBox ID="ckbDel" runat="server" /></td>
+                                <asp:CheckBox ID="ckbDel" runat="server"/></td>
                             <td>
                                 <asp:Label ID="lblnumber" runat="server"></asp:Label></td>
                             <td>
@@ -92,7 +99,8 @@
                                 <asp:Label ID="lblQType" runat="server" Text='<%#Eval("QuesType1") %>'></asp:Label></td>
                             <td>
                                 <asp:CheckBox ID="ckbNecessary" runat="server" Checked='<%#Eval("Necessary") %>' Enabled="false" /></td>
-                            <td><a>編輯</a></td>
+                            <td>
+                                <asp:Button ID="btnQuesEdit" runat="server" Text="編輯" CommandName='<%#Eval("QuesTitle") %>' OnCommand="btnQuesEdit_Command"/></td>
                         </tr>
                     </ItemTemplate>
                 </asp:Repeater>
@@ -100,7 +108,7 @@
             <span id='table_pageA'></span>
 
             <p></p>
-            <asp:Button ID="Button1" runat="server" Text="取消" />
+            <asp:Button ID="Button1" runat="server" Text="取消"  OnClick="btnCancel_Click" OnClientClick="return confirm('確定取消新增問卷嗎？')"/>
             &emsp;&emsp;&emsp;&emsp;&emsp;
             <asp:Button ID="btnCreateQ" runat="server" Text="送出" OnClick="btnCreateQ_Click" />
         </div>

@@ -301,15 +301,16 @@ namespace questionnaire.BackAdmin
 
         #endregion
 
-        #region 開啟關閉問卷
+        #region 刪除/開啟/關閉問卷
 
-        //刪除/關閉/開啟問卷
+        //關閉/開啟問卷
         protected void ImgBtnDel_Command(object sender, CommandEventArgs e)
         {
             Guid id = Guid.Parse(e.CommandName);
             this._mgrQues.DeleteQues(id);
         }
 
+        //刪除問卷
         protected void ImgBtnClose_Click(object sender, ImageClickEventArgs e)
         {
             foreach (RepeaterItem item in this.rptList.Items)

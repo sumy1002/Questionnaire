@@ -72,7 +72,7 @@ namespace questionnaire.Managers
 
                     var quesDetail = query.FirstOrDefault();
 
-                    if(quesDetail != null)
+                    if (quesDetail != null)
                         return quesDetail;
 
                     return null;
@@ -316,6 +316,61 @@ namespace questionnaire.Managers
                 quesList.Add(Ques);
             }
             return quesList;
+        }
+
+        /// <summary>
+        /// 輸入字串，做字串切割，輸出成列表
+        /// </summary>
+        /// <param name="ques"></param>
+        /// <returns></returns>
+        public QuesAndTypeModel GetOneQues(string ques)
+        {
+            ques = ques.TrimEnd('$');
+            string[] Q = ques.Split('$');
+
+            QuesAndTypeModel quesList = new QuesAndTypeModel();
+            foreach (string item in Q)
+            {
+                string[] QD = item.Split('&');
+
+                QuesAndTypeModel Ques = new QuesAndTypeModel();
+                Ques.QuesTitle = QD[0];
+                Ques.QuesChoice = QD[1];
+                Ques.QuesTypeID = Convert.ToInt32(QD[2]);
+                Ques.QuesType1 = QD[3];
+                Ques.Necessary = Convert.ToBoolean(QD[4]);
+
+                quesList = Ques;
+            }
+            return quesList;
+        }
+
+        /// <summary>
+        /// 輸入字串，做字串切割，輸出成列表
+        /// </summary>
+        /// <param name="ques"></param>
+        /// <returns></returns>
+        public List<QuesAndTypeModel> DelQuesList(string ques, List<QuesAndTypeModel> queslist)
+        {
+            int count = queslist.Count;
+
+            for (int i = 0; i < count; i++)
+            {
+                //foreach (var item in queslist)
+                //{
+                if(i < queslist.Count)
+                {
+                    if (queslist[i].QuesTitle == ques)
+                    {
+                        queslist.Remove(queslist[i]);
+                        i--;
+                    }
+                }
+                    
+               // }
+            }
+
+            return queslist;
         }
     }
 }

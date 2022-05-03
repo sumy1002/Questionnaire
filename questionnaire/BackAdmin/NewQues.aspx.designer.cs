@@ -33,6 +33,15 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.TextBox txtTitle;
 
         /// <summary>
+        /// lblname 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblname;
+
+        /// <summary>
         /// ltlcontent 控制項。
         /// </summary>
         /// <remarks>
@@ -49,6 +58,15 @@ namespace questionnaire.BackAdmin
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtContent;
+
+        /// <summary>
+        /// lblContent 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblContent;
 
         /// <summary>
         /// ltlStart 控制項。
@@ -69,6 +87,15 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.TextBox txtStart;
 
         /// <summary>
+        /// lblStart 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblStart;
+
+        /// <summary>
         /// ltlEnd 控制項。
         /// </summary>
         /// <remarks>
@@ -85,6 +112,15 @@ namespace questionnaire.BackAdmin
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtEnd;
+
+        /// <summary>
+        /// lblEnd 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblEnd;
 
         /// <summary>
         /// ckbEnable 控制項。
@@ -121,15 +157,6 @@ namespace questionnaire.BackAdmin
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlType;
-
-        /// <summary>
-        /// btnAddCQ 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAddCQ;
 
         /// <summary>
         /// ltlQues 控制項。
@@ -204,6 +231,24 @@ namespace questionnaire.BackAdmin
         protected global::System.Web.UI.WebControls.Button btnQuesAdd;
 
         /// <summary>
+        /// btnQuesAddEdit 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnQuesAddEdit;
+
+        /// <summary>
+        /// btnEditCancel 控制項。
+        /// </summary>
+        /// <remarks>
+        /// 自動產生的欄位。
+        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnEditCancel;
+
+        /// <summary>
         /// lblAnsRed 控制項。
         /// </summary>
         /// <remarks>
@@ -238,15 +283,6 @@ namespace questionnaire.BackAdmin
         /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
         /// </remarks>
         protected global::System.Web.UI.WebControls.ImageButton ImageButton1;
-
-        /// <summary>
-        /// hfQuesList 控制項。
-        /// </summary>
-        /// <remarks>
-        /// 自動產生的欄位。
-        /// 若要修改，請將欄位宣告從設計工具檔案移到程式碼後置檔案。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HiddenField hfQuesList;
 
         /// <summary>
         /// rptQuesItem 控制項。
