@@ -343,12 +343,12 @@ namespace questionnaire
             Guid ID3 = new Guid(ID2);
 
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(ID3);
-            bool ansCheck = true;
+            int ansCheck = 0;
 
             #region 檢查有沒有填必選問題
             for (var i = 0; i < questionList.Count; i++)
             {
-                ansCheck = false;
+                //ansCheck = false;
 
                 var q = _mgrQuesDetail.GetOneQuesDetail(questionList[i].QuesID);
                 if (questionList[i].Necessary == true)
@@ -364,7 +364,7 @@ namespace questionnaire
                                     RadioButton ansRdb = this.plcDynamic.FindControl($"{questionList[i].QuesID}{j}") as RadioButton;
                                     if (ansRdb.Checked == true)
                                     {
-                                        ansCheck = true;
+                                        ansCheck++;
                                         break;
                                     }
                                 }
@@ -379,7 +379,7 @@ namespace questionnaire
                                     CheckBox ansCdb = this.plcDynamic.FindControl($"{questionList[i].QuesID}{j}") as CheckBox;
                                     if (ansCdb.Checked == true)
                                     {
-                                        ansCheck = true;
+                                        ansCheck++;
                                         _ckbCheck = true;
                                         break;
                                     }
@@ -387,7 +387,6 @@ namespace questionnaire
                                 if (_ckbCheck != true)
                                 {
                                     _ckbCheck = false;
-                                    break;
                                 }
                             }
                             break;
@@ -398,7 +397,7 @@ namespace questionnaire
                                 TextBox txtCdb = this.plcDynamic.FindControl($"Q{questionList[i].QuesID}") as TextBox;
                                 if (!String.IsNullOrWhiteSpace(txtCdb.Text))
                                 {
-                                    ansCheck = true;
+                                    ansCheck++;
                                     break;
                                 }
                             }
@@ -407,12 +406,14 @@ namespace questionnaire
                 }
                 else
                 {
-                    ansCheck = true;
+                    ansCheck++;
                 }
             }
             #endregion
 
-            if (_ckbCheck && ansCheck && isNameRight && isPhoneRight && isEmailRight && isAgeRight) ///
+
+
+            if (ansCheck == questionList.Count && isNameRight && isPhoneRight && isEmailRight && isAgeRight) ///
             {
                 this.Session["Name"] = this.txtName.Text;
                 this.Session["Phone"] = this.txtPhone.Text;
