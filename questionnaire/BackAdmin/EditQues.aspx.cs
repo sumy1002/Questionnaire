@@ -966,7 +966,7 @@ namespace questionnaire.BackAdmin
             catch (Exception ex)
             {
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", $"alert('匯出失敗。');", true);
-                Logger.WriteLog("AccountCheckManager.GetAccountCheckList", ex);
+                Logger.WriteLog("CSV.Export", ex);
             }
         }
         #endregion
