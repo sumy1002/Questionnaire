@@ -31,6 +31,7 @@ namespace questionnaire
             }
         }
 
+        //確定登入
         protected void btnLogin_Click(object sender, EventArgs e)
         {
             string account = this.txtAccount.Text.Trim();
@@ -49,6 +50,7 @@ namespace questionnaire
             }
         }
 
+        //取消登入
         protected void btnCancel_Click(object sender, EventArgs e)
         {
             Response.Redirect("listPage.aspx");

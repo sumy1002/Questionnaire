@@ -151,7 +151,7 @@
                             <td>
                                 <asp:Label ID="lblQues" runat="server" Text='<%#Eval("QuesTitle") %>'></asp:Label></td>
                             <td class="tdCenter">
-                                <asp:Label ID="lblQType" runat="server" Text='<%#Eval("QuesType1") %>'></asp:Label></td>
+                                <asp:Label ID="lblQType" runat="server" Text='<%#Eval("QuesTypeID") %>'></asp:Label></td>
                             <td class="tdCenter">
                                 <asp:CheckBox ID="ckbNecessary" runat="server" Checked='<%#Eval("Necessary") %>' Enabled="false" /></td>
                             <td class="tdCenter">

@@ -52,6 +52,8 @@ namespace questionnaire.BackAdmin
             }
         }
 
+        #region 新增問題
+
         //加入自訂/常用問題
         protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -203,6 +205,17 @@ namespace questionnaire.BackAdmin
                     }
                 }
 
+                foreach (RepeaterItem item in this.rptQuesItem.Items)
+                {
+                    Label lbl = item.FindControl("lblQType") as Label;
+                    if (lbl.Text == "1")
+                        lbl.Text = "文字";
+                    else if (lbl.Text == "2")
+                        lbl.Text = "單選";
+                    else if (lbl.Text == "3")
+                        lbl.Text = "複選";
+                }
+
                 this.txtQues.Text = String.Empty;
                 this.txtAnswer.Text = String.Empty;
                 this.ddlQuesType.SelectedIndex = 0;
@@ -211,7 +224,9 @@ namespace questionnaire.BackAdmin
                 Session.Remove("questionList");
             }
         }
-        
+
+        #endregion
+
         #region 編輯問題
 
         //編輯問題
@@ -337,7 +352,7 @@ namespace questionnaire.BackAdmin
 
             if (TitleCheck == true && (RadioHasChoice == true || CkbHasChoice == true))
             {
-                if (queslist[editQ].QuesTypeID == 1)
+                if (this.ddlQuesType.SelectedValue == "1")
                 {
                     queslist[editQ].QuesTitle = this.txtQues.Text;
                     queslist[editQ].QuesTypeID = Convert.ToInt32(this.ddlQuesType.SelectedValue);
@@ -353,6 +368,17 @@ namespace questionnaire.BackAdmin
 
                 this.rptQuesItem.DataSource = queslist;
                 this.rptQuesItem.DataBind();
+
+                foreach (RepeaterItem item in this.rptQuesItem.Items)
+                {
+                    Label lbl = item.FindControl("lblQType") as Label;
+                    if (lbl.Text == "1")
+                        lbl.Text = "文字";
+                    else if (lbl.Text == "2")
+                        lbl.Text = "單選";
+                    else if (lbl.Text == "3")
+                        lbl.Text = "複選";
+                }
 
                 this.btnQuesAddEdit.Visible = false;
                 this.btnEditCancel.Visible = false;
@@ -385,16 +411,17 @@ namespace questionnaire.BackAdmin
 
         #region 刪除問題
         //刪除問題
-        protected void ImageButton1_Click(object sender, ImageClickEventArgs e)
+        protected void ImageButton1_Click(object sender, ImageClickEventArgs e)  //////
         {
             foreach (RepeaterItem item in this.rptQuesItem.Items)
             {
                 HiddenField hf = item.FindControl("hfQuesList") as HiddenField;
                 CheckBox ckbDel = item.FindControl("ckbDel") as CheckBox;
+                Label lblNum = item.FindControl("lblnumber") as Label;
                 Button btn = item.FindControl("btnQuesEdit") as Button;
                 if (ckbDel.Checked)
                 {
-                    this._mgrQuesDetail.DelQuesList(hf.Value, queslist);
+                    this._mgrQuesDetail.DelQuesList(Convert.ToInt32(lblNum.Text), hf.Value, queslist);
                 }
             }
 
@@ -450,6 +477,8 @@ namespace questionnaire.BackAdmin
                     questionNo++;
                 }
 
+                _questionSession.Clear();
+
                 //回列表頁
                 Response.Redirect("ListPageAdmin.aspx");
                 //Response.Redirect("NewQues.aspx?ID=" + ques.QuestionnaireID);
@@ -478,20 +507,20 @@ namespace questionnaire.BackAdmin
             }
         }
 
-        #endregion
-
         //取消新建問卷
         protected void btnCancel_Click(object sender, EventArgs e)
         {
             Response.Redirect("ListPageAdmin.aspx");
         }
 
+        #endregion
+
         //限制結束日期範圍
         protected void txtEnd_TextChanged(object sender, EventArgs e)
         {
             DateTime end = Convert.ToDateTime(this.txtEnd.Text);
 
-            if(end < DateTime.Now)
+            if (end < DateTime.Now)
             {
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('截止日期不可為過去。')", true);
                 this.txtEnd.Text = String.Empty;

@@ -77,6 +77,7 @@ namespace questionnaire
 
                 this.ltlTime.Text = Ques.strStartTime.ToString();
 
+                //過濾一下時間狀態
                 if(Ques.IsEnable == true)
                     this.ltlVote.Text = "投票中";
 

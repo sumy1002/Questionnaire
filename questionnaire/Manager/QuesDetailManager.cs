@@ -350,7 +350,7 @@ namespace questionnaire.Managers
         /// </summary>
         /// <param name="ques"></param>
         /// <returns></returns>
-        public List<QuesAndTypeModel> DelQuesList(string ques, List<QuesAndTypeModel> queslist)
+        public List<QuesAndTypeModel> DelQuesList(int num,string ques, List<QuesAndTypeModel> queslist)
         {
             int count = queslist.Count;
 
@@ -360,7 +360,7 @@ namespace questionnaire.Managers
                 //{
                 if(i < queslist.Count)
                 {
-                    if (queslist[i].QuesTitle == ques)
+                    if (queslist[num-1].QuesTitle == ques)
                     {
                         queslist.Remove(queslist[i]);
                         i--;

@@ -264,6 +264,11 @@ namespace questionnaire
 
         #region 送出
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void btnSend_Click(object sender, EventArgs e)
         {
             #region 個人資料防呆
@@ -338,7 +343,7 @@ namespace questionnaire
             Guid ID3 = new Guid(ID2);
 
             List<QuesDetail> questionList = _mgrQuesDetail.GetQuesDetailList(ID3);
-            bool ansCheck = true; ;
+            bool ansCheck = true;
 
             #region 檢查有沒有填必選問題
             for (var i = 0; i < questionList.Count; i++)
@@ -407,7 +412,7 @@ namespace questionnaire
             }
             #endregion
 
-            if (_ckbCheck && ansCheck && isNameRight && isPhoneRight && isEmailRight && isAgeRight)
+            if (_ckbCheck && ansCheck && isNameRight && isPhoneRight && isEmailRight && isAgeRight) ///
             {
                 this.Session["Name"] = this.txtName.Text;
                 this.Session["Phone"] = this.txtPhone.Text;
@@ -475,7 +480,7 @@ namespace questionnaire
 
                             for (var j = 0; j < arrQ2.Length; j++)
                             {
-                                for (var k = 0; k < arrQ2.Length; k++)
+                                for (var k = 0; k < arrQ2.Length; k++) //////
                                 {
                                     CheckBox ckb = (CheckBox)this.plcDynamic.FindControl($"{questionList[i].QuesID}{k}");
                                     if (ckb.Checked == true)
@@ -518,7 +523,7 @@ namespace questionnaire
 
                 //取ID
                 string ID = Request.QueryString["ID"];
-                Guid id = new Guid(ID);
+                //Guid id = new Guid(ID);
 
                 Response.Redirect($"checkPage.aspx?ID={ID}");
             }

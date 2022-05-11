@@ -1,4 +1,5 @@
-﻿using questionnaire.Manager;
+﻿using questionnaire.Helpers;
+using questionnaire.Manager;
 using questionnaire.Managers;
 using questionnaire.Models;
 using questionnaire.ORM;
@@ -41,7 +42,6 @@ namespace questionnaire.BackAdmin
                 #region 資料繫結
                 //取ID
                 string ID = Request.QueryString["ID"];
-                this.Label1.Text = ID;
                 Guid id = new Guid(ID);
 
                 //尋找該ID的問卷及問題列表
@@ -118,6 +118,17 @@ namespace questionnaire.BackAdmin
                         lblNumber.Text = i.ToString();
                         i++;
                     }
+                }
+
+                foreach (RepeaterItem item in this.rptQuesItem.Items)
+                {
+                    Label lblQType = item.FindControl("lblQType") as Label;
+                    if (lblQType.Text == "1")
+                        lblQType.Text = "文字";
+                    else if (lblQType.Text == "2")
+                        lblQType.Text = "單選";
+                    else if (lblQType.Text == "3")
+                        lblQType.Text = "複選";
                 }
 
                 //統計頁
@@ -484,6 +495,40 @@ namespace questionnaire.BackAdmin
             this.txtAnswer.Text = String.Empty;
             this.ddlQuesType.SelectedIndex = 0;
             this.ckbNess.Checked = false;
+
+
+            //取ID
+            string ID2 = Request.QueryString["ID"];
+            Guid id2 = new Guid(ID2);
+
+            Response.Redirect($"EditQues.aspx?ID={ID2}");
+        }
+
+        //常用問題選擇
+        protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int cqid = Convert.ToInt32(this.ddlType.SelectedValue.Trim());
+            CQAndTypeModel CQs = this._mgrQuesType.GetCQType(cqid);
+
+            if (CQs != null)
+            {
+                this.txtQues.Text = this.ddlType.SelectedItem.ToString();
+                this.txtAnswer.Text = CQs.CQChoice;
+                this.ddlQuesType.SelectedIndex = CQs.QuesTypeID - 1;
+
+                var isEnable = CQs.Necessary;
+                if (isEnable)
+                {
+                    this.ckbNess.Checked = true;
+                }
+            }
+
+            if (this.ddlType.SelectedIndex == 0)
+            {
+                this.txtQues.Text = String.Empty;
+                this.txtAnswer.Text = String.Empty;
+                this.ddlQuesType.SelectedIndex = 0;
+            }
         }
 
         //取消建立問題
@@ -518,12 +563,12 @@ namespace questionnaire.BackAdmin
             Guid id = new Guid(ID);
 
             //導回正確的問卷編輯頁
-            Response.Redirect($"EditQues.aspx?ID={ID}");
+            Response.Redirect($"EditQues.aspx?ID={ID}#question");
         }
         #endregion
 
         #region 修改問卷資訊
-        
+
         //取消修改問卷資訊
         protected void btnCancel_Click(object sender, EventArgs e)
         {
@@ -789,10 +834,10 @@ namespace questionnaire.BackAdmin
             {
                 Directory.CreateDirectory(Path);
             }
-            if (!File.Exists(FileName))
-            {
-                File.Create(Ques.Title);
-            }
+            //if (!File.Exists(FileName))
+            //{
+            //    File.Create(Ques.Title);
+            //}
 
             string fullPath = $"D:\\CSV\\{Ques.Title}.csv";
 
@@ -862,6 +907,19 @@ namespace questionnaire.BackAdmin
                     fi.Directory.Create();
                 }
 
+                string Path = "D:\\CSV\\";
+                string FileName = $"D:\\CSV\\{Ques.Title}.csv";
+
+                //確認路徑是否存在
+                if (!Directory.Exists(Path))
+                {
+                    Directory.CreateDirectory(Path);
+                }
+                if (!File.Exists(FileName))
+                {
+                    File.Create(Ques.Title);
+                }
+
                 FileStream fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
                 StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.UTF8);
                 string data = "";
@@ -908,6 +966,7 @@ namespace questionnaire.BackAdmin
             catch (Exception ex)
             {
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", $"alert('匯出失敗。');", true);
+                Logger.WriteLog("AccountCheckManager.GetAccountCheckList", ex);
             }
         }
         #endregion
@@ -1017,30 +1076,6 @@ namespace questionnaire.BackAdmin
         }
         #endregion
 
-        protected void ddlType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int cqid = Convert.ToInt32(this.ddlType.SelectedValue.Trim());
-            CQAndTypeModel CQs = this._mgrQuesType.GetCQType(cqid);
 
-            if (CQs != null)
-            {
-                this.txtQues.Text = this.ddlType.SelectedItem.ToString();
-                this.txtAnswer.Text = CQs.CQChoice;
-                this.ddlQuesType.SelectedIndex = CQs.QuesTypeID - 1;
-
-                var isEnable = CQs.Necessary;
-                if (isEnable)
-                {
-                    this.ckbNess.Checked = true;
-                }
-            }
-
-            if (this.ddlType.SelectedIndex == 0)
-            {
-                this.txtQues.Text = String.Empty;
-                this.txtAnswer.Text = String.Empty;
-                this.ddlQuesType.SelectedIndex = 0;
-            }
-        }
     }
 }

@@ -17,8 +17,13 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <ul class="nav nav-tabs">
         <li class="active"><a data-toggle="tab" href="#paper">問卷</a></li>
-        <li><a data-toggle="tab" href="#question">問題</a></li>
+        <li><a data-toggle="tab" href="#question" data-target="#question">問題</a></li>
     </ul>
+
+    <%--<ul class="nav nav-tabs">
+        <li class="nav-link active"><a data-toggle="tab" href="#paper">問卷</a></li>
+        <li class="nav-item"><a class="nav-link active" aria-current="page" data-toggle="tab" href="#question">問題</a></li>
+    </ul>--%>
 
 
     <%-- 新增問卷資訊 --%>
@@ -96,7 +101,7 @@
                             <td>
                                 <asp:Label ID="lblQues" runat="server" Text='<%#Eval("QuesTitle") %>'></asp:Label></td>
                             <td>
-                                <asp:Label ID="lblQType" runat="server" Text='<%#Eval("QuesType1") %>'></asp:Label></td>
+                                <asp:Label ID="lblQType" runat="server" Text='<%#Eval("QuesTypeID") %>'></asp:Label></td>
                             <td>
                                 <asp:CheckBox ID="ckbNecessary" runat="server" Checked='<%#Eval("Necessary") %>' Enabled="false" /></td>
                             <td>
@@ -128,24 +133,10 @@
             $('[href="#question"]').tab('show');
         }
 
-        //var a = document.getElementById("btnadd");
-
         $("#btnadd").click(function () {
             $('[href="#tab2"]').tab('show');
         });
 
-        //if (a.click) {
-        //    $("#btn1").click();
-        //   //$('[href="#qeestion"]').tab('show');
-        //};
 
-        //a.click(function () {
-        //    $('[href="#qeestion"]').tab('show');
-        //});
-
-        //a.onClick(function () {
-        //    //GoTotab2();
-        //    alert("123");
-        //});
     </script>
 </asp:Content>

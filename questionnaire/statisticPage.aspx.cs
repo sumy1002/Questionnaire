@@ -135,7 +135,7 @@ namespace questionnaire
                                     break;
                             }
 
-                            //長條圖外圈
+                            //長條圖外圈  //////
                             HtmlGenericControl whiteDiv = new HtmlGenericControl("div");
                             whiteDiv.Style.Value = "border:1px solid black;width:100%;height:20px;";
                             this.plcDynamic.Controls.Add(whiteDiv);
