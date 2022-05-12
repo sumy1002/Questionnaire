@@ -269,14 +269,21 @@ namespace questionnaire.Managers
                 {
                     //組查詢條件
                     var query = contextModel.QuesDetails.Where(item => item.QuesID == id);
+                    var query2 = contextModel.UserQuesDetails.Where(item => item.QuesID == id);
 
                     //取得資料
                     var deleteQues = query.FirstOrDefault();
+                    var deleteUserQues = query2.ToList();
 
                     //檢查是否存在
                     if (deleteQues != null)
                     {
                         contextModel.QuesDetails.Remove(deleteQues);
+
+                        foreach(var item in deleteUserQues)
+                        {
+                            contextModel.UserQuesDetails.Remove(item);
+                        }
                     }
 
                     //確定存檔
