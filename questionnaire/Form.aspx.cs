@@ -374,8 +374,8 @@ namespace questionnaire
                         case 3:
                             for (int j = 0; j < q.QuesChoice.Split(';').Length; j++)
                             {
-                                foreach (var rdb in q.QuesChoice.Split(';'))
-                                {
+                                //foreach (var rdb in q.QuesChoice.Split(';'))
+                                //{
                                     CheckBox ansCdb = this.plcDynamic.FindControl($"{questionList[i].QuesID}{j}") as CheckBox;
                                     if (ansCdb.Checked == true)
                                     {
@@ -383,11 +383,11 @@ namespace questionnaire
                                         _ckbCheck = true;
                                         break;
                                     }
-                                }
-                                if (_ckbCheck != true)
-                                {
-                                    _ckbCheck = false;
-                                }
+                                //}
+                                //if (_ckbCheck != true)
+                                //{
+                                //    _ckbCheck = false;
+                                //}
                             }
                             break;
                         //文字
@@ -413,7 +413,7 @@ namespace questionnaire
 
 
 
-            if (ansCheck == questionList.Count && isNameRight && isPhoneRight && isEmailRight && isAgeRight) ///
+            if (ansCheck == questionList.Count && isNameRight && isPhoneRight && isEmailRight && isAgeRight)
             {
                 this.Session["Name"] = this.txtName.Text;
                 this.Session["Phone"] = this.txtPhone.Text;

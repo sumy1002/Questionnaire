@@ -200,7 +200,9 @@ namespace questionnaire.BackAdmin
                     foreach (RepeaterItem item in this.rptQuesItem.Items)
                     {
                         Label lblNumber = item.FindControl("lblNumber") as Label;
+                        Button btn = item.FindControl("btnQuesEdit") as Button;
                         lblNumber.Text = i.ToString();
+                        btn.CommandName = i.ToString();
                         i++;
                     }
                 }
@@ -234,25 +236,35 @@ namespace questionnaire.BackAdmin
         {
             this.ddlType.Enabled = false;
 
-            for (int i = 0; i < queslist.Count; i++)
+            foreach (RepeaterItem item in this.rptQuesItem.Items)
             {
-                if (queslist[i].QuesTitle == e.CommandName)
+                Label lblNum = item.FindControl("lblnumber") as Label;
+                Button btn = item.FindControl("btnQuesEdit") as Button;
+
+                //btn.CommandName = lblNum.Text;
+
+                for (int i = 0; i < queslist.Count; i++)
                 {
-                    if (queslist[i].QuesTypeID == 1)
+                    if (lblNum.Text == e.CommandName)
                     {
-                        this.txtQues.Text = queslist[i].QuesTitle;
-                        this.txtAnswer.Text = String.Empty;
-                        this.ddlQuesType.SelectedIndex = queslist[i].QuesTypeID;
-                        this.ckbNess.Checked = queslist[i].Necessary;
-                        editQ = i;
-                    }
-                    else
-                    {
-                        this.txtQues.Text = queslist[i].QuesTitle;
-                        this.txtAnswer.Text = queslist[i].QuesChoice;
-                        this.ddlQuesType.SelectedIndex = queslist[i].QuesTypeID - 1;
-                        this.ckbNess.Checked = queslist[i].Necessary;
-                        editQ = i;
+                        int num = Convert.ToInt32(lblNum.Text);
+
+                        if (queslist[num-1].QuesTypeID == 1)
+                        {
+                            this.txtQues.Text = queslist[num - 1].QuesTitle;
+                            this.txtAnswer.Text = String.Empty;
+                            this.ddlQuesType.SelectedIndex = 0;
+                            this.ckbNess.Checked = queslist[num - 1].Necessary;
+                            editQ = num - 1;
+                        }
+                        else
+                        {
+                            this.txtQues.Text = queslist[num - 1].QuesTitle;
+                            this.txtAnswer.Text = queslist[num - 1].QuesChoice;
+                            this.ddlQuesType.SelectedIndex = queslist[num - 1].QuesTypeID -1;
+                            this.ckbNess.Checked = queslist[num - 1].Necessary;
+                            editQ = num - 1;
+                        }
                     }
                 }
             }
@@ -263,6 +275,31 @@ namespace questionnaire.BackAdmin
             this.btnQuesAddEdit.Visible = true;
             this.btnEditCancel.Visible = true;
             this.btnQuesAdd.Visible = false;
+
+            //生成問題的編號
+            if (queslist != null || queslist.Count > 0)
+            {
+                int i = 1;
+                foreach (RepeaterItem item in this.rptQuesItem.Items)
+                {
+                    Label lblNumber = item.FindControl("lblNumber") as Label;
+                    Button btn = item.FindControl("btnQuesEdit") as Button;
+                    lblNumber.Text = i.ToString();
+                    btn.CommandName = i.ToString();
+                    i++;
+                }
+            }
+
+            foreach (RepeaterItem item in this.rptQuesItem.Items)
+            {
+                Label lbl = item.FindControl("lblQType") as Label;
+                if (lbl.Text == "1")
+                    lbl.Text = "文字";
+                else if (lbl.Text == "2")
+                    lbl.Text = "單選";
+                else if (lbl.Text == "3")
+                    lbl.Text = "複選";
+            }
         }
 
         //儲存編輯問題
