@@ -75,7 +75,41 @@ namespace questionnaire.Managers
                 throw;
             }
         }
-        
+
+        /// <summary>
+        /// 取得查詢條件的CQ，及其所有資料
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public CQ GetCQs(string cq)
+        {
+            try
+            {
+                using (ContextModel contextModel = new ContextModel())
+                {
+                    //取得所有或加查詢條件的問卷
+
+                    var query =
+                        from item in contextModel.CQs
+                        select item;
+
+                    //取得Account所有資料
+                    var CQ = query.FirstOrDefault();
+
+                    if (CQ != null)
+                        return CQ;
+
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Logger.WriteLog("CQManager.GetCQs", ex);
+                throw;
+            }
+        }
+
 
         #region "增刪修"
         /// <summary>

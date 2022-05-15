@@ -372,6 +372,13 @@ namespace questionnaire.BackAdmin
             {
                 HiddenField hfid = item.FindControl("hfcqid") as HiddenField;
                 CheckBox ckbDel = item.FindControl("ckbCQ") as CheckBox;
+                ImageButton imgbtn = item.FindControl("imgbtnDel") as ImageButton;
+
+                if (String.IsNullOrWhiteSpace(hfid.Value))
+                {
+                    hfid.Value = imgbtn.CommandName;
+                }
+
                 if (ckbDel.Checked && Int32.TryParse(hfid.Value, out int CQID))
                 {
                     //把問題從資料庫中刪除
